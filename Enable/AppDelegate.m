@@ -7,6 +7,8 @@
 
 #import "AppDelegate.h"
 @import GoogleMaps;
+@import GooglePlaces;
+
 @interface AppDelegate ()
 
 @end
@@ -20,7 +22,7 @@
     NSString *path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
     [GMSServices provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
-//    [GMSPlacesClient provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
+    [GMSPlacesClient provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
     return YES;
 }
 
