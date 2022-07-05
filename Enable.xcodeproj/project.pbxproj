@@ -37,6 +37,7 @@
 		7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		7FA7DEE02874AEB90080E4A9 /* MapView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
 		7FA7DEE12874AEB90080E4A9 /* MapView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapView.m; sourceTree = "<group>"; };
+		7FE2F25E2874EF7900EDEFCA /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		CA14A83AA965803D354FA3D7 /* Pods_Enable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Enable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D67A7590AA5911A77EE09CA2 /* Pods-Enable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.debug.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.debug.xcconfig"; sourceTree = "<group>"; };
 		F34E327DA9BDCC00805195DA /* Pods-Enable.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.release.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.release.xcconfig"; sourceTree = "<group>"; };
@@ -57,6 +58,7 @@
 		724CCB2007FB637C69E28CC1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7FE2F25E2874EF7900EDEFCA /* CoreLocation.framework */,
 				CA14A83AA965803D354FA3D7 /* Pods_Enable.framework */,
 			);
 			name = Frameworks;
@@ -309,6 +311,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -392,7 +395,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = K3R3WAQYL3;
-				"EXCLUDED_ARCHS[sdk=*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Enable/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
