@@ -32,6 +32,7 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 - Perhaps allow users to view another user's profile and give an "upvote". ie some users are considered "better" reviewers
         - Similar to StackOverflow?
         - Balance between providing more user privacy vs. greater sense of community
+
 **What This Will Look Like**
 - Able to use all of the functionality involving searching/filtering
 - Able to customize profile information
