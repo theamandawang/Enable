@@ -64,7 +64,6 @@
         NSLog(@"Location issues :((");
     }
     
-    
     [self.contentView addSubview:mapView];
 
     return self;
