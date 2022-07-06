@@ -24,10 +24,12 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
                                 <rect key="frame" x="0.0" y="139" width="428" height="753"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <gestureRecognizers/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="xww-aA-ja5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="MBh-m7-vUj"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="19E-Cg-fHi" secondAttribute="trailing" id="NJI-SL-Kby"/>
@@ -59,7 +61,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="contentView" destination="8bC-Xf-vdC" id="y44-b2-sm1"/>
+                        <outlet property="mapView" destination="19E-Cg-fHi" id="tx7-4N-uvo"/>
+                        <outlet property="searchBar" destination="xww-aA-ja5" id="LGT-dI-lSh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

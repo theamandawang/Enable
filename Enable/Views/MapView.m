@@ -6,10 +6,8 @@
 //
 
 #import "MapView.h"
-#import <GoogleMaps/GoogleMaps.h>
 #import <CoreLocation/CoreLocation.h>
 @implementation MapView{
-    GMSMapView *mapView;
     BOOL firstLocationUpdate;
 }
 
@@ -45,15 +43,15 @@
                                  cameraWithLatitude:-33.86
                                  longitude:151.20
                                  zoom:6];
-    mapView = [GMSMapView mapWithFrame:self.contentView.frame camera:camera];
-    mapView.myLocationEnabled = YES;
-    
+    self.mapView = [GMSMapView mapWithFrame:self.contentView.frame camera:camera];
+    self.mapView.myLocationEnabled = YES;
+    self.mapView.settings.myLocationButton = YES;
     /*
      https://stackoverflow.com/questions/17366403/gmsmapview-mylocation-not-giving-actual-location
      using KOV method; not CLLocation. CLLocation was not working not sure why.
     */
     if(CLLocationManager.locationServicesEnabled){
-        [mapView
+        [self.mapView
                     addObserver:self
                     forKeyPath:@"myLocation"
                     options:NSKeyValueObservingOptionNew
@@ -64,7 +62,7 @@
         NSLog(@"Location issues :((");
     }
     
-    [self.contentView addSubview:mapView];
+    [self.contentView addSubview:self.mapView];
 
     return self;
 }
@@ -79,7 +77,7 @@
       if(!CLLocationManager.locationServicesEnabled){
           return;
       }
-    mapView.camera = [GMSCameraPosition
+    self.mapView.camera = [GMSCameraPosition
                       cameraWithTarget:location.coordinate
                       zoom:14];
   }
