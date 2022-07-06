@@ -6,6 +6,9 @@
 //
 
 #import "LoginViewController.h"
+#import "ProfileViewController.h"
+#import "SceneDelegate.h"
+#import "HomeViewController.h"
 #import "Parse/Parse.h"
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -47,7 +50,36 @@
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    NSLog(@"logging in");
+    PFUser *user = [PFUser user];
+    user.email = self.emailTextField.text;
+    user.username = self.userTextField.text;
+    user.password = self.passTextField.text;
+    PFQuery *query = [PFUser query];
+        [query whereKey:@"email" equalTo:self.emailTextField.text];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error){
+            if (objects.count > 0) {
+
+                PFObject *object = [objects objectAtIndex:0];
+                NSString *username = [object objectForKey:@"username"];
+                [PFUser logInWithUsernameInBackground:username password:self.passTextField.text block:^(PFUser* user, NSError* error){
+                    if(!error){
+                        NSLog(@"success");
+                        SceneDelegate *sceneDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
+                        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                        UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"mainNav"];
+                        sceneDelegate.window.rootViewController = navController;
+                        [navController.topViewController performSegueWithIdentifier:@"signedIn" sender:nil];
+                    } else {
+                        
+                    }
+                    
+                }];
+            }else{
+                NSLog(@"nothing found");
+
+            }
+        }];
+    
 }
 - (IBAction)didTapView:(id)sender {
     [self.view endEditing:YES];
