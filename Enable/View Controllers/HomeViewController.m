@@ -7,6 +7,7 @@
 
 #import "HomeViewController.h"
 #import "MapView.h"
+#import "Parse/Parse.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
@@ -98,6 +99,14 @@ didFailAutocompleteWithError:(NSError *)error {
 - (void)didUpdateAutocompletePredictionsForResultsController:
     (GMSAutocompleteResultsViewController *)resultsController {
   [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+- (IBAction)didTapProfile:(id)sender {
+    if([PFUser currentUser]){
+        [self performSegueWithIdentifier:@"signedIn" sender:nil];
+    }
+    else {
+        [self performSegueWithIdentifier:@"signedOut" sender:nil];
+    }
 }
 
 @end

@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7FA28F6028751C5900B90DF0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA28F5F28751C5900B90DF0 /* CoreLocation.framework */; };
+		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
+		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */; };
 		7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC22874A1A50080E4A9 /* SceneDelegate.m */; };
 		7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC72874A1A50080E4A9 /* Main.storyboard */; };
@@ -23,7 +24,10 @@
 /* Begin PBXFileReference section */
 		41F93252FB7EFAA887D947DF /* Pods-Enable.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.release.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.release.xcconfig"; sourceTree = "<group>"; };
 		79AB9D4698423F7E04353FE7 /* Pods-Enable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.debug.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.debug.xcconfig"; sourceTree = "<group>"; };
-		7FA28F5F28751C5900B90DF0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		7F841BFA28762FA700CBD922 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		7FA7DEBB2874A1A50080E4A9 /* Enable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Enable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7DEBE2874A1A50080E4A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,7 +51,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FA28F6028751C5900B90DF0 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,7 +60,6 @@
 		724CCB2007FB637C69E28CC1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7FA28F5F28751C5900B90DF0 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -114,6 +116,10 @@
 			children = (
 				7FA7DEDD2874AE3F0080E4A9 /* HomeViewController.h */,
 				7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */,
+				7F841BF62876011600CBD922 /* LoginViewController.h */,
+				7F841BF72876011600CBD922 /* LoginViewController.m */,
+				7F841BF928762FA700CBD922 /* ProfileViewController.h */,
+				7F841BFA28762FA700CBD922 /* ProfileViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -139,6 +145,7 @@
 				7FA7DEB82874A1A50080E4A9 /* Frameworks */,
 				7FA7DEB92874A1A50080E4A9 /* Resources */,
 				917AEE6ACA9638DC5EAA0C7E /* [CP] Copy Pods Resources */,
+				B65136900363E863BFAC28D6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -214,6 +221,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		B65136900363E863BFAC28D6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		E67F0988F05ABDF0783EE6FA /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -245,7 +269,9 @@
 			files = (
 				7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */,
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
+				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,
+				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
 			);
