@@ -1,4 +1,4 @@
-#Enable#
+# Enable #
 
 *Enable* - Meta University iOS
 
@@ -6,7 +6,7 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 
 ## Timeline ##
 
-##Week 4##
+## Week 4 ##
 - Set up MapView, autocomplete location search, detailed view of locations
 - Set up Back4App database
     - Create User, UserProfile, Location, and Review tables
@@ -20,7 +20,7 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 - Similar to Instagram, be able to see the user who posted
 
 
-##Week 5##
+## Week 5 ##
 - Allow filtering
 - User profiles; allow editing
 - Create image slideshows; users can swipe between images that reviewers have left
@@ -39,7 +39,7 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 - Able to reverse search; get a POI (point of interest) from user's current coordinates
 - User profile!
 
-##Week 6##
+## Week 6 ##
 - Fix formatting + look. Create images for the launch screen, app icon etc.
 - Provide customizable color palette / font sizes.
     - Will cache this locally
@@ -51,11 +51,11 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 - Everything on Wireframe will be complete!
 
 
-##Week 7##
+## Week 7 ##
 - Start with bonus / fun features!
 - Try to incorporate the Measure app from iOS AR...
     - Start looking into this more! Not quite sure if it's possible yet.
 - Try to incorporate autofill for user login; iOS saves login info in Apple Wallet?
 - Perhaps email confirmation? For registering accounts
-##Week 8##
+## Week 8 ##
 - Polish features, write final self-evaluation
