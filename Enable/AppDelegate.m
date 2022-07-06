@@ -18,12 +18,15 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
+    [self setUpGoogleMaps];
+    return YES;
+}
+
+-(void)setUpGoogleMaps{
     NSString *path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
     [GMSServices provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
     [GMSPlacesClient provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
-    return YES;
 }
 
 

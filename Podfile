@@ -7,6 +7,6 @@ target 'Enable' do
 
   # Pods for Enable
   pod 'GoogleMaps', '7.0.0'
-  pod 'GooglePlaces'
+  pod 'GooglePlaces', '7.0.0'
 
 end

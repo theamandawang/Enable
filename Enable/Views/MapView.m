@@ -46,10 +46,13 @@
     self.mapView = [GMSMapView mapWithFrame:self.contentView.frame camera:camera];
     self.mapView.myLocationEnabled = YES;
     self.mapView.settings.myLocationButton = YES;
+    self.mapView.settings.myLocationButton = YES;
+    [self.mapView setMapType:kGMSTypeTerrain];
     /*
      https://stackoverflow.com/questions/17366403/gmsmapview-mylocation-not-giving-actual-location
      using KOV method; not CLLocation. CLLocation was not working not sure why.
     */
+    //CLLocationManager.locationServicesEnabled does not work
     if(CLLocationManager.locationServicesEnabled){
         [self.mapView
                     addObserver:self

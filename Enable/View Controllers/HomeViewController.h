@@ -7,9 +7,11 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
+#import <GooglePlaces/GooglePlaces.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HomeViewController : UIViewController <GMSMapViewDelegate>
+@interface HomeViewController : UIViewController <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
 
 @end
 

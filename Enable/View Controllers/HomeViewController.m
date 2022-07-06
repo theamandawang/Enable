@@ -7,18 +7,42 @@
 
 #import "HomeViewController.h"
 #import "MapView.h"
-@interface HomeViewController () <GMSMapViewDelegate>
+@interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) UISearchController *searchController;
+@property (strong, nonatomic) GMSAutocompleteResultsViewController *resultsViewController;
 
 @end
 
 @implementation HomeViewController
+GMSMarker *infoMarker;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.mapView.mapView.delegate = self;
+    self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
+    self.searchController = [[UISearchController alloc]
+                             initWithSearchResultsController:self.resultsViewController
+                            ];
+    self.resultsViewController.delegate = self;
+    self.searchController.searchResultsUpdater = self.resultsViewController;
     
+    
+    
+    // search bar covers nav bar; need to constrain somehow
+    UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
+    
+    // gives "Impossible to set up layout with view hierarchy unprepared for constraint" exception
+//    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:subView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+//    [subView addConstraint:top];
+    
+    [subView addSubview:self.searchController.searchBar];
+    [self.searchController.searchBar sizeToFit];
+    [self.view addSubview:subView];
+    
+    self.mapView.mapView.delegate = self;
+    self.searchController.searchBar.text = @"";
+    self.searchController.searchBar.placeholder = @"Search location...";
+    [self.mapView.mapView setBounds:self.mapView.bounds];
     // Do any additional setup after loading the view.
 }
 
@@ -32,7 +56,48 @@
 }
 */
 -(void) mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate{
-    [self.searchBar endEditing:YES];
+    [self.searchController setActive:NO];
+
+}
+- (void)mapView:(GMSMapView *)mapView
+    didTapPOIWithPlaceID:(NSString *)placeID
+                    name:(NSString *)name
+                location:(CLLocationCoordinate2D)location {
+  infoMarker = [GMSMarker markerWithPosition:location];
+  infoMarker.snippet = placeID;
+  infoMarker.title = name;
+  infoMarker.opacity = 0;
+  CGPoint pos = infoMarker.infoWindowAnchor;
+  pos.y = 1;
+  infoMarker.infoWindowAnchor = pos;
+  infoMarker.map = mapView;
+  mapView.selectedMarker = infoMarker;
+}
+
+- (void)resultsController:(nonnull GMSAutocompleteResultsViewController *)resultsController didAutocompleteWithPlace:(nonnull GMSPlace *)place {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    // Do something with the selected place.
+    NSLog(@"Place name %@", place.name);
+    NSLog(@"Place address %@", place.formattedAddress);
+    NSLog(@"Place attributions %@", place.attributions.string);
+    
+    
+    self.searchController.searchBar.text = place.formattedAddress;
+}
+- (void)resultsController:(GMSAutocompleteResultsViewController *)resultsController
+didFailAutocompleteWithError:(NSError *)error {
+  [self dismissViewControllerAnimated:YES completion:nil];
+  // TODO: handle the error.
+  NSLog(@"Error: %@", [error description]);
+}
+
+
+-(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+- (void)didUpdateAutocompletePredictionsForResultsController:
+    (GMSAutocompleteResultsViewController *)resultsController {
+  [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 
 @end
