@@ -108,5 +108,7 @@ didFailAutocompleteWithError:(NSError *)error {
         [self performSegueWithIdentifier:@"signedOut" sender:nil];
     }
 }
-
+- (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker{
+    [self performSegueWithIdentifier:@"review" sender:nil];
+}
 @end

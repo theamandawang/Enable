@@ -12,6 +12,10 @@
 		7F6298C028776BB600A550F4 /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BF28776BB600A550F4 /* Review.m */; };
 		7F6298C328776DBD00A550F4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C228776DBD00A550F4 /* Location.m */; };
 		7F6298C628778C7D00A550F4 /* ResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C528778C7D00A550F4 /* ResultView.m */; };
+		7F6298CE28779C2C00A550F4 /* 3xTransparentLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298C928779C2C00A550F4 /* 3xTransparentLogo.png */; };
+		7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */; };
+		7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */; };
+		7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
@@ -40,6 +44,10 @@
 		7F6298C228776DBD00A550F4 /* Location.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		7F6298C428778C7D00A550F4 /* ResultView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultView.h; sourceTree = "<group>"; };
 		7F6298C528778C7D00A550F4 /* ResultView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultView.m; sourceTree = "<group>"; };
+		7F6298C928779C2C00A550F4 /* 3xTransparentLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3xTransparentLogo.png; sourceTree = "<group>"; };
+		7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2xSolidLogo.png; sourceTree = "<group>"; };
+		7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3xSolidLogo.png; sourceTree = "<group>"; };
+		7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2xTransparentLogo.png; sourceTree = "<group>"; };
 		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -98,6 +106,17 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		7F6298C828779C1500A550F4 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */,
+				7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */,
+				7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */,
+				7F6298C928779C2C00A550F4 /* 3xTransparentLogo.png */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		7FA7DEB22874A1A50080E4A9 = {
 			isa = PBXGroup;
 			children = (
@@ -119,6 +138,7 @@
 		7FA7DEBD2874A1A50080E4A9 /* Enable */ = {
 			isa = PBXGroup;
 			children = (
+				7F6298C828779C1500A550F4 /* Assets */,
 				7F6298BA2877662700A550F4 /* Models */,
 				7FA7DEDA2874ADF70080E4A9 /* View Controllers */,
 				7FA7DED92874ADE90080E4A9 /* Views */,
@@ -233,10 +253,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */,
+				7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */,
 				7FA7DECE2874A1A50080E4A9 /* LaunchScreen.storyboard in Resources */,
 				7FA7DECB2874A1A50080E4A9 /* Assets.xcassets in Resources */,
 				7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */,
+				7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */,
 				7FA7DED82874A87A0080E4A9 /* Keys.plist in Resources */,
+				7F6298CE28779C2C00A550F4 /* 3xTransparentLogo.png in Resources */,
 				7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */,
 				7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */,
 			);
