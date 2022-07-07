@@ -11,6 +11,7 @@
 		7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BB2877663B00A550F4 /* UserProfile.m */; };
 		7F6298C028776BB600A550F4 /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BF28776BB600A550F4 /* Review.m */; };
 		7F6298C328776DBD00A550F4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C228776DBD00A550F4 /* Location.m */; };
+		7F6298C628778C7D00A550F4 /* ResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C528778C7D00A550F4 /* ResultView.m */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
@@ -37,6 +38,8 @@
 		7F6298BF28776BB600A550F4 /* Review.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Review.m; sourceTree = "<group>"; };
 		7F6298C128776DAF00A550F4 /* Location.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		7F6298C228776DBD00A550F4 /* Location.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		7F6298C428778C7D00A550F4 /* ResultView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultView.h; sourceTree = "<group>"; };
+		7F6298C528778C7D00A550F4 /* ResultView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultView.m; sourceTree = "<group>"; };
 		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -142,6 +145,8 @@
 				7F841BFE2876322B00CBD922 /* ProfileView.xib */,
 				7F841C002876323D00CBD922 /* ProfileView.h */,
 				7F841C012876323D00CBD922 /* ProfileView.m */,
+				7F6298C428778C7D00A550F4 /* ResultView.h */,
+				7F6298C528778C7D00A550F4 /* ResultView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 				7F841C022876323D00CBD922 /* ProfileView.m in Sources */,
 				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
+				7F6298C628778C7D00A550F4 /* ResultView.m in Sources */,
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
 				7F6298C028776BB600A550F4 /* Review.m in Sources */,
 			);

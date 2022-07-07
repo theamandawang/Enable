@@ -6,11 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "UserProfile.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ProfileView : UIView
-
+@property(weak, nonatomic) UserProfile *user;
+- (void) reloadUserData;
 @end
 
 NS_ASSUME_NONNULL_END

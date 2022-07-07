@@ -8,7 +8,9 @@
 #import "ProfileViewController.h"
 #import "Parse/Parse.h"
 #import "SceneDelegate.h"
+#import "ProfileView.h"
 @interface ProfileViewController ()
+@property (weak, nonatomic) IBOutlet ProfileView *profileView;
 
 @end
 
@@ -16,6 +18,22 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
+    [query whereKey:@"userID" equalTo:[PFUser currentUser]];
+    [query setLimit:1];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable users, NSError * _Nullable error) {
+        if(error){
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            if(users){
+                self.profileView.user = users[0];
+                [self.profileView reloadUserData];
+            }
+            else{
+                NSLog(@"no user found!");
+            }
+        }
+    }];
     // Do any additional setup after loading the view.
 }
 

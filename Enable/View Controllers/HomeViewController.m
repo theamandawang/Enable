@@ -30,6 +30,7 @@ GMSMarker *infoMarker;
     
     
     // search bar covers nav bar; need to constrain somehow
+    [self.searchController setHidesNavigationBarDuringPresentation:NO];
     UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
     
     // gives "Impossible to set up layout with view hierarchy unprepared for constraint" exception
@@ -91,7 +92,6 @@ didFailAutocompleteWithError:(NSError *)error {
   // TODO: handle the error.
   NSLog(@"Error: %@", [error description]);
 }
-
 
 -(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
