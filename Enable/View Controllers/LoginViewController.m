@@ -6,9 +6,6 @@
 //
 
 #import "LoginViewController.h"
-#import "ProfileViewController.h"
-#import "SceneDelegate.h"
-#import "HomeViewController.h"
 #import "Parse/Parse.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
@@ -35,11 +32,7 @@
 
 // allow iCloud Keychain ? for future development.
 - (void)navigateToProfile {
-    SceneDelegate *sceneDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"mainNav"];
-    sceneDelegate.window.rootViewController = navController;
-    [navController.topViewController performSegueWithIdentifier:@"signedIn" sender:nil];
+    [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
 
 - (void) signUp {
