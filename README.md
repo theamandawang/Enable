@@ -7,14 +7,14 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 ## Timeline ##
 
 ## Week 4 ##
-- Set up MapView, autocomplete location search, detailed view of locations
-- Set up Back4App database
+- [X] Set up MapView, autocomplete location search, detailed view of locations
+- [X] Set up Back4App database
     - Create User, UserProfile, Location, and Review tables
         - Excluding OAuth to start
--Set up Storyboard to navigate like the wireframe; only User Login, HomeScreen, User Profile, and Reviews implemented
+- [X] Set up Storyboard to navigate like the wireframe; only User Login, HomeScreen, User Profile, and Reviews implemented
 
 **What This Will Look Like**
-- Able to log in with email + password
+- [X] Able to log in with email + password
 - Able to post a review with a single picture (no multiple images yet...)
 - Able to read reviews
 - Similar to Instagram, be able to see the user who posted
