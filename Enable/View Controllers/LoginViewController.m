@@ -37,9 +37,10 @@
 
 - (void) signUp {
     NSString *email = self.emailTextField.text;
+    NSString *password = self.passTextField.text;
     PFUser *user = [PFUser user];
     user.username = email;
-    user.password = self.passTextField.text;
+    user.password = password;
     UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
@@ -66,7 +67,9 @@
 }
 
 - (void) logIn {
-    [PFUser logInWithUsernameInBackground:self.emailTextField.text password:self.passTextField.text block:^(PFUser* user, NSError* error){
+    NSString * email = self.emailTextField.text;
+    NSString * password = self.passTextField.text;
+    [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
             if(!error){
                 NSLog(@"success");
                 [self navigateToProfile];
