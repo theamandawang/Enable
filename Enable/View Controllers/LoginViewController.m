@@ -18,7 +18,6 @@
 @end
 
 @implementation LoginViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -42,7 +41,8 @@
     sceneDelegate.window.rootViewController = navController;
     [navController.topViewController performSegueWithIdentifier:@"signedIn" sender:nil];
 }
-- (IBAction)didTapSignUp:(id)sender {
+
+- (void) signUp {
     NSString *email = self.emailTextField.text;
     PFUser *user = [PFUser user];
     user.username = email;
@@ -51,30 +51,28 @@
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
     
-    if(![self isEmail:email]){
+    if([self isEmail:email]){
+        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (!error) {
+                userProfile.userID = [PFUser currentUser];
+                [userProfile saveInBackgroundWithBlock:^(BOOL saveSucceeded, NSError * _Nullable saveError) {
+                    if(!saveError){
+                        [self navigateToProfile];
+                    } else {
+                        NSLog(@"%@", saveError.localizedDescription);
+                    }
+                }];
+            } else {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+    } else {
         NSLog(@"NOT AN EMAIL !!!!!!!!!!!!!");
-        return;
     }
-    [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        if (!error) {
-            userProfile.userID = [PFUser currentUser];
-            [userProfile saveInBackgroundWithBlock:^(BOOL saveSucceeded, NSError * _Nullable saveError) {
-                if(!saveError){
-                    [self navigateToProfile];
-                }
-                else {
-                    NSLog(@"issues!");
-                    NSLog(@"%@", saveError.localizedDescription);
-                }
-            }];
-        } else {
-            NSLog(@"👿👿👿👿 doesn't work");
-            NSLog(@"%@", error.localizedDescription);
-        }
-    }];
+
 }
 
-- (IBAction)didTapLogin:(id)sender {
+- (void) logIn {
     [PFUser logInWithUsernameInBackground:self.emailTextField.text password:self.passTextField.text block:^(PFUser* user, NSError* error){
             if(!error){
                 NSLog(@"success");
@@ -83,6 +81,15 @@
                 NSLog(@"%@", error.localizedDescription);
             }
     }];
+}
+
+
+- (IBAction)didTapSignUp:(id)sender {
+    [self signUp];
+}
+
+- (IBAction)didTapLogin:(id)sender {
+    [self logIn];
 }
 - (BOOL)isEmail:(NSString *)email{
     NSString *emailRegEx =
