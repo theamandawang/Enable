@@ -7,7 +7,6 @@
 
 #import "ProfileViewController.h"
 #import "Parse/Parse.h"
-#import "SceneDelegate.h"
 #import "ProfileView.h"
 @interface ProfileViewController ()
 @property (weak, nonatomic) IBOutlet ProfileView *profileView;
@@ -18,15 +17,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //TODO: implement what is below in a prepareforsegue instead
     PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
     [query whereKey:@"userID" equalTo:[PFUser currentUser]];
     [query setLimit:1];
-    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable users, NSError * _Nullable error) {
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable user, NSError * _Nullable error) {
         if(error){
             NSLog(@"%@", error.localizedDescription);
         } else {
-            if(users){
-                self.profileView.user = users[0];
+            if(user){
+                self.profileView.user = (UserProfile *)user;
                 [self.profileView reloadUserData];
             }
             else{
@@ -46,17 +46,20 @@
     // Pass the selected object to the new view controller.
 }
 */
-- (IBAction)didTapLogout:(id)sender {
-    NSLog(@"click logout");
+- (void) logOutWithCompletion:(void (^_Nonnull)(void))completion{
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
-        if(!error){
-            SceneDelegate *sceneDelegate = (SceneDelegate *)self.view.window.windowScene.delegate;
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            UINavigationController *navController = [storyboard instantiateViewControllerWithIdentifier:@"mainNav"];
-            sceneDelegate.window.rootViewController = navController;
+        if(!error) {
+            completion();
         } else {
+            //TODO: handle errors
             NSLog(@"%@", error.localizedDescription);
         }
+
+    }];
+}
+- (IBAction)didTapLogout:(id)sender {
+    [self logOutWithCompletion:^{
+        [self.navigationController popToRootViewControllerAnimated:TRUE];
     }];
 }
 

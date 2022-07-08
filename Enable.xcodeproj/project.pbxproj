@@ -16,6 +16,9 @@
 		7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */; };
 		7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */; };
 		7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */; };
+		7F6298D52877A4BC00A550F4 /* ReviewByLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298D42877A4BC00A550F4 /* ReviewByLocationViewController.m */; };
+		7F6298D82877D3EB00A550F4 /* ComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298D72877D3EB00A550F4 /* ComposeViewController.m */; };
+		7F6298DB2878A01700A550F4 /* SummaryReviewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298DA2878A01700A550F4 /* SummaryReviewTableViewCell.m */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
@@ -48,6 +51,12 @@
 		7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2xSolidLogo.png; sourceTree = "<group>"; };
 		7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3xSolidLogo.png; sourceTree = "<group>"; };
 		7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2xTransparentLogo.png; sourceTree = "<group>"; };
+		7F6298D32877A4BC00A550F4 /* ReviewByLocationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReviewByLocationViewController.h; sourceTree = "<group>"; };
+		7F6298D42877A4BC00A550F4 /* ReviewByLocationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReviewByLocationViewController.m; sourceTree = "<group>"; };
+		7F6298D62877D3EB00A550F4 /* ComposeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComposeViewController.h; sourceTree = "<group>"; };
+		7F6298D72877D3EB00A550F4 /* ComposeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComposeViewController.m; sourceTree = "<group>"; };
+		7F6298D92878A01700A550F4 /* SummaryReviewTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SummaryReviewTableViewCell.h; sourceTree = "<group>"; };
+		7F6298DA2878A01700A550F4 /* SummaryReviewTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SummaryReviewTableViewCell.m; sourceTree = "<group>"; };
 		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -167,6 +176,8 @@
 				7F841C012876323D00CBD922 /* ProfileView.m */,
 				7F6298C428778C7D00A550F4 /* ResultView.h */,
 				7F6298C528778C7D00A550F4 /* ResultView.m */,
+				7F6298D92878A01700A550F4 /* SummaryReviewTableViewCell.h */,
+				7F6298DA2878A01700A550F4 /* SummaryReviewTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -180,6 +191,10 @@
 				7F841BF72876011600CBD922 /* LoginViewController.m */,
 				7F841BF928762FA700CBD922 /* ProfileViewController.h */,
 				7F841BFA28762FA700CBD922 /* ProfileViewController.m */,
+				7F6298D32877A4BC00A550F4 /* ReviewByLocationViewController.h */,
+				7F6298D42877A4BC00A550F4 /* ReviewByLocationViewController.m */,
+				7F6298D62877D3EB00A550F4 /* ComposeViewController.h */,
+				7F6298D72877D3EB00A550F4 /* ComposeViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -333,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */,
+				7F6298D52877A4BC00A550F4 /* ReviewByLocationViewController.m in Sources */,
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
 				7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */,
 				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,
@@ -342,7 +358,9 @@
 				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
 				7F6298C628778C7D00A550F4 /* ResultView.m in Sources */,
+				7F6298D82877D3EB00A550F4 /* ComposeViewController.m in Sources */,
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
+				7F6298DB2878A01700A550F4 /* SummaryReviewTableViewCell.m in Sources */,
 				7F6298C028776BB600A550F4 /* Review.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -425,6 +443,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = NO;
 			};
 			name = Debug;
 		};

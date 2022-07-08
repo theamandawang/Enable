@@ -7,6 +7,7 @@
 
 #import "HomeViewController.h"
 #import "MapView.h"
+#import "ReviewByLocationViewController.h"
 #import "Parse/Parse.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
@@ -17,7 +18,7 @@
 
 @implementation HomeViewController
 GMSMarker *infoMarker;
-
+NSString *POI_idStr;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
@@ -48,15 +49,30 @@ GMSMarker *infoMarker;
     // Do any additional setup after loading the view.
 }
 
-/*
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"review"]){
+        ReviewByLocationViewController* vc = [segue destinationViewController];
+        PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+        query.limit = 1;
+        [query whereKey:@"POI_idStr" equalTo:POI_idStr];
+        [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable location, NSError * _Nullable error) {
+            if(!error){
+                vc.location = (Location *)location;
+            } else {
+                //TODO: error handle
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }];
+    }
+    
+    
 }
-*/
+
 -(void) mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate{
     [self.searchController setActive:NO];
 
@@ -109,6 +125,7 @@ didFailAutocompleteWithError:(NSError *)error {
     }
 }
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker{
+    POI_idStr = marker.snippet;
     [self performSegueWithIdentifier:@"review" sender:nil];
 }
 @end

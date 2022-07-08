@@ -35,57 +35,56 @@
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
 
-- (void) signUp {
-    NSString *email = self.emailTextField.text;
-    NSString *password = self.passTextField.text;
+- (void) signUpWithEmail : (NSString *) email password: (NSString *) password completion:(void (^_Nonnull)(void))completion{
     PFUser *user = [PFUser user];
     user.username = email;
     user.password = password;
     UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
-    
+        
     if([self isEmail:email]){
         [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error) {
                 userProfile.userID = [PFUser currentUser];
                 [userProfile saveInBackgroundWithBlock:^(BOOL saveSucceeded, NSError * _Nullable saveError) {
                     if(!saveError){
-                        [self navigateToProfile];
+                        completion();
                     } else {
+                        //TODO: error handle
                         NSLog(@"%@", saveError.localizedDescription);
                     }
                 }];
             } else {
+                //TODO: error handle
                 NSLog(@"%@", error.localizedDescription);
             }
         }];
     } else {
+        //TODO: error handle
         NSLog(@"NOT AN EMAIL !!!!!!!!!!!!!");
     }
-
 }
-
-- (void) logIn {
-    NSString * email = self.emailTextField.text;
-    NSString * password = self.passTextField.text;
+- (IBAction)didTapSignUp:(id)sender {
+    [self signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^{
+        [self navigateToProfile];
+    }];
+}
+- (void) logInWithEmail :(NSString*)email  password : (NSString*)password completion:(void (^_Nonnull)(void))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
             if(!error){
-                NSLog(@"success");
-                [self navigateToProfile];
+                completion();
             } else {
+                //TODO: error handle
                 NSLog(@"%@", error.localizedDescription);
             }
     }];
 }
 
-
-- (IBAction)didTapSignUp:(id)sender {
-    [self signUp];
-}
-
 - (IBAction)didTapLogin:(id)sender {
-    [self logIn];
+    [self logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^{
+        [self navigateToProfile];
+    }];
 }
 - (BOOL)isEmail:(NSString *)email{
     NSString *emailRegEx =

@@ -11,6 +11,8 @@
     @dynamic rating;
     @dynamic POI_idStr;
     @dynamic coordinates;
+    @dynamic name;
+    @dynamic address;
 + (nonnull NSString *)parseClassName {
     return @"Location";
 }
