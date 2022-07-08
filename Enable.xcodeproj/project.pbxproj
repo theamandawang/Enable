@@ -7,7 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7FA28F6028751C5900B90DF0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7FA28F5F28751C5900B90DF0 /* CoreLocation.framework */; };
+		41558699EC86FC28050BA611 /* Pods_Enable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A11B032ED5684F2B46225F4 /* Pods_Enable.framework */; };
+		7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BB2877663B00A550F4 /* UserProfile.m */; };
+		7F6298C028776BB600A550F4 /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BF28776BB600A550F4 /* Review.m */; };
+		7F6298C328776DBD00A550F4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C228776DBD00A550F4 /* Location.m */; };
+		7F6298C628778C7D00A550F4 /* ResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C528778C7D00A550F4 /* ResultView.m */; };
+		7F6298CE28779C2C00A550F4 /* 3xTransparentLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298C928779C2C00A550F4 /* 3xTransparentLogo.png */; };
+		7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */; };
+		7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */; };
+		7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */; };
+		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
+		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
+		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
+		7F841C022876323D00CBD922 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841C012876323D00CBD922 /* ProfileView.m */; };
 		7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */; };
 		7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC22874A1A50080E4A9 /* SceneDelegate.m */; };
 		7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC72874A1A50080E4A9 /* Main.storyboard */; };
@@ -22,8 +34,27 @@
 
 /* Begin PBXFileReference section */
 		41F93252FB7EFAA887D947DF /* Pods-Enable.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.release.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.release.xcconfig"; sourceTree = "<group>"; };
+		6A11B032ED5684F2B46225F4 /* Pods_Enable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Enable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79AB9D4698423F7E04353FE7 /* Pods-Enable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.debug.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.debug.xcconfig"; sourceTree = "<group>"; };
-		7FA28F5F28751C5900B90DF0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		7F6298BB2877663B00A550F4 /* UserProfile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
+		7F6298BD2877664900A550F4 /* UserProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
+		7F6298BE28776BA800A550F4 /* Review.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Review.h; sourceTree = "<group>"; };
+		7F6298BF28776BB600A550F4 /* Review.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Review.m; sourceTree = "<group>"; };
+		7F6298C128776DAF00A550F4 /* Location.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		7F6298C228776DBD00A550F4 /* Location.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
+		7F6298C428778C7D00A550F4 /* ResultView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultView.h; sourceTree = "<group>"; };
+		7F6298C528778C7D00A550F4 /* ResultView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultView.m; sourceTree = "<group>"; };
+		7F6298C928779C2C00A550F4 /* 3xTransparentLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3xTransparentLogo.png; sourceTree = "<group>"; };
+		7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2xSolidLogo.png; sourceTree = "<group>"; };
+		7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3xSolidLogo.png; sourceTree = "<group>"; };
+		7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2xTransparentLogo.png; sourceTree = "<group>"; };
+		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
+		7F841BFA28762FA700CBD922 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		7F841BFE2876322B00CBD922 /* ProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
+		7F841C002876323D00CBD922 /* ProfileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
+		7F841C012876323D00CBD922 /* ProfileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		7FA7DEBB2874A1A50080E4A9 /* Enable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Enable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7DEBE2874A1A50080E4A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -47,7 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7FA28F6028751C5900B90DF0 /* CoreLocation.framework in Frameworks */,
+				41558699EC86FC28050BA611 /* Pods_Enable.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,9 +88,33 @@
 		724CCB2007FB637C69E28CC1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7FA28F5F28751C5900B90DF0 /* CoreLocation.framework */,
+				6A11B032ED5684F2B46225F4 /* Pods_Enable.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7F6298BA2877662700A550F4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				7F6298BD2877664900A550F4 /* UserProfile.h */,
+				7F6298BB2877663B00A550F4 /* UserProfile.m */,
+				7F6298BE28776BA800A550F4 /* Review.h */,
+				7F6298BF28776BB600A550F4 /* Review.m */,
+				7F6298C128776DAF00A550F4 /* Location.h */,
+				7F6298C228776DBD00A550F4 /* Location.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		7F6298C828779C1500A550F4 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7F6298CA28779C2C00A550F4 /* 2xSolidLogo.png */,
+				7F6298CD28779C2C00A550F4 /* 2xTransparentLogo.png */,
+				7F6298CC28779C2C00A550F4 /* 3xSolidLogo.png */,
+				7F6298C928779C2C00A550F4 /* 3xTransparentLogo.png */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		7FA7DEB22874A1A50080E4A9 = {
@@ -83,6 +138,8 @@
 		7FA7DEBD2874A1A50080E4A9 /* Enable */ = {
 			isa = PBXGroup;
 			children = (
+				7F6298C828779C1500A550F4 /* Assets */,
+				7F6298BA2877662700A550F4 /* Models */,
 				7FA7DEDA2874ADF70080E4A9 /* View Controllers */,
 				7FA7DED92874ADE90080E4A9 /* Views */,
 				7FA7DEBE2874A1A50080E4A9 /* AppDelegate.h */,
@@ -105,6 +162,11 @@
 				7FA7DEDB2874AE0F0080E4A9 /* MapView.xib */,
 				7FA7DEE02874AEB90080E4A9 /* MapView.h */,
 				7FA7DEE12874AEB90080E4A9 /* MapView.m */,
+				7F841BFE2876322B00CBD922 /* ProfileView.xib */,
+				7F841C002876323D00CBD922 /* ProfileView.h */,
+				7F841C012876323D00CBD922 /* ProfileView.m */,
+				7F6298C428778C7D00A550F4 /* ResultView.h */,
+				7F6298C528778C7D00A550F4 /* ResultView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -114,6 +176,10 @@
 			children = (
 				7FA7DEDD2874AE3F0080E4A9 /* HomeViewController.h */,
 				7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */,
+				7F841BF62876011600CBD922 /* LoginViewController.h */,
+				7F841BF72876011600CBD922 /* LoginViewController.m */,
+				7F841BF928762FA700CBD922 /* ProfileViewController.h */,
+				7F841BFA28762FA700CBD922 /* ProfileViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -139,6 +205,7 @@
 				7FA7DEB82874A1A50080E4A9 /* Frameworks */,
 				7FA7DEB92874A1A50080E4A9 /* Resources */,
 				917AEE6ACA9638DC5EAA0C7E /* [CP] Copy Pods Resources */,
+				B65136900363E863BFAC28D6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -186,9 +253,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */,
+				7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */,
 				7FA7DECE2874A1A50080E4A9 /* LaunchScreen.storyboard in Resources */,
 				7FA7DECB2874A1A50080E4A9 /* Assets.xcassets in Resources */,
+				7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */,
+				7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */,
 				7FA7DED82874A87A0080E4A9 /* Keys.plist in Resources */,
+				7F6298CE28779C2C00A550F4 /* 3xTransparentLogo.png in Resources */,
 				7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */,
 				7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */,
 			);
@@ -212,6 +284,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B65136900363E863BFAC28D6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Enable/Pods-Enable-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E67F0988F05ABDF0783EE6FA /* [CP] Check Pods Manifest.lock */ = {
@@ -245,9 +334,16 @@
 			files = (
 				7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */,
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
+				7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */,
+				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,
+				7F6298C328776DBD00A550F4 /* Location.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,
+				7F841C022876323D00CBD922 /* ProfileView.m in Sources */,
+				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
+				7F6298C628778C7D00A550F4 /* ResultView.m in Sources */,
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
+				7F6298C028776BB600A550F4 /* Review.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

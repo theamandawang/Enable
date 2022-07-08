@@ -9,4 +9,6 @@ target 'Enable' do
   pod 'GoogleMaps', '7.0.0'
   pod 'GooglePlaces', '7.0.0'
 
+  pod 'Parse'
+
 end

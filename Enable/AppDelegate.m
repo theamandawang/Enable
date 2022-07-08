@@ -6,6 +6,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Parse/Parse.h"
 @import GoogleMaps;
 @import GooglePlaces;
 
@@ -14,17 +15,26 @@
 @end
 
 @implementation AppDelegate
-
+NSString *path;
+NSDictionary *dict;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
+    dict = [NSDictionary dictionaryWithContentsOfFile: path];
+    [self setUpParse];
     [self setUpGoogleMaps];
     return YES;
 }
-
+-(void)setUpParse{
+    [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
+        NSDictionary *back4AppKeys = [dict objectForKey:@"Back4App"];
+        configuration.applicationId = [back4AppKeys objectForKey:@"APP_KEY"];
+        configuration.clientKey = [back4AppKeys objectForKey:@"CLIENT_KEY"];
+        configuration.server = @"https://parseapi.back4app.com/";
+    }]];
+}
 -(void)setUpGoogleMaps{
-    NSString *path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
     [GMSServices provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
     [GMSPlacesClient provideAPIKey:[dict objectForKey:@"MAP_KEY"]];
 }
