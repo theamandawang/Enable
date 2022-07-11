@@ -375,17 +375,24 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="892"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA">
                                         <rect key="frame" x="0.0" y="0.6666666666666714" width="428" height="198.66666666666669"/>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="EzU-gh-eLs"/>
                                         </constraints>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="MGA-W7-C3R" appends="YES" id="8lY-W1-A1X"/>
+                                        </connections>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sb9-tz-kyI">
                                         <rect key="frame" x="20" y="377" width="388" height="47"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Submit"/>
+                                        <connections>
+                                            <action selector="didTapSubmit:" destination="FpU-Et-TaW" eventType="touchUpInside" id="GeV-uC-IS4"/>
+                                        </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title / Summary" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="saa-b4-r0p">
                                         <rect key="frame" x="20" y="230" width="388" height="34"/>
@@ -437,6 +444,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgz-aq-IoS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="MGA-W7-C3R">
+                    <connections>
+                        <action selector="didTapPhoto:" destination="FpU-Et-TaW" id="pXu-i6-Nk6"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2862.6168224299063" y="44.708423326133911"/>
         </scene>

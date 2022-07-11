@@ -15,6 +15,7 @@
     @dynamic locationID;
     @dynamic likes;
     @dynamic images;
+    @dynamic userLikes;
 + (nonnull NSString *)parseClassName {
     return @"Review";
 }

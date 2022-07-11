@@ -8,6 +8,7 @@
 #import "ReviewByLocationViewController.h"
 #import "Parse/Parse.h"
 #import "Review.h"
+#import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -50,15 +51,20 @@
 }
 
 
-/*
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"compose"]){
+        ComposeViewController * vc = [segue destinationViewController];
+        vc.location = self.location;
+        vc.locationValid = self.locationValid;
+    }
 }
-*/
+
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     // create a uitableview cell for the regular reviews, the aggregated review, and  the cell that opens the compose view.

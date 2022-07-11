@@ -19,6 +19,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 }
+//TODO: automatically scroll up when keyboard opens
+//https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
+
 
 /*
 #pragma mark - Navigation
