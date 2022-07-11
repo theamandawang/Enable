@@ -26,7 +26,6 @@
     self.reviews = [[NSMutableArray alloc] init];
     UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
-    [self.tableView setRowHeight:330];
     [self fetchData];
     // Do any additional setup after loading the view.
 }
@@ -66,6 +65,7 @@
         ComposeViewController * vc = [segue destinationViewController];
         vc.location = self.location;
         vc.locationValid = self.locationValid;
+        vc.userProfile = self.userProfile;
     }
 }
 

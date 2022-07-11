@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ProfileView : UIView
-@property(weak, nonatomic) UserProfile *user;
+@property(weak, nonatomic) UserProfile *userProfile;
 - (void) reloadUserData;
 @end
 

@@ -7,33 +7,13 @@
 
 #import "ProfileViewController.h"
 #import "Parse/Parse.h"
-#import "ProfileView.h"
-@interface ProfileViewController ()
-@property (weak, nonatomic) IBOutlet ProfileView *profileView;
-
-@end
 
 @implementation ProfileViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    //TODO: implement what is below in a prepareforsegue instead
-    PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
-    [query whereKey:@"userID" equalTo:[PFUser currentUser]];
-    [query setLimit:1];
-    [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable user, NSError * _Nullable error) {
-        if(error){
-            NSLog(@"%@", error.localizedDescription);
-        } else {
-            if(user){
-                self.profileView.user = (UserProfile *)user;
-                [self.profileView reloadUserData];
-            }
-            else{
-                NSLog(@"no user found!");
-            }
-        }
-    }];
+    self.profileView.userProfile = self.userProfile;
+    [self.profileView reloadUserData];
 }
 
 /*

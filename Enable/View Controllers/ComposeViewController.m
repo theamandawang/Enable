@@ -87,7 +87,10 @@ UITapGestureRecognizer *scrollViewTapGesture;
     review.locationID = location;
     review.images = nil;
     review.likes = 0;
-    review.userID = [PFUser currentUser];
+    
+    //get current user's user profile
+    review.userProfileID = self.userProfile;
+    
     [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if(!error){
             if(succeeded){

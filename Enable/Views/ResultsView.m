@@ -6,14 +6,19 @@
 //
 
 #import "ResultsView.h"
+#import "UserProfile.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
 @interface ResultsView ()
-
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+
 @property (weak, nonatomic) IBOutlet UIImageView *photosImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
+
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
+
+@property (strong, nonatomic) UserProfile * userProfile;
 
 @end
 @implementation ResultsView
@@ -47,9 +52,19 @@
     return self;
 }
 - (void) loadData {
-    self.titleLabel.text = self.review.title;
-    self.detailsLabel.text = self.review.reviewText;
-    self.starRatingView.value = self.review.rating;
+    [self getUserProfileFromIDWithCompletion:^{
+        self.titleLabel.text = self.review.title;
+        self.detailsLabel.text = self.review.reviewText;
+        self.starRatingView.value = self.review.rating;
+        self.usernameLabel.text = self.userProfile.username;
+    }];
     
+}
+- (void) getUserProfileFromIDWithCompletion: (void (^_Nonnull)(void))completion {
+    PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
+    [query getObjectInBackgroundWithId:self.review.userProfileID.objectId block:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        self.userProfile = (UserProfile *) object;
+        completion();
+    }];
 }
 @end

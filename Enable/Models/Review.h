@@ -10,7 +10,7 @@
 #import "UserProfile.h"
 @interface Review : PFObject<PFSubclassing>
 
-@property (nonatomic, strong) PFUser * _Nonnull userID;
+@property (nonatomic, strong) UserProfile * _Nonnull userProfileID;
 @property int rating;
 @property (nonatomic, strong) NSString * _Nonnull title;
 @property (nonatomic, strong) NSString * _Nonnull reviewText;

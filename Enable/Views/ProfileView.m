@@ -42,8 +42,8 @@
     return self;
 }
 - (void) reloadUserData {
-    if(self.user) {
-        self.userDisplayNameLabel.text = self.user.username;
+    if(self.userProfile) {
+        self.userDisplayNameLabel.text = self.userProfile.username;
     } else {
         NSLog(@"user is null");
     }

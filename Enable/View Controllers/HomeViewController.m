@@ -10,6 +10,8 @@
 #import "ReviewByLocationViewController.h"
 #import "Parse/Parse.h"
 #import "Location.h"
+#import "ProfileViewController.h"
+#import "UserProfile.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
@@ -17,6 +19,7 @@
 @property (strong, nonatomic) Location * location;
 @property bool locationValid;
 @property (strong, nonatomic) GMSPlacesClient *placesClient;
+@property (strong, nonatomic) UserProfile * userProfile;
 @end
 
 @implementation HomeViewController
@@ -25,31 +28,38 @@ NSString *POI_idStr;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.placesClient = [[GMSPlacesClient alloc] init];
     
-    
-    self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
-    self.searchController = [[UISearchController alloc]
-                             initWithSearchResultsController:self.resultsViewController
-                            ];
-    self.resultsViewController.delegate = self;
-    self.searchController.searchResultsUpdater = self.resultsViewController;
-    
-    
-    
-    // search bar covers nav bar; need to constrain somehow
-    // TODO: either fix styling or change search controller to using tableview
-    [self.searchController setHidesNavigationBarDuringPresentation:NO];
-    UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
-    
-    [subView addSubview:self.searchController.searchBar];
-    [self.searchController.searchBar sizeToFit];
-    [self.view addSubview:subView];
-    
-    self.mapView.mapView.delegate = self;
-    self.searchController.searchBar.text = @"";
-    self.searchController.searchBar.placeholder = @"Search location...";
-    [self.mapView.mapView setBounds:self.mapView.bounds];
+    [self getCurrentUserProfileWithCompletion:^{
+        self.placesClient = [[GMSPlacesClient alloc] init];
+        
+        
+        self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
+        self.searchController = [[UISearchController alloc]
+                                 initWithSearchResultsController:self.resultsViewController
+                                ];
+        self.resultsViewController.delegate = self;
+        self.searchController.searchResultsUpdater = self.resultsViewController;
+        
+        
+        
+        // search bar covers nav bar; need to constrain somehow
+        // TODO: either fix styling or change search controller to using tableview
+        [self.searchController setHidesNavigationBarDuringPresentation:NO];
+        UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
+        
+        [subView addSubview:self.searchController.searchBar];
+        [self.searchController.searchBar sizeToFit];
+        [self.view addSubview:subView];
+        
+        self.mapView.mapView.delegate = self;
+        self.searchController.searchBar.text = @"";
+        self.searchController.searchBar.placeholder = @"Search location...";
+        [self.mapView.mapView setBounds:self.mapView.bounds];
+    } ];
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self viewDidLoad];
 }
 
 #pragma mark - Navigation
@@ -62,9 +72,12 @@ NSString *POI_idStr;
         ReviewByLocationViewController* vc = [segue destinationViewController];
         vc.location = self.location;
         vc.locationValid = self.locationValid;
+        vc.userProfile = self.userProfile;
     }
-    
-    
+    if([segue.identifier isEqualToString:@"signedIn"]){
+        ProfileViewController* vc = [segue destinationViewController];
+        vc.userProfile = self.userProfile;
+    }
 }
 
 -(void) mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate{
@@ -177,4 +190,32 @@ didFailAutocompleteWithError:(NSError *)error {
         [self performSegueWithIdentifier:@"review" sender:nil];
     }];
 }
+
+- (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(void))completion {
+    PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
+    if(![PFUser currentUser]){
+        completion();
+        self.userProfile = nil;
+        return;
+    }
+    [query whereKey:@"userID" equalTo:[PFUser currentUser]];
+    [query setLimit:1];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable userProfile, NSError * _Nullable error) {
+        if(error){
+            //TODO: error handle
+            NSLog(@"%@", error.localizedDescription);
+            completion();
+        } else {
+            if(userProfile){
+                self.userProfile = (UserProfile*)userProfile;
+                completion();
+            }
+            else{
+                NSLog(@"no user found!");
+                completion();
+            }
+        }
+    }];
+}
+
 @end

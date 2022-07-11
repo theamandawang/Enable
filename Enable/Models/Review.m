@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "Review.h"
 @implementation Review
-    @dynamic userID;
+    @dynamic userProfileID;
     @dynamic rating;
     @dynamic title;
     @dynamic reviewText;
