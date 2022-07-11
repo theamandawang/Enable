@@ -28,7 +28,7 @@
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="byN-XK-g5F">
+                        <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="byN-XK-g5F" customClass="PFImageView">
                             <rect key="frame" x="40" y="31.5" width="334" height="297"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="300" id="TkI-mU-k94"/>

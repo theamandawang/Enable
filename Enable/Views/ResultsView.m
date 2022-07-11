@@ -7,12 +7,13 @@
 
 #import "ResultsView.h"
 #import "UserProfile.h"
+#import "Parse/PFImageView.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 
-@property (weak, nonatomic) IBOutlet UIImageView *photosImageView;
+@property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 

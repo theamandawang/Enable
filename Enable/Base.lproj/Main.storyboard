@@ -374,7 +374,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="892"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA">
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
                                         <rect key="frame" x="0.0" y="0.6666666666666714" width="428" height="198.66666666666669"/>
                                         <gestureRecognizers/>
                                         <constraints>

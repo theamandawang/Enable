@@ -11,12 +11,15 @@ PODS:
     - Parse/Core (= 1.19.3)
   - Parse/Core (1.19.3):
     - Bolts/Tasks (= 1.9.1)
+  - Parse/UI (1.19.3):
+    - Parse/Core
 
 DEPENDENCIES:
   - GoogleMaps (= 7.0.0)
   - GooglePlaces (= 7.0.0)
   - HCSStarRatingView (~> 1.5)
   - Parse
+  - Parse/UI
 
 SPEC REPOS:
   trunk:
@@ -33,6 +36,6 @@ SPEC CHECKSUMS:
   HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
 
-PODFILE CHECKSUM: fb2f7d5a71b945ef111b96f0e675524be9a79995
+PODFILE CHECKSUM: 8582af8628f0878c3a1992f205fff903dc0c9ac5
 
 COCOAPODS: 1.11.3

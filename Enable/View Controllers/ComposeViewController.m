@@ -6,12 +6,13 @@
 //
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import "ComposeViewController.h"
+#import "Parse/PFImageView.h"
 #import "Review.h"
 @interface ComposeViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextField;
-@property (weak, nonatomic) IBOutlet UIImageView *photosImageView;
+@property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @end
 

@@ -10,6 +10,7 @@ target 'Enable' do
   pod 'GooglePlaces', '7.0.0'
 
   pod 'Parse'
+  pod 'Parse/UI'
 
   pod 'HCSStarRatingView', '~> 1.5'
 end
