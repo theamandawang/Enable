@@ -11,4 +11,5 @@ target 'Enable' do
 
   pod 'Parse'
 
+  pod 'HCSStarRatingView', '~> 1.5'
 end

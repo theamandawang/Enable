@@ -4,12 +4,15 @@
 //
 //  Created by Amanda Wang on 7/7/22.
 //
-
+#import "HCSStarRatingView/HCSStarRatingView.h"
 #import "ComposeViewController.h"
 #import "Review.h"
 @interface ComposeViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-
+@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
+@property (weak, nonatomic) IBOutlet UITextView *reviewTextField;
+@property (weak, nonatomic) IBOutlet UIImageView *photosImageView;
+@property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @end
 
 @implementation ComposeViewController
@@ -26,7 +29,18 @@ UITapGestureRecognizer *scrollViewTapGesture;
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
+    
+    
+    self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(100, 300, 200, 100)];
+
+    self.starRatingView.maximumValue = 5;
+    self.starRatingView.minimumValue = 0;
+    self.starRatingView.value = 0;
+    self.starRatingView.tintColor = [UIColor systemYellowColor];
+//    [self.starRatingView addTarget:self action:@selector(didChangeValue) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.starRatingView];
 }
+
 
 /*
 #pragma mark - Navigation
@@ -37,8 +51,13 @@ UITapGestureRecognizer *scrollViewTapGesture;
     // Pass the selected object to the new view controller.
 }
 */
-
-- (void) locationHandler {
+- (bool) checkValuesWithRating:(int)rating title:(NSString *)title description:(NSString*) description{
+    if(rating && title && description){
+        return !([title isEqualToString:@""] || [description isEqualToString:@""]);
+    }
+    return false;
+}
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description completion: (void (^_Nonnull)(void))completion{
     if(!self.locationValid){
         Location *location = [[Location alloc] initWithClassName:@"Location"];
         location.rating = 0;
@@ -50,21 +69,21 @@ UITapGestureRecognizer *scrollViewTapGesture;
         [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if(!error){
                 if(succeeded){
-                    [self postReviewWithLocation:location];
+                    [self postReviewWithLocation:location rating:rating title:title description:description completion:completion];
                 }
             } else {
                 NSLog(@"%@", error.localizedDescription);
             }
         }];
     } else {
-        [self postReviewWithLocation:self.location];
+        [self postReviewWithLocation:self.location rating:rating title:title description:description completion:completion];
     }
 }
-- (void) postReviewWithLocation:(Location *)location{
+- (void) postReviewWithLocation:(Location *)location rating: (int) rating title: (NSString *) title description: (NSString *) description completion: (void (^_Nonnull)(void))completion{
     Review *review = [[Review alloc] initWithClassName:@"Review"];
-    review.title = @"my title";
-    review.reviewText = @"my text";
-    review.rating  = 5;
+    review.title = title;
+    review.reviewText = description;
+    review.rating = rating;
     review.locationID = location;
     review.images = nil;
     review.likes = 0;
@@ -73,6 +92,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
         if(!error){
             if(succeeded){
                 NSLog(@"successful post");
+                completion();
             } else {
                 //TODO: implement error check
                 NSLog(@"%@", error.localizedDescription);
@@ -95,7 +115,14 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 - (IBAction)didTapSubmit:(id)sender {
-    NSLog(@"submitted");
-    [self locationHandler];
+    if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text]){
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text completion:^{
+            //TODO: go back to the reviews screen, not the maps screen.
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }];
+    } else {
+        //TODO: error handle
+        NSLog(@"values need to be fillled");
+    }
 }
 @end

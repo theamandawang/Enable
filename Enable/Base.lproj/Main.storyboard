@@ -386,7 +386,7 @@
                                         </connections>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sb9-tz-kyI">
-                                        <rect key="frame" x="20" y="377" width="388" height="47"/>
+                                        <rect key="frame" x="20" y="447" width="388" height="47"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Submit"/>
@@ -395,12 +395,12 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title / Summary" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="saa-b4-r0p">
-                                        <rect key="frame" x="20" y="230" width="388" height="34"/>
+                                        <rect key="frame" x="20" y="300" width="388" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" keyboardDismissMode="onDrag" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pcX-PS-yfb">
-                                        <rect key="frame" x="20" y="314" width="388" height="33"/>
+                                        <rect key="frame" x="20" y="384" width="388" height="33"/>
                                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -411,7 +411,7 @@
                                     <constraint firstItem="fwD-rI-MDO" firstAttribute="bottom" secondItem="Sb9-tz-kyI" secondAttribute="bottom" constant="10" id="8jB-yC-bAd"/>
                                     <constraint firstItem="e68-Ez-NoA" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" constant="20" id="Fpj-Ow-YuE"/>
                                     <constraint firstItem="Sb9-tz-kyI" firstAttribute="leading" secondItem="pcX-PS-yfb" secondAttribute="leading" id="L8K-jQ-wgW"/>
-                                    <constraint firstItem="saa-b4-r0p" firstAttribute="top" secondItem="1xt-2p-uUA" secondAttribute="bottom" constant="30" id="Ne5-Rf-EXm"/>
+                                    <constraint firstItem="saa-b4-r0p" firstAttribute="top" secondItem="1xt-2p-uUA" secondAttribute="bottom" constant="100" id="Ne5-Rf-EXm"/>
                                     <constraint firstItem="Sb9-tz-kyI" firstAttribute="top" secondItem="pcX-PS-yfb" secondAttribute="bottom" constant="30" id="OAv-IB-3Aq"/>
                                     <constraint firstItem="pcX-PS-yfb" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" id="Ojm-rl-wir"/>
                                     <constraint firstItem="1xt-2p-uUA" firstAttribute="leading" secondItem="fwD-rI-MDO" secondAttribute="leading" id="WW4-De-dmY"/>
@@ -440,7 +440,10 @@
                     </view>
                     <navigationItem key="navigationItem" id="Y83-xc-AWj"/>
                     <connections>
+                        <outlet property="photosImageView" destination="1xt-2p-uUA" id="Ojy-TI-RV1"/>
+                        <outlet property="reviewTextField" destination="pcX-PS-yfb" id="GR6-lH-qEw"/>
                         <outlet property="scrollView" destination="KUv-1Z-Ass" id="5gj-4u-vBW"/>
+                        <outlet property="titleTextField" destination="saa-b4-r0p" id="SFA-h8-hYo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgz-aq-IoS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
