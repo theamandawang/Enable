@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
                                 <rect key="frame" x="0.0" y="153" width="428" height="739"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <gestureRecognizers/>
@@ -319,25 +319,24 @@
                                             <outlet property="locationNameLabel" destination="8Z9-vS-l9S" id="mp6-x5-cyX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ReviewCell" rowHeight="261" id="Fdu-re-sGx">
-                                        <rect key="frame" x="0.0" y="316.66666603088379" width="428" height="261"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ComposeCell" rowHeight="112" id="RVZ-OL-19d">
+                                        <rect key="frame" x="0.0" y="316.66666603088379" width="428" height="112"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Fdu-re-sGx" id="rca-By-iBX">
-                                            <rect key="frame" x="0.0" y="0.0" width="428" height="261"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RVZ-OL-19d" id="EL0-NY-yT9">
+                                            <rect key="frame" x="0.0" y="0.0" width="428" height="112"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Review summary" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Edn-we-Yt8">
-                                                    <rect key="frame" x="63" y="120" width="295" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <textField opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Add a review..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qWo-vF-PeO">
+                                                    <rect key="frame" x="50" y="41" width="328" height="30"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="Edn-we-Yt8" firstAttribute="top" secondItem="rca-By-iBX" secondAttribute="topMargin" constant="109" id="4sY-bx-p6e"/>
-                                                <constraint firstItem="Edn-we-Yt8" firstAttribute="leading" secondItem="rca-By-iBX" secondAttribute="leadingMargin" constant="43" id="GBZ-kH-gU1"/>
-                                                <constraint firstAttribute="trailing" secondItem="Edn-we-Yt8" secondAttribute="trailing" constant="70" id="OmU-B8-mLd"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Edn-we-Yt8" secondAttribute="bottom" constant="109" id="kwg-bc-rpE"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="qWo-vF-PeO" secondAttribute="trailing" constant="30" id="4K6-pi-jXD"/>
+                                                <constraint firstItem="qWo-vF-PeO" firstAttribute="top" secondItem="EL0-NY-yT9" secondAttribute="topMargin" constant="30" id="GCi-or-It3"/>
+                                                <constraint firstItem="qWo-vF-PeO" firstAttribute="leading" secondItem="EL0-NY-yT9" secondAttribute="leadingMargin" constant="30" id="jYu-Af-UQ6"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="qWo-vF-PeO" secondAttribute="bottom" constant="30" id="seG-LE-zCX"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -457,7 +456,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="22x-Oq-g41"/>
+        <segue reference="glC-rt-CzJ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

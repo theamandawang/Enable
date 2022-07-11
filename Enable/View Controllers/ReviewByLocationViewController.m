@@ -10,6 +10,7 @@
 #import "Review.h"
 #import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
+#import "ReviewTableViewCell.h"
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
@@ -23,6 +24,9 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.reviews = [[NSMutableArray alloc] init];
+    UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
+    [self.tableView setRowHeight:330];
     [self fetchData];
     // Do any additional setup after loading the view.
 }
@@ -76,8 +80,13 @@
             summaryCell.locationNameLabel.text = @"no reviews yet!";
         }
         return summaryCell;
+    } else if (indexPath.row == 1) {
+        UITableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier:@"ComposeCell"];
+        return composeCell;
     }
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+    ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+    cell.resultsView.review = self.reviews[indexPath.row - 2];
+    [cell.resultsView loadData];
 
     return cell;
     

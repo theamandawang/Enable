@@ -7,6 +7,10 @@
 
 #import "MapView.h"
 #import <CoreLocation/CoreLocation.h>
+@interface MapView()
+@property (weak, nonatomic) IBOutlet UIStackView *stackView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@end
 @implementation MapView{
     BOOL firstLocationUpdate;
 }
@@ -43,10 +47,11 @@
                                  cameraWithLatitude:-33.86
                                  longitude:151.20
                                  zoom:6];
-    self.mapView = [GMSMapView mapWithFrame:self.contentView.frame camera:camera];
+    self.mapView = [GMSMapView mapWithFrame:self.stackView.frame camera:camera];
     self.mapView.myLocationEnabled = YES;
     self.mapView.settings.myLocationButton = YES;
-    self.mapView.settings.myLocationButton = YES;
+    self.mapView.padding = UIEdgeInsetsMake(0, 0, 20, 0);
+
     [self.mapView setMapType:kGMSTypeTerrain];
     /*
      https://stackoverflow.com/questions/17366403/gmsmapview-mylocation-not-giving-actual-location
@@ -62,11 +67,11 @@
         ];
         
     } else {
+        //TODO: error handle
         NSLog(@"Location issues :((");
     }
+    [self.stackView addArrangedSubview:self.mapView];
     
-    [self.contentView addSubview:self.mapView];
-
     return self;
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath
