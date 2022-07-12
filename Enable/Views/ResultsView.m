@@ -54,29 +54,27 @@
 
 
 - (void) loadData {
-    //TODO: decide whether to fetch individual reviews... i've already fetched them from the last screen, don't know if it's worth it to double the work here.
-    
-    if(self.review){
-        [ParseUtilities getUserProfileFromID: self.review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile) {
-                self.titleLabel.text = self.review.title;
-                self.detailsLabel.text = self.review.reviewText;
-                self.starRatingView.value = self.review.rating;
-                self.usernameLabel.text = profile.username;
-            }];
-    } else {
+    if (self.review) {
+        [self present:self.review];
+    } else if (self.reviewID) {
         [ParseUtilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review) {
-            [ParseUtilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile) {
+            self.review = review;
+            [self present:self.review];
+        }];
+    } else {
+        // TODO: error handle
+        NSLog(@"Fail loadData in ResultsView %@", @"review and reviewID are both undefined");
+        
+    }
+}
+
+- (void) present: (Review * _Nullable) review {
+    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile) {
                 self.titleLabel.text = review.title;
                 self.detailsLabel.text = review.reviewText;
                 self.starRatingView.value = review.rating;
                 self.usernameLabel.text = profile.username;
             }];
-        }];
-    }
-    
-    
-
-    
-    
 }
+
 @end
