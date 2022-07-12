@@ -6,6 +6,7 @@
 //
 
 #import "MapView.h"
+#import "ErrorHandler.h"
 #import <CoreLocation/CoreLocation.h>
 @interface MapView()
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
@@ -65,15 +66,17 @@
                     options:NSKeyValueObservingOptionNew
                     context:NULL
         ];
-        
     } else {
         //TODO: error handle
+        //TODO: not sure how to attach an alert onto a view class; tried attaching the alert onto the homescreen, but it doesn't show.
         NSLog(@"Location issues :((");
     }
     [self.stackView addArrangedSubview:self.mapView];
     
     return self;
 }
+
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change

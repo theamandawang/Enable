@@ -10,15 +10,16 @@
 #import "ReviewByLocationViewController.h"
 #import "Location.h"
 #import "ProfileViewController.h"
+#import "ErrorHandler.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) GMSAutocompleteResultsViewController *resultsViewController;
+@property (strong, nonatomic) NSString * POI_idStr;
 @end
 
 @implementation HomeViewController
 GMSMarker *infoMarker;
-NSString *POI_idStr;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -57,7 +58,7 @@ NSString *POI_idStr;
     // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"review"]){
         ReviewByLocationViewController* vc = [segue destinationViewController];
-        vc.POI_idStr = POI_idStr;
+        vc.POI_idStr = self.POI_idStr;
     }
 }
 
@@ -72,7 +73,7 @@ NSString *POI_idStr;
     
     infoMarker = [GMSMarker markerWithPosition:location];
     infoMarker.snippet = placeID;
-    POI_idStr = placeID;
+    self.POI_idStr = placeID;
     infoMarker.title = name;
     infoMarker.opacity = 0;
     CGPoint pos = infoMarker.infoWindowAnchor;
@@ -95,9 +96,10 @@ NSString *POI_idStr;
 }
 - (void)resultsController:(GMSAutocompleteResultsViewController *)resultsController
 didFailAutocompleteWithError:(NSError *)error {
-  [self dismissViewControllerAnimated:YES completion:nil];
-  // TODO: handle the error.
-  NSLog(@"Error: %@", [error description]);
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [ErrorHandler showAlertFromViewController:self title:@"Cannot Autocomplete" message:[error description] completion:^{
+    }];
+    
 }
 
 -(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{

@@ -57,19 +57,22 @@
     if (self.review) {
         [self present:self.review];
     } else if (self.reviewID) {
-        [ParseUtilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review) {
+        // TODO: same issue as map view, don't know how to attach alert onto a view
+        [ParseUtilities getReviewFromID:self.reviewID vc: [self nextResponder] withCompletion:^(Review * _Nullable review) {
             self.review = review;
             [self present:self.review];
         }];
     } else {
         // TODO: error handle
+        // TODO: same issue as map view, don't know how to attach alert onto a view
         NSLog(@"Fail loadData in ResultsView %@", @"review and reviewID are both undefined");
         
     }
 }
 
 - (void) present: (Review * _Nullable) review {
-    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile) {
+    // TODO: same issue as map view, don't know how to attach alert onto a view
+    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId vc: [self nextResponder] withCompletion:^(UserProfile * _Nullable profile) {
                 self.titleLabel.text = review.title;
                 self.detailsLabel.text = review.reviewText;
                 self.starRatingView.value = review.rating;

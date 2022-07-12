@@ -32,12 +32,12 @@
 */
 - (void) getUserProfile {
     if(self.userProfileID){
-        [ParseUtilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile) {
+        [ParseUtilities getUserProfileFromID:self.userProfileID vc: self withCompletion:^(UserProfile * _Nullable userProfile) {
                 self.profileView.userProfile = userProfile;
                 [self.profileView reloadUserData];
         }];
     } else {
-        [ParseUtilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile) {
+        [ParseUtilities getCurrentUserProfileWithVC: self withCompletion:^(UserProfile * _Nullable profile) {
             self.profileView.userProfile = profile;
             [self.profileView reloadUserData];
         }];
@@ -47,9 +47,9 @@
 }
 
 - (IBAction)didTapLogout:(id)sender {
-    [ParseUtilities logOutWithCompletion:^{
+    [ParseUtilities logOutWithVC: self withCompletion:^{
         [self.navigationController popToRootViewControllerAnimated:TRUE];
-    }];
+    } ];
 }
 
 @end

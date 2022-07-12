@@ -13,33 +13,33 @@
 
 #pragma mark User Signup/Login/Logout
 //user login
-+ (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^_Nonnull)(void))completion;
++ (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password vc:(UIViewController * _Nonnull) vc completion:(void (^ _Nonnull)(void))completion;
 
 //user signup
-+ (void) signUpWithEmail : (NSString * _Nonnull) email password: (NSString * _Nonnull) password completion:(void (^_Nonnull)(void))completion;
++ (void) signUpWithEmail : (NSString * _Nonnull) email password: (NSString * _Nonnull) password vc:(UIViewController * _Nonnull) vc completion:(void (^_Nonnull)(void))completion;
 
 //log out
 
-+ (void) logOutWithCompletion:(void (^_Nonnull)(void))completion;
++ (void) logOutWithVC:(UIViewController *_Nonnull) vc withCompletion:(void (^_Nonnull)(void))completion ;
 
 
 #pragma mark UserProfile
 //get user profile
-+ (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile))completion;
-+ (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile))completion;
++ (void) getCurrentUserProfileWithVC: (UIViewController * _Nonnull) vc withCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile))completion;
++ (void) getUserProfileFromID: (id _Nonnull) userProfileID vc: (UIViewController * _Nonnull) vc withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile))completion;
 
 
 #pragma mark Review
-+ (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review))completion;
-+ (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews)) completion;
++ (void) getReviewFromID: (id _Nonnull) reviewID vc: (UIViewController * _Nonnull) vc withCompletion: (void (^_Nonnull)(Review * _Nullable review))completion;
++ (void) getReviewsByLocation: (Location * _Nonnull) location vc: (UIViewController * _Nonnull) vc withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews)) completion;
 
 #pragma mark Location
-+ (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location))completion;
++ (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr vc: (UIViewController * _Nonnull) vc withCompletion: (void (^_Nonnull)(Location * _Nullable location))completion;
 
 
 #pragma mark Posting
-+ (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location))completion;
-+ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description completion: (void (^_Nonnull)(void))completion;
++ (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address vc: (UIViewController * _Nonnull) vc completion: (void (^_Nonnull)(Location * _Nullable location))completion;
++ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description vc: (UIViewController * _Nonnull) vc completion: (void (^_Nonnull)(void))completion;
 
 @end
 

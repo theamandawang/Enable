@@ -10,7 +10,7 @@
 #import "UserProfile.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ComposeViewController : UIViewController
+@interface ComposeViewController : UIViewController <UITextViewDelegate, UIImagePickerControllerDelegate>
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) NSString * POI_idStr;
 @end

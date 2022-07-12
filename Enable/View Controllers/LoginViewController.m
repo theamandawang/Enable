@@ -7,6 +7,7 @@
 
 #import "LoginViewController.h"
 #import "ParseUtilities.h"
+#import "ErrorHandler.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -39,18 +40,18 @@
 }
 - (IBAction)didTapSignUp:(id)sender {
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
-        [ParseUtilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^{
+        [ParseUtilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text vc: self completion:^{
             [self navigateToProfile];
         }];
     } else {
-        //TODO: error handle
-        NSLog(@"NOT AN EMAIL !!!!!!!!!!!!!");
+        [ErrorHandler showAlertFromViewController:self title:@"Invalid username/password" message:@"Not a valid email" completion:^{
+        }];
     }
     
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [ParseUtilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^{
+    [ParseUtilities logInWithEmail: self.emailTextField.text password:self.passTextField.text vc:self completion:^{
         [self navigateToProfile];
     }];
 }

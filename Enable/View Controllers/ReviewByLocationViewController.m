@@ -38,16 +38,16 @@
 }
 
 - (void) queryForLocationData {
-    [ParseUtilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location) {
+    [ParseUtilities getLocationFromPOI_idStr:self.POI_idStr vc: self withCompletion:^(Location * _Nullable location) {
         if(location){
             self.location = location;
-            [ParseUtilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews) {
+            [ParseUtilities getReviewsByLocation:self.location vc:self withCompletion:^(NSMutableArray<Review *> * _Nullable reviews) {
                 self.reviews = reviews;
                 [self.tableView reloadData];
             }];
         } else {
             GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-            [GoogleUtilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place) {
+            [GoogleUtilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withVC:self withCompletion:^(GMSPlace * _Nullable place) {
                 self.location = [[Location alloc] initWithClassName:@"Location"];
                 self.location.POI_idStr = self.POI_idStr;
                 self.location.address = [place formattedAddress];
