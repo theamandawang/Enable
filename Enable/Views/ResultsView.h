@@ -10,8 +10,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ResultsView : UIView
-@property (strong, nonatomic) Review * review;
-
+ @property (strong, nonatomic) id reviewID;
+@property (strong, nonatomic) Review *review;
 -(void) loadData;
 @end
 

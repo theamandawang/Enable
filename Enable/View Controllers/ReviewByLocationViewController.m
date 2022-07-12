@@ -6,15 +6,18 @@
 //
 
 #import "ReviewByLocationViewController.h"
-#import "Parse/Parse.h"
 #import "Review.h"
+#import "ParseUtilities.h"
 #import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
+#import <GooglePlaces/GooglePlaces.h>
+#import "GoogleUtilities.h"
+
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
-
+@property (strong, nonatomic) Location * location;
 @end
 
 @implementation ReviewByLocationViewController
@@ -26,7 +29,7 @@
     self.reviews = [[NSMutableArray alloc] init];
     UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
-    [self fetchData];
+    [self queryForLocationData];
     // Do any additional setup after loading the view.
 }
 - (void) viewWillAppear:(BOOL)animated{
@@ -34,25 +37,28 @@
     
 }
 
-- (void) fetchData {
-    if(self.location){
-        PFQuery *query = [PFQuery queryWithClassName:@"Review"];
-        query.limit = 20;
-        [query whereKey:@"locationID" equalTo:self.location];
-        [query orderByDescending:@"likes"];
-        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
-            if(!error){
-                self.reviews = (NSMutableArray<Review *> *)objects;
+- (void) queryForLocationData {
+    [ParseUtilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location) {
+        if(location){
+            self.location = location;
+            [ParseUtilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews) {
+                self.reviews = reviews;
                 [self.tableView reloadData];
-            } else {
-                //TODO: error handle
-                NSLog(@"%@", error.localizedDescription);
-            }
-        }];
-    }
-    
+            }];
+        } else {
+            GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
+            [GoogleUtilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place) {
+                self.location = [[Location alloc] initWithClassName:@"Location"];
+                self.location.POI_idStr = self.POI_idStr;
+                self.location.address = [place formattedAddress];
+                self.location.name = [place name];
+                self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
+                [self.tableView reloadData];
+            }];
+            
+        }
+    }];
 }
-
 
 
 #pragma mark - Navigation
@@ -63,9 +69,8 @@
     // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"compose"]){
         ComposeViewController * vc = [segue destinationViewController];
+        vc.POI_idStr = self.POI_idStr;
         vc.location = self.location;
-        vc.locationValid = self.locationValid;
-        vc.userProfile = self.userProfile;
     }
 }
 
@@ -77,7 +82,7 @@
         if(self.reviews && self.reviews.count > 0){
             summaryCell.locationNameLabel.text = self.location.name;
         } else {
-            summaryCell.locationNameLabel.text = @"no reviews yet!";
+            summaryCell.locationNameLabel.text = [NSString stringWithFormat:@"%@%@", self.location.name, @" has no reviews yet!"];
         }
         return summaryCell;
     } else if (indexPath.row == 1) {
@@ -85,7 +90,8 @@
         return composeCell;
     }
     ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
-    cell.resultsView.review = self.reviews[indexPath.row - 2];
+    cell.resultsView.reviewID = self.reviews[indexPath.row - 2].objectId;
+    cell.resultsView.review = self.reviews[indexPath.row-2];
     [cell.resultsView loadData];
 
     return cell;

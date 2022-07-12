@@ -6,7 +6,7 @@
 //
 
 #import "LoginViewController.h"
-#import "Parse/Parse.h"
+#import "ParseUtilities.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -37,55 +37,20 @@
 - (void)navigateToProfile {
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
-
-- (void) signUpWithEmail : (NSString *) email password: (NSString *) password completion:(void (^_Nonnull)(void))completion{
-    PFUser *user = [PFUser user];
-    user.username = email;
-    user.password = password;
-    UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
-    userProfile.username = @"Anonymous User";
-    userProfile.email = email;
-        
-    if([self isEmail:email]){
-        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (!error) {
-                userProfile.userID = [PFUser currentUser];
-                [userProfile saveInBackgroundWithBlock:^(BOOL saveSucceeded, NSError * _Nullable saveError) {
-                    if(!saveError){
-                        completion();
-                    } else {
-                        //TODO: error handle
-                        NSLog(@"%@", saveError.localizedDescription);
-                    }
-                }];
-            } else {
-                //TODO: error handle
-                NSLog(@"%@", error.localizedDescription);
-            }
+- (IBAction)didTapSignUp:(id)sender {
+    if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
+        [ParseUtilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^{
+            [self navigateToProfile];
         }];
     } else {
         //TODO: error handle
         NSLog(@"NOT AN EMAIL !!!!!!!!!!!!!");
     }
-}
-- (IBAction)didTapSignUp:(id)sender {
-    [self signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^{
-        [self navigateToProfile];
-    }];
-}
-- (void) logInWithEmail :(NSString*)email  password : (NSString*)password completion:(void (^_Nonnull)(void))completion{
-    [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
-            if(!error){
-                completion();
-            } else {
-                //TODO: error handle
-                NSLog(@"%@", error.localizedDescription);
-            }
-    }];
+    
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [self logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^{
+    [ParseUtilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^{
         [self navigateToProfile];
     }];
 }

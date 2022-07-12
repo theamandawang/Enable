@@ -275,6 +275,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="logOutButton" destination="fVF-0I-Idh" id="tN0-1p-xtS"/>
                         <outlet property="profileView" destination="coL-Q1-gvj" id="V3N-nl-7Bw"/>
                     </connections>
                 </viewController>
