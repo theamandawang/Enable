@@ -6,14 +6,19 @@
 //
 
 #import "ProfileViewController.h"
-#import "Parse/Parse.h"
+#import "ParseUtilities.h"
+
+@interface ProfileViewController()
+@property (weak, nonatomic) IBOutlet UIButton *logOutButton;
+@end
 
 @implementation ProfileViewController
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.profileView.userProfile = self.userProfile;
-    [self.profileView reloadUserData];
+    if(self.userProfileID){
+        [self.logOutButton setHidden:YES];
+    }
+    [self getUserProfile];
 }
 
 /*
@@ -25,19 +30,24 @@
     // Pass the selected object to the new view controller.
 }
 */
-- (void) logOutWithCompletion:(void (^_Nonnull)(void))completion{
-    [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
-        if(!error) {
-            completion();
-        } else {
-            //TODO: handle errors
-            NSLog(@"%@", error.localizedDescription);
-        }
+- (void) getUserProfile {
+    if(self.userProfileID){
+        [ParseUtilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile) {
+                self.profileView.userProfile = userProfile;
+                [self.profileView reloadUserData];
+        }];
+    } else {
+        [ParseUtilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile) {
+            self.profileView.userProfile = profile;
+            [self.profileView reloadUserData];
+        }];
+    }
+    
 
-    }];
 }
+
 - (IBAction)didTapLogout:(id)sender {
-    [self logOutWithCompletion:^{
+    [ParseUtilities logOutWithCompletion:^{
         [self.navigationController popToRootViewControllerAnimated:TRUE];
     }];
 }

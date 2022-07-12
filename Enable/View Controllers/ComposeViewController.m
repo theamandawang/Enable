@@ -4,9 +4,12 @@
 //
 //  Created by Amanda Wang on 7/7/22.
 //
+#import <GooglePlaces/GooglePlaces.h>
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import "ComposeViewController.h"
 #import "Parse/PFImageView.h"
+#import "GoogleUtilities.h"
+#import "ParseUtilities.h"
 #import "Review.h"
 @interface ComposeViewController ()
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -43,6 +46,18 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 
+-(void) getLocationDataWithCompletion: (void (^_Nonnull)(void)) completion {
+    GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
+    [GoogleUtilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place) {
+        self.location = [[Location alloc] initWithClassName:@"Location"];
+        self.location.POI_idStr = self.POI_idStr;
+        self.location.address = [place formattedAddress];
+        self.location.name = [place name];
+        self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
+        completion();
+    }];
+}
+
 /*
 #pragma mark - Navigation
 
@@ -58,55 +73,21 @@ UITapGestureRecognizer *scrollViewTapGesture;
     }
     return false;
 }
-- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description completion: (void (^_Nonnull)(void))completion{
-    if(!self.locationValid){
-        Location *location = [[Location alloc] initWithClassName:@"Location"];
-        location.rating = 0;
-        location.POI_idStr = self.location.POI_idStr;
-        location.coordinates = self.location.coordinates;
-        location.name = self.location.name;
-        location.address = self.location.address;
-        
-        [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-            if(!error){
-                if(succeeded){
-                    [self postReviewWithLocation:location rating:rating title:title description:description completion:completion];
-                }
-            } else {
-                NSLog(@"%@", error.localizedDescription);
-            }
+
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description didPost: (void (^_Nonnull)(void))didPost{
+    
+    // TODO: decide whether to fetch location again, i've already done it in the previous vc.
+    // I have created an option so that if there is no location provided then I will have it request
+    // location on its own, but the default is still probably going to rely on the location already provided.
+    if(!self.location){
+        [self getLocationDataWithCompletion:^{
+            [ParseUtilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location) {
+                [ParseUtilities postReviewWithLocation:location rating:rating title:title description:description completion:didPost];
+            }];
         }];
     } else {
-        [self postReviewWithLocation:self.location rating:rating title:title description:description completion:completion];
+        [ParseUtilities postReviewWithLocation:self.location rating:rating title:title description:description completion:didPost];
     }
-}
-- (void) postReviewWithLocation:(Location *)location rating: (int) rating title: (NSString *) title description: (NSString *) description completion: (void (^_Nonnull)(void))completion{
-    Review *review = [[Review alloc] initWithClassName:@"Review"];
-    review.title = title;
-    review.reviewText = description;
-    review.rating = rating;
-    review.locationID = location;
-    review.images = nil;
-    review.likes = 0;
-    
-    //get current user's user profile
-    review.userProfileID = self.userProfile;
-    
-    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-        if(!error){
-            if(succeeded){
-                NSLog(@"successful post");
-                completion();
-            } else {
-                //TODO: implement error check
-                NSLog(@"%@", error.localizedDescription);
-            }
-        }
-        else {
-            //TODO: implement error check
-            NSLog(@"%@", error.localizedDescription);
-        }
-    }];
 }
 
 // method to hide keyboard when user taps on a scrollview
@@ -120,13 +101,13 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (IBAction)didTapSubmit:(id)sender {
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text completion:^{
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text didPost:^{
             //TODO: go back to the reviews screen, not the maps screen.
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];
     } else {
         //TODO: error handle
-        NSLog(@"values need to be fillled");
+        NSLog(@"values need to be filled");
     }
 }
 @end

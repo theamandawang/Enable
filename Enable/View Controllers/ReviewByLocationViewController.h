@@ -11,9 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ReviewByLocationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-@property (strong, nonatomic) Location * location;
-@property bool locationValid;
-@property UserProfile * userProfile;
+@property (strong, nonatomic) NSString * POI_idStr;
 @end
 
 NS_ASSUME_NONNULL_END
