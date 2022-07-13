@@ -23,7 +23,8 @@ GMSMarker *infoMarker;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
+    self.mapView.delegate = self;
+    [self.mapView init];
     self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
     self.searchController = [[UISearchController alloc]
                                 initWithSearchResultsController:self.resultsViewController
@@ -48,6 +49,10 @@ GMSMarker *infoMarker;
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self viewDidLoad];
+}
+
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
+    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
 }
 
 #pragma mark - Navigation

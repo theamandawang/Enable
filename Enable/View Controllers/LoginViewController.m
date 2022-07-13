@@ -40,8 +40,13 @@
 }
 - (IBAction)didTapSignUp:(id)sender {
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
-        [ParseUtilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text vc: self completion:^{
-            [self navigateToProfile];
+        [ParseUtilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            } else {
+                [self navigateToProfile];
+            }
         }];
     } else {
         [ErrorHandler showAlertFromViewController:self title:@"Invalid username/password" message:@"Not a valid email" completion:^{
@@ -51,8 +56,11 @@
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [ParseUtilities logInWithEmail: self.emailTextField.text password:self.passTextField.text vc:self completion:^{
-        [self navigateToProfile];
+    [ParseUtilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        }
     }];
 }
 - (BOOL)isEmail:(NSString *)email{

@@ -6,15 +6,13 @@
 //
 
 #import "MapView.h"
-#import "ErrorHandler.h"
 #import <CoreLocation/CoreLocation.h>
 @interface MapView()
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
-@implementation MapView{
-    BOOL firstLocationUpdate;
-}
+@implementation MapView
+BOOL firstLocationUpdate;
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -58,7 +56,7 @@
      https://stackoverflow.com/questions/17366403/gmsmapview-mylocation-not-giving-actual-location
      using KOV method; not CLLocation. CLLocation was not working not sure why.
     */
-    //CLLocationManager.locationServicesEnabled does not work
+    //CLLocationManager.locationServicesEnabled does not workß
     if(CLLocationManager.locationServicesEnabled){
         [self.mapView
                     addObserver:self
@@ -67,8 +65,8 @@
                     context:NULL
         ];
     } else {
-        //TODO: error handle
-        //TODO: not sure how to attach an alert onto a view class; tried attaching the alert onto the homescreen, but it doesn't show.
+        [self.delegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
+        }];
         NSLog(@"Location issues :((");
     }
     [self.stackView addArrangedSubview:self.mapView];

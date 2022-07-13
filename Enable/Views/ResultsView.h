@@ -7,10 +7,15 @@
 
 #import <UIKit/UIKit.h>
 #import "Review.h"
+#import "ErrorHandler.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
+
+
 @interface ResultsView : UIView
- @property (strong, nonatomic) id reviewID;
+@property (weak, nonatomic) id<ViewErrorHandle> delegate;
+@property (strong, nonatomic) id reviewID;
 @property (strong, nonatomic) Review *review;
 -(void) loadData;
 @end

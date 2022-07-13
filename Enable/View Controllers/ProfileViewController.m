@@ -7,6 +7,7 @@
 
 #import "ProfileViewController.h"
 #import "ParseUtilities.h"
+#import "ErrorHandler.h"
 
 @interface ProfileViewController()
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
@@ -32,14 +33,24 @@
 */
 - (void) getUserProfile {
     if(self.userProfileID){
-        [ParseUtilities getUserProfileFromID:self.userProfileID vc: self withCompletion:^(UserProfile * _Nullable userProfile) {
+        [ParseUtilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSDictionary * _Nullable error) {
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            } else {
                 self.profileView.userProfile = userProfile;
                 [self.profileView reloadUserData];
+            }
         }];
     } else {
-        [ParseUtilities getCurrentUserProfileWithVC: self withCompletion:^(UserProfile * _Nullable profile) {
-            self.profileView.userProfile = profile;
-            [self.profileView reloadUserData];
+        [ParseUtilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            } else {
+                self.profileView.userProfile = profile;
+                [self.profileView reloadUserData];
+            }
         }];
     }
     
@@ -47,8 +58,14 @@
 }
 
 - (IBAction)didTapLogout:(id)sender {
-    [ParseUtilities logOutWithVC: self withCompletion:^{
-        [self.navigationController popToRootViewControllerAnimated:TRUE];
+    [ParseUtilities logOutWithCompletion:^(NSDictionary * _Nullable error){
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:TRUE];
+
+        }
     } ];
 }
 

@@ -80,17 +80,22 @@ UITapGestureRecognizer *scrollViewTapGesture;
     return false;
 }
 
-- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description didPost: (void (^_Nonnull)(void))didPost{
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description didPost: (void (^_Nonnull)(NSDictionary * error))didPost{
     // I have created an option so that if there is no location provided then I will have it request
     // location on its own, but the default is still probably going to rely on the location already provided.
     if(!self.location){
         [self getLocationDataWithCompletion:^{
-            [ParseUtilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address vc: self completion:^(Location * _Nullable location) {
-                [ParseUtilities postReviewWithLocation:location rating:rating title:title description:description vc: self completion:didPost];
+            [ParseUtilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
+                if(locationError){
+                    [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
+                    }];
+                } else {
+                    [ParseUtilities postReviewWithLocation:location rating:rating title:title description:description images:nil completion:didPost];
+                }
             }];
         }];
     } else {
-        [ParseUtilities postReviewWithLocation:self.location rating:rating title:title description:description vc: self completion:didPost];
+        [ParseUtilities postReviewWithLocation:self.location rating:rating title:title description:description images:nil completion:didPost];
     }
 }
 
@@ -109,9 +114,14 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (IBAction)didTapSubmit:(id)sender {
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text didPost:^{
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text didPost:^(NSDictionary * _Nullable error){
             //TODO: go back to the reviews screen, not the maps screen.
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            } else {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
         }];
     } else {
         [ErrorHandler showAlertFromViewController:self title:@"Cannot post review" message:@"Please fill in all fields." completion:^{

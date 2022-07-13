@@ -14,7 +14,7 @@
 #import <GooglePlaces/GooglePlaces.h>
 #import "GoogleUtilities.h"
 
-@interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (strong, nonatomic) Location * location;
@@ -36,14 +36,25 @@
     [super viewWillAppear:animated];
     
 }
-
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
+    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
+}
 - (void) queryForLocationData {
-    [ParseUtilities getLocationFromPOI_idStr:self.POI_idStr vc: self withCompletion:^(Location * _Nullable location) {
+    [ParseUtilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable error) {
+        if(error){
+            
+            return;
+        }
         if(location){
             self.location = location;
-            [ParseUtilities getReviewsByLocation:self.location vc:self withCompletion:^(NSMutableArray<Review *> * _Nullable reviews) {
-                self.reviews = reviews;
-                [self.tableView reloadData];
+            [ParseUtilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error) {
+                if(error){
+                    [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                    }];
+                } else {
+                    self.reviews = reviews;
+                    [self.tableView reloadData];
+                }
             }];
         } else {
             GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
@@ -90,6 +101,7 @@
         return composeCell;
     }
     ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+    cell.resultsView.delegate = self;
     cell.resultsView.reviewID = self.reviews[indexPath.row - 2].objectId;
     cell.resultsView.review = self.reviews[indexPath.row-2];
     [cell.resultsView loadData];

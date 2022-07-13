@@ -10,6 +10,8 @@
 #import "Parse/PFImageView.h"
 #import "ParseUtilities.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
+
+
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -57,27 +59,36 @@
     if (self.review) {
         [self present:self.review];
     } else if (self.reviewID) {
-        // TODO: same issue as map view, don't know how to attach alert onto a view
-        [ParseUtilities getReviewFromID:self.reviewID vc: [self nextResponder] withCompletion:^(Review * _Nullable review) {
-            self.review = review;
-            [self present:self.review];
+        [ParseUtilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review, NSDictionary * _Nullable error) {
+            if(!error){
+                self.review = review;
+                [self present:self.review];
+            } else {
+                [self.delegate showAlertWithTitle:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            }
+
         }];
     } else {
-        // TODO: error handle
-        // TODO: same issue as map view, don't know how to attach alert onto a view
+        [self.delegate showAlertWithTitle:@"Failed to load data" message:@"review and revewID are both undefined" completion:^{
+        }];
         NSLog(@"Fail loadData in ResultsView %@", @"review and reviewID are both undefined");
         
     }
 }
 
 - (void) present: (Review * _Nullable) review {
-    // TODO: same issue as map view, don't know how to attach alert onto a view
-    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId vc: [self nextResponder] withCompletion:^(UserProfile * _Nullable profile) {
-                self.titleLabel.text = review.title;
-                self.detailsLabel.text = review.reviewText;
-                self.starRatingView.value = review.rating;
-                self.usernameLabel.text = profile.username;
+    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+        if(error){
+            [self.delegate showAlertWithTitle:error[@"title"] message:error[@"message"] completion:^{
             }];
+        } else {
+            self.titleLabel.text = review.title;
+            self.detailsLabel.text = review.reviewText;
+            self.starRatingView.value = review.rating;
+            self.usernameLabel.text = profile.username;
+        }
+    }];
 }
 
 @end
