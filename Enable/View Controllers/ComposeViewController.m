@@ -11,16 +11,18 @@
 #import "Utilities.h"
 #import "ErrorHandler.h"
 #import "Review.h"
-@interface ComposeViewController () <UITextViewDelegate, UIImagePickerControllerDelegate>
+@interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
+@property (strong, nonatomic) NSMutableArray <PFFileObject *> *images;
 @end
 
 @implementation ComposeViewController
 //TODO: add tableview for dropdown.
+bool didUpload = false;
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 // this doesn't seem to be working? not sure what to do.
@@ -30,15 +32,17 @@ UITapGestureRecognizer *scrollViewTapGesture;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.images = [[NSMutableArray alloc] init];
+
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
     [self registerForKeyboardNotifications];
-    
-    
-    
-    
+
+
+
+
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(100, 200, 200, 100)];
 
     self.starRatingView.maximumValue = 5;
@@ -46,7 +50,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     self.starRatingView.value = 0;
     self.starRatingView.backgroundColor = [UIColor systemBackgroundColor];
     self.starRatingView.tintColor = [UIColor systemYellowColor];
-//    [self.starRatingView addTarget:self action:@selector(didChangeValue) forControlEvents:UIControlEventValueChanged];
     [self.scrollView addSubview:self.starRatingView];
 }
 
@@ -67,7 +70,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
         }
     }];
 }
-
 /*
 #pragma mark - Navigation
 
@@ -84,7 +86,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     return false;
 }
 
-- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description didPost: (void (^_Nonnull)(NSDictionary * error))didPost{
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images didPost: (void (^_Nonnull)(NSDictionary * error))didPost{
     // I have created an option so that if there is no location provided then I will have it request
     // location on its own, but the default is still probably going to rely on the location already provided.
     if(!self.location){
@@ -94,12 +96,12 @@ UITapGestureRecognizer *scrollViewTapGesture;
                     [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
                     }];
                 } else {
-                    [Utilities postReviewWithLocation:location rating:rating title:title description:description images:nil completion:didPost];
+                    [Utilities postReviewWithLocation:location rating:rating title:title description:description images:images completion:didPost];
                 }
             }];
         }];
     } else {
-        [Utilities postReviewWithLocation:self.location rating:rating title:title description:description images:nil completion:didPost];
+        [Utilities postReviewWithLocation:self.location rating:rating title:title description:description images: images completion:didPost];
     }
 }
 
@@ -113,12 +115,76 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.scrollView endEditing:YES];
 }
 - (IBAction)didTapPhoto:(id)sender {
-    NSLog(@"tapped photo");
+    UIAlertController *alert =
+        [UIAlertController
+                    alertControllerWithTitle:@"Upload Photo or Take Photo"
+                    message:@"Would you like to upload a photo from your photos library or take one with your camera?"
+                    preferredStyle:(UIAlertControllerStyleAlert)
+        ];
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction * _Nonnull action) {
+                                        // handle cancel response here. Doing nothing will dismiss the view.
+                                    }];
+    [alert addAction:cancelAction];
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Use Camera"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+        [self openCamera];
+                                                      }];
+    [alert addAction:cameraAction];
+    UIAlertAction *libraryAction = [UIAlertAction
+                                    actionWithTitle:@"Use Library"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * _Nonnull action) {
+                                        [self openLibrary];
+                                    }];
+    [alert addAction:libraryAction];
+    [self presentViewController:alert animated:YES completion:^{
+        // optional code for what happens after the alert controller has finished presenting
+    }];
+
+}
+- (void) openCamera {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        //TODO: error handle
+        NSLog(@"Camera 🚫 available so we will use photo library instead");
+        [self openLibrary];
+        return;
+    }
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+- (void) openLibrary {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+
+    // Get the image captured by the UIImagePickerController
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    self.photosImageView.image = editedImage;
+    didUpload = true;
+        // Dismiss UIImagePickerController to go back to your original view controller
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 - (IBAction)didTapSubmit:(id)sender {
+    if(didUpload){
+        [self.images addObject: [Utilities  getPFFileFromImage: self.photosImageView.image]];
+    }
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text didPost:^(NSDictionary * _Nullable error){
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSDictionary * _Nullable error){
             //TODO: go back to the reviews screen, not the maps screen.
             if(error){
                 [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{

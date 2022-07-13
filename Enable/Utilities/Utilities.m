@@ -8,6 +8,19 @@
 #import <Foundation/Foundation.h>
 #import "Utilities.h"
 @implementation Utilities
+#pragma mark Image -> PFFileObject
++ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
+    // check if image is not nil
+    if (!image) {
+        return nil;
+    }
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.6);
+    // get image data and check if that is not nil
+    if (!imageData) {
+        return nil;
+    }
+    return [PFFileObject fileObjectWithName:@"image.jpeg" data:imageData];
+}
 
 /* each function now provides a dictionary to the completion block
     the dictionary will contain
@@ -157,7 +170,7 @@ const int kCustomizedErrorCode = 0;
     //TODO: infinite scroll
     query.limit = 20;
     [query whereKey:@"locationID" equalTo:location];
-    [query orderByDescending:@"likes"];
+    [query addDescendingOrder:@"likes"];
     [query addDescendingOrder:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
         if(!error){

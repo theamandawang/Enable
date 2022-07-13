@@ -11,6 +11,8 @@
 #import "Location.h"
 #import <GooglePlaces/GooglePlaces.h>
 @interface Utilities : NSObject
+#pragma mark Image -> PFFileObject
++ (PFFileObject *_Nullable)getPFFileFromImage: (UIImage * _Nullable)image;
 
 #pragma mark User Signup/Login/Logout
 //user login
@@ -19,7 +21,6 @@
 + (void) signUpWithEmail : (NSString * _Nonnull) email password: (NSString * _Nonnull) password completion:(void (^_Nonnull)(NSDictionary  * _Nullable  error))completion;
 
 //log out
-
 + (void) logOutWithCompletion:(void (^_Nonnull)(NSDictionary  * _Nullable  error))completion;
 
 
