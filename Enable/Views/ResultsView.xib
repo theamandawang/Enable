@@ -12,6 +12,8 @@
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="Q5q-QZ-H8w"/>
                 <outlet property="detailsLabel" destination="5pT-8H-b2V" id="WyM-eq-XJX"/>
+                <outlet property="likeCountLabel" destination="dG4-P5-ptH" id="HIg-AH-A65"/>
+                <outlet property="likeImageView" destination="woy-kx-gfW" id="Ha0-1e-Ikx"/>
                 <outlet property="photosImageView" destination="3nt-zU-KKQ" id="LVZ-kp-odn"/>
                 <outlet property="titleLabel" destination="Gan-sS-eyd" id="7w6-L1-oDI"/>
                 <outlet property="usernameLabel" destination="oSG-iB-K3w" id="cDm-9Z-C6H"/>
@@ -46,31 +48,63 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.up.heart" catalog="system" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="woy-kx-gfW">
+                    <rect key="frame" x="30" y="793.5" width="60" height="57.5"/>
+                    <color key="tintColor" systemColor="systemRedColor"/>
+                    <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="1yn-ua-2du"/>
+                        <constraint firstAttribute="height" constant="60" id="Ubz-fe-3I4"/>
+                    </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="2S6-8o-vfj" appends="YES" id="lWm-qj-fTh"/>
+                    </connections>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dG4-P5-ptH">
+                    <rect key="frame" x="210" y="811.5" width="125" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="Gan-sS-eyd" firstAttribute="top" secondItem="3nt-zU-KKQ" secondAttribute="bottom" constant="20" id="4DR-Ae-7eO"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="5pT-8H-b2V" secondAttribute="trailing" constant="20" id="4g7-YK-ICE"/>
+                <constraint firstItem="woy-kx-gfW" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="7hl-uH-nJr"/>
                 <constraint firstItem="oSG-iB-K3w" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="BKa-SR-O1V"/>
                 <constraint firstItem="3nt-zU-KKQ" firstAttribute="top" secondItem="oSG-iB-K3w" secondAttribute="bottom" constant="10" id="Dr7-5P-BY3"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="oSG-iB-K3w" secondAttribute="trailing" constant="30" id="H7X-Te-cNF"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="3nt-zU-KKQ" secondAttribute="trailing" constant="30" id="Hnr-LX-oaJ"/>
                 <constraint firstItem="Gan-sS-eyd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="Ivx-7z-4kz"/>
+                <constraint firstItem="dG4-P5-ptH" firstAttribute="leading" secondItem="woy-kx-gfW" secondAttribute="trailing" constant="120" id="QSw-8B-qqy"/>
                 <constraint firstItem="oSG-iB-K3w" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="XOU-PM-mVt"/>
                 <constraint firstItem="3nt-zU-KKQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="30" id="dVV-W5-xYp"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5pT-8H-b2V" secondAttribute="bottom" constant="10" id="fST-Nc-yix"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dG4-P5-ptH" secondAttribute="trailing" constant="79" id="dnm-Ng-75h"/>
+                <constraint firstItem="dG4-P5-ptH" firstAttribute="centerY" secondItem="woy-kx-gfW" secondAttribute="centerY" id="eLQ-dQ-dje"/>
                 <constraint firstItem="3nt-zU-KKQ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="60" id="jfD-0V-QjC"/>
                 <constraint firstItem="5pT-8H-b2V" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="ocO-I8-ONf"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="woy-kx-gfW" secondAttribute="bottom" constant="10" id="pub-4v-Jjh"/>
                 <constraint firstItem="5pT-8H-b2V" firstAttribute="top" secondItem="Gan-sS-eyd" secondAttribute="bottom" constant="20" id="vui-aZ-k4J"/>
+                <constraint firstItem="woy-kx-gfW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5pT-8H-b2V" secondAttribute="bottom" constant="10" id="z7y-Ck-Mf8"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Gan-sS-eyd" secondAttribute="trailing" constant="20" id="zt4-H0-bxx"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="127.90178571428571"/>
         </view>
+        <tapGestureRecognizer id="2S6-8o-vfj">
+            <connections>
+                <action selector="didLike:" destination="-1" id="cdD-Zp-Hdp"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
+        <image name="arrow.up.heart" catalog="system" width="128" height="109"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

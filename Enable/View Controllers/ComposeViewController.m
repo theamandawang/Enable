@@ -8,19 +8,21 @@
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import "ComposeViewController.h"
 #import "Parse/PFImageView.h"
+#import "Parse/Parse.h"
 #import "GoogleUtilities.h"
 #import "ParseUtilities.h"
 #import "Review.h"
-@interface ComposeViewController ()
+@interface ComposeViewController () <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextField;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
+@property (strong, nonatomic) NSMutableArray <PFFileObject *> *images;
 @end
 
 @implementation ComposeViewController
-
+bool didUpload = false;
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 
@@ -30,6 +32,8 @@ UITapGestureRecognizer *scrollViewTapGesture;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.images = [[NSMutableArray alloc] init];
+    
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
@@ -41,7 +45,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     self.starRatingView.minimumValue = 0;
     self.starRatingView.value = 0;
     self.starRatingView.tintColor = [UIColor systemYellowColor];
-//    [self.starRatingView addTarget:self action:@selector(didChangeValue) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.starRatingView];
 }
 
@@ -57,7 +60,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
         completion();
     }];
 }
-
 /*
 #pragma mark - Navigation
 
@@ -74,7 +76,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     return false;
 }
 
-- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description didPost: (void (^_Nonnull)(void))didPost{
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images didPost: (void (^_Nonnull)(void))didPost{
     
     // TODO: decide whether to fetch location again, i've already done it in the previous vc.
     // I have created an option so that if there is no location provided then I will have it request
@@ -82,11 +84,11 @@ UITapGestureRecognizer *scrollViewTapGesture;
     if(!self.location){
         [self getLocationDataWithCompletion:^{
             [ParseUtilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location) {
-                [ParseUtilities postReviewWithLocation:location rating:rating title:title description:description completion:didPost];
+                [ParseUtilities postReviewWithLocation:location rating:rating title:title description:description images: images completion:didPost];
             }];
         }];
     } else {
-        [ParseUtilities postReviewWithLocation:self.location rating:rating title:title description:description completion:didPost];
+        [ParseUtilities postReviewWithLocation:self.location rating:rating title:title description:description images: images completion:didPost];
     }
 }
 
@@ -96,12 +98,76 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.scrollView endEditing:YES];
 }
 - (IBAction)didTapPhoto:(id)sender {
-    NSLog(@"tapped photo");
+    UIAlertController *alert =
+        [UIAlertController
+                    alertControllerWithTitle:@"Upload Photo or Take Photo"
+                    message:@"Would you like to upload a photo from your photos library or take one with your camera?"
+                    preferredStyle:(UIAlertControllerStyleAlert)
+        ];
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction * _Nonnull action) {
+                                        // handle cancel response here. Doing nothing will dismiss the view.
+                                    }];
+    [alert addAction:cancelAction];
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Use Camera"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+        [self openCamera];
+                                                      }];
+    [alert addAction:cameraAction];
+    UIAlertAction *libraryAction = [UIAlertAction
+                                    actionWithTitle:@"Use Library"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * _Nonnull action) {
+                                        [self openLibrary];
+                                    }];
+    [alert addAction:libraryAction];
+    [self presentViewController:alert animated:YES completion:^{
+        // optional code for what happens after the alert controller has finished presenting
+    }];
+
+}
+- (void) openCamera {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        //TODO: error handle
+        NSLog(@"Camera 🚫 available so we will use photo library instead");
+        [self openLibrary];
+        return;
+    }
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+- (void) openLibrary {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+    
+    // Get the image captured by the UIImagePickerController
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    self.photosImageView.image = editedImage;
+    didUpload = true;
+        // Dismiss UIImagePickerController to go back to your original view controller
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 - (IBAction)didTapSubmit:(id)sender {
+    if(didUpload){
+        [self.images addObject: [ParseUtilities  getPFFileFromImage: self.photosImageView.image]];
+    }
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text didPost:^{
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextField.text images: (NSArray *) self.images didPost:^{
             //TODO: go back to the reviews screen, not the maps screen.
             [self.navigationController popToRootViewControllerAnimated:YES];
         }];

@@ -8,7 +8,19 @@
 #import <Foundation/Foundation.h>
 #import "ParseUtilities.h"
 @implementation ParseUtilities
-
+#pragma mark Image -> PFFileObject
++ (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
+    // check if image is not nil
+    if (!image) {
+        return nil;
+    }
+    NSData *imageData = UIImageJPEGRepresentation(image, 0.6);
+    // get image data and check if that is not nil
+    if (!imageData) {
+        return nil;
+    }
+    return [PFFileObject fileObjectWithName:@"image.jpeg" data:imageData];
+}
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(void))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
@@ -168,7 +180,7 @@
     }];
 }
 
-+ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description completion: (void (^_Nonnull)(void))completion{
++ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<PFFileObject *> * _Nullable) images completion: (void (^_Nonnull)(void))completion{
     [ParseUtilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile) {
         Review *review = [[Review alloc] initWithClassName:@"Review"];
         review.userProfileID = profile;
@@ -176,8 +188,7 @@
         review.reviewText = description;
         review.rating = rating;
         review.locationID = location;
-        review.images = nil;
-        review.likes = 0;
+        review.images = images;
         
         [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if(!error){
@@ -195,5 +206,11 @@
             }
         }];
     }];
+}
+    
+#pragma mark Image from URL
+
++ (void) getImageFromURL: (NSURL * _Nonnull)imageURL withCompletion: (void (^_Nonnull)(UIImage * _Nullable image))completion{
+    NSURLRequest *request=[NSURLRequest requestWithURL:imageURL];
 }
 @end
