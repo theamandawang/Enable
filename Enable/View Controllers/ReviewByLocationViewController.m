@@ -7,12 +7,11 @@
 
 #import "ReviewByLocationViewController.h"
 #import "Review.h"
-#import "ParseUtilities.h"
+#import "Utilities.h"
 #import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
 #import <GooglePlaces/GooglePlaces.h>
-#import "GoogleUtilities.h"
 
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -21,7 +20,7 @@
 @end
 
 @implementation ReviewByLocationViewController
-
+const int kNoMatchErrorCode = 101;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
@@ -40,33 +39,38 @@
     [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
 }
 - (void) queryForLocationData {
-    [ParseUtilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable error) {
-        if(error){
-            
-            return;
-        }
-        if(location){
-            self.location = location;
-            [ParseUtilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error) {
-                if(error){
-                    [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-                    }];
-                } else {
-                    self.reviews = reviews;
-                    [self.tableView reloadData];
-                }
+    [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
+        if(locationError && ([locationError[@"code"] integerValue] != kNoMatchErrorCode)){
+            [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
             }];
         } else {
-            GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-            [GoogleUtilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withVC:self withCompletion:^(GMSPlace * _Nullable place) {
-                self.location = [[Location alloc] initWithClassName:@"Location"];
-                self.location.POI_idStr = self.POI_idStr;
-                self.location.address = [place formattedAddress];
-                self.location.name = [place name];
-                self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
-                [self.tableView reloadData];
-            }];
-            
+            if(location){
+                self.location = location;
+                [Utilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error) {
+                    if(error){
+                        [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                        }];
+                    } else {
+                        self.reviews = reviews;
+                        [self.tableView reloadData];
+                    }
+                }];
+            } else {
+                GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
+                [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSDictionary * _Nullable error) {
+                    if(error){
+                        [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                        }];
+                    } else {
+                        self.location = [[Location alloc] initWithClassName:@"Location"];
+                        self.location.POI_idStr = self.POI_idStr;
+                        self.location.address = [place formattedAddress];
+                        self.location.name = [place name];
+                        self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
+                        [self.tableView reloadData];
+                    }
+                }];
+            }
         }
     }];
 }

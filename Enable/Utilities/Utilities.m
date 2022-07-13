@@ -1,20 +1,21 @@
 //
-//  ParseUtilities.m
+//  Utilities.m
 //  Enable
 //
 //  Created by Amanda Wang on 7/11/22.
 //
 
 #import <Foundation/Foundation.h>
-#import "ParseUtilities.h"
-@implementation ParseUtilities
+#import "Utilities.h"
+@implementation Utilities
 
 /* each function now provides a dictionary to the completion block
     the dictionary will contain
         - title
-        - localizedDescription
+        - message (localizedDescription)
+        - code
  */
-
+const int kCustomizedErrorCode = 0;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSDictionary  * _Nullable  error))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
@@ -23,7 +24,8 @@
             } else {
                 NSLog(@"Fail logIn %@", error.localizedDescription);
                 NSDictionary * errorDict = @{@"title" : @"Failed to log in",
-                                             @"message" : error.localizedDescription};
+                                             @"message" : error.localizedDescription,
+                                             @"code" : [NSNumber numberWithLong:error.code]};
                 completion(errorDict);
             }
     }];
@@ -46,14 +48,16 @@
                 } else {
                     NSLog(@"Fail save UserProfile (in signUp) %@", saveError.localizedDescription);
                     NSDictionary * errorDict = @{@"title" : @"Failed to sign up",
-                                                 @"message" : saveError.localizedDescription};
+                                                 @"message" : saveError.localizedDescription,
+                                                 @"code" : [NSNumber numberWithLong:saveError.code]};
                     completion(errorDict);
                 }
             }];
         } else {
             NSLog(@"Fail signUp %@", error.localizedDescription);
             NSDictionary * errorDict = @{@"title" : @"Failed to sign up",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(errorDict);
         }
     }];
@@ -66,7 +70,8 @@
         } else {
             NSLog(@"Fail logOut %@", error.localizedDescription);
             NSDictionary * errorDict = @{@"title" : @"Failed to log out",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(errorDict);
         }
 
@@ -79,7 +84,8 @@
     PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
     if(![PFUser currentUser]){
         NSDictionary * errorDict = @{@"title" : @"Failed to get the current user",
-                                     @"message" : @"No user signed in"};
+                                     @"message" : @"No user signed in",
+                                     @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
         completion(nil, errorDict);
         return;
     }
@@ -89,7 +95,8 @@
         if(error){
             NSLog(@"Fail getCurrentUserProfile %@", error.localizedDescription);
             NSDictionary * errorDict = @{@"title" : @"Failed to get the current user",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(nil, errorDict);
         } else {
             if(userProfile){
@@ -112,7 +119,8 @@
 
         } else {
             NSDictionary * errorDict = @{@"title" : @"Failed to get the user",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(nil, errorDict);
             NSLog(@"Fail getUserProfileFromID %@", error.localizedDescription);
         }
@@ -129,12 +137,14 @@
                 completion((Review *) dbReview, nil);
             } else {
                 NSDictionary * errorDict = @{@"title" : @"No review found",
-                                             @"message" : @"This review doesn't exist"};
+                                             @"message" : @"This review doesn't exist",
+                                             @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
                 completion(nil, errorDict);
             }
         } else {
             NSDictionary * errorDict = @{@"title" : @"Failed to get the review",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(nil, errorDict);
             NSLog(@"Fail getReviewFromID %@", error.localizedDescription);
         }
@@ -154,7 +164,8 @@
             completion((NSMutableArray<Review *> *) objects, nil);
         } else {
             NSDictionary * errorDict = @{@"title" : @"Failed to get reviews",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(nil, errorDict);
             NSLog(@"Fail getReviewsByLocation %@", error.localizedDescription);
         }
@@ -174,7 +185,8 @@
         } else {
             NSLog(@"Fail getLocationFromPOI_idStr %@", error.localizedDescription);
             NSDictionary * errorDict = @{@"title" : @"Failed to get the location",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(nil, errorDict);
         }
     }];
@@ -197,14 +209,15 @@
         } else {
             NSLog(@"Fail postLocationWithPOI_idStr %@", error.localizedDescription);
             NSDictionary * errorDict = @{@"title" : @"Failed to post this location",
-                                         @"message" : error.localizedDescription};
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
             completion(nil, errorDict);
         }
     }];
 }
 
 + (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<PFFileObject *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion{
-    [ParseUtilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
         Review *review = [[Review alloc] initWithClassName:@"Review"];
         if(error){
             completion(error);
@@ -226,17 +239,46 @@
                 } else {
                     NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
                     NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                                 @"message" : @"Couldn't save review in background"};
+                                                 @"message" : @"Couldn't save review in background",
+                                                 @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
                     completion(errorDict);
                 }
             }
             else {
                 NSLog(@"Fail getCurrentUserProfile (in Post Review) %@", error.localizedDescription);
                 NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                             @"message" : error.localizedDescription};
+                                             @"message" : error.localizedDescription,
+                                             @"code" : [NSNumber numberWithLong:error.code]};
                 completion(errorDict);
             }
         }];
     }];
+}
+
+#pragma mark Google
+static GMSPlacesClient * placesClient = nil;
+
++ (void) initializePlacesClient{
+    if(!placesClient){
+        placesClient = [[GMSPlacesClient alloc] init];
+    }
+}
+
++ (void) getPlaceDataFromPOI_idStr:(NSString * _Nonnull)POI_idStr withFields: (GMSPlaceField) fields withCompletion: (void (^_Nonnull)(GMSPlace * _Nullable place, NSDictionary * _Nullable error)) completion{
+    [self initializePlacesClient];
+    [placesClient fetchPlaceFromPlaceID:POI_idStr placeFields:fields sessionToken:nil callback:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
+        if (error != nil) {
+            NSLog(@"An error occurred %@", [error localizedDescription]);
+            NSDictionary * errorDict = @{@"title" : @"Failed to get Place data",
+                                         @"message" : [error localizedDescription],
+                                         @"code" : [NSNumber numberWithLong:error.code]};
+            completion(nil, errorDict);
+            return;
+        }
+        if (place != nil) {
+            completion(place, nil);
+        }
+    }];
+    
 }
 @end

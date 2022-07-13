@@ -8,7 +8,7 @@
 #import "ResultsView.h"
 #import "UserProfile.h"
 #import "Parse/PFImageView.h"
-#import "ParseUtilities.h"
+#import "Utilities.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
 
 
@@ -59,7 +59,7 @@
     if (self.review) {
         [self present:self.review];
     } else if (self.reviewID) {
-        [ParseUtilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review, NSDictionary * _Nullable error) {
+        [Utilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review, NSDictionary * _Nullable error) {
             if(!error){
                 self.review = review;
                 [self present:self.review];
@@ -78,7 +78,7 @@
 }
 
 - (void) present: (Review * _Nullable) review {
-    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+    [Utilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
         if(error){
             [self.delegate showAlertWithTitle:error[@"title"] message:error[@"message"] completion:^{
             }];

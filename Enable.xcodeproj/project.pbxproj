@@ -23,8 +23,7 @@
 		7F6298E0287C99CB00A550F4 /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298DE287C99CB00A550F4 /* ReviewTableViewCell.xib */; };
 		7F6298E3287C9AAD00A550F4 /* ResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298E2287C9AAD00A550F4 /* ResultsView.m */; };
 		7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298E4287C9AC000A550F4 /* ResultsView.xib */; };
-		7F6298F1287D1A7000A550F4 /* ParseUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298F0287D1A7000A550F4 /* ParseUtilities.m */; };
-		7F6298F7287DEEE100A550F4 /* GoogleUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298F6287DEEE100A550F4 /* GoogleUtilities.m */; };
+		7F6298F1287D1A7000A550F4 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298F0287D1A7000A550F4 /* Utilities.m */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
@@ -69,10 +68,8 @@
 		7F6298E1287C9AAD00A550F4 /* ResultsView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResultsView.h; sourceTree = "<group>"; };
 		7F6298E2287C9AAD00A550F4 /* ResultsView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ResultsView.m; sourceTree = "<group>"; };
 		7F6298E4287C9AC000A550F4 /* ResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResultsView.xib; sourceTree = "<group>"; };
-		7F6298EF287D1A7000A550F4 /* ParseUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParseUtilities.h; sourceTree = "<group>"; };
-		7F6298F0287D1A7000A550F4 /* ParseUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseUtilities.m; sourceTree = "<group>"; };
-		7F6298F5287DEEE100A550F4 /* GoogleUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GoogleUtilities.h; sourceTree = "<group>"; };
-		7F6298F6287DEEE100A550F4 /* GoogleUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GoogleUtilities.m; sourceTree = "<group>"; };
+		7F6298EF287D1A7000A550F4 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
+		7F6298F0287D1A7000A550F4 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -145,10 +142,8 @@
 		7F6298EE287D1A3D00A550F4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				7F6298F5287DEEE100A550F4 /* GoogleUtilities.h */,
-				7F6298F6287DEEE100A550F4 /* GoogleUtilities.m */,
-				7F6298EF287D1A7000A550F4 /* ParseUtilities.h */,
-				7F6298F0287D1A7000A550F4 /* ParseUtilities.m */,
+				7F6298EF287D1A7000A550F4 /* Utilities.h */,
+				7F6298F0287D1A7000A550F4 /* Utilities.m */,
 				7F06A2FC287E135800F45C63 /* ErrorHandler.h */,
 				7F06A2FD287E135800F45C63 /* ErrorHandler.m */,
 			);
@@ -385,7 +380,7 @@
 			files = (
 				7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */,
 				7F6298D52877A4BC00A550F4 /* ReviewByLocationViewController.m in Sources */,
-				7F6298F1287D1A7000A550F4 /* ParseUtilities.m in Sources */,
+				7F6298F1287D1A7000A550F4 /* Utilities.m in Sources */,
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
 				7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */,
 				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,
@@ -401,7 +396,6 @@
 				7F6298DF287C99CB00A550F4 /* ReviewTableViewCell.m in Sources */,
 				7F6298DB2878A01700A550F4 /* SummaryReviewTableViewCell.m in Sources */,
 				7F6298C028776BB600A550F4 /* Review.m in Sources */,
-				7F6298F7287DEEE100A550F4 /* GoogleUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,7 +6,7 @@
 //
 
 #import "LoginViewController.h"
-#import "ParseUtilities.h"
+#import "Utilities.h"
 #import "ErrorHandler.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
@@ -40,7 +40,7 @@
 }
 - (IBAction)didTapSignUp:(id)sender {
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
-        [ParseUtilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+        [Utilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
             if(error){
                 [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
                 }];
@@ -56,7 +56,7 @@
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [ParseUtilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+    [Utilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
         if(error){
             [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
             }];

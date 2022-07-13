@@ -8,8 +8,7 @@
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import "ComposeViewController.h"
 #import "Parse/PFImageView.h"
-#import "GoogleUtilities.h"
-#import "ParseUtilities.h"
+#import "Utilities.h"
 #import "ErrorHandler.h"
 #import "Review.h"
 @interface ComposeViewController () <UITextViewDelegate, UIImagePickerControllerDelegate>
@@ -54,13 +53,18 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 -(void) getLocationDataWithCompletion: (void (^_Nonnull)(void)) completion {
     GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-    [GoogleUtilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withVC: self withCompletion:^(GMSPlace * _Nullable place) {
-        self.location = [[Location alloc] initWithClassName:@"Location"];
-        self.location.POI_idStr = self.POI_idStr;
-        self.location.address = [place formattedAddress];
-        self.location.name = [place name];
-        self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
-        completion();
+    [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            self.location = [[Location alloc] initWithClassName:@"Location"];
+            self.location.POI_idStr = self.POI_idStr;
+            self.location.address = [place formattedAddress];
+            self.location.name = [place name];
+            self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
+            completion();
+        }
     }];
 }
 
@@ -85,17 +89,17 @@ UITapGestureRecognizer *scrollViewTapGesture;
     // location on its own, but the default is still probably going to rely on the location already provided.
     if(!self.location){
         [self getLocationDataWithCompletion:^{
-            [ParseUtilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
+            [Utilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
                 if(locationError){
                     [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
                     }];
                 } else {
-                    [ParseUtilities postReviewWithLocation:location rating:rating title:title description:description images:nil completion:didPost];
+                    [Utilities postReviewWithLocation:location rating:rating title:title description:description images:nil completion:didPost];
                 }
             }];
         }];
     } else {
-        [ParseUtilities postReviewWithLocation:self.location rating:rating title:title description:description images:nil completion:didPost];
+        [Utilities postReviewWithLocation:self.location rating:rating title:title description:description images:nil completion:didPost];
     }
 }
 
