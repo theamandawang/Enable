@@ -106,6 +106,20 @@ const int kNoMatchErrorCode = 101;
     }
     ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
     cell.resultsView.delegate = self;
+    
+
+    //TODO: use sections instead
+    //section 1 is summary review
+    //section 2 is compose cell
+    //section 3 is all the regular reviews
+    //if indexPath.section == VARNAME...
+    //constants start w/ 'k'
+    
+    //TODO: remove the logic from the view
+    //replace below 3 lines w/ [cell present:review]
+    //for detailsVC -> send in review ID -> get review -> present it as modal?
+    //think of a view as a visual UI element; want to instantiate it.
+    //content of a view is defined by VC.
     cell.resultsView.reviewID = self.reviews[indexPath.row - 2].objectId;
     cell.resultsView.review = self.reviews[indexPath.row-2];
     [cell.resultsView loadData];
