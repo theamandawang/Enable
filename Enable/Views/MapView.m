@@ -11,9 +11,8 @@
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
-@implementation MapView{
-    BOOL firstLocationUpdate;
-}
+@implementation MapView
+BOOL firstLocationUpdate;
 
 /*
 // Only override drawRect: if you perform custom drawing.
@@ -57,7 +56,7 @@
      https://stackoverflow.com/questions/17366403/gmsmapview-mylocation-not-giving-actual-location
      using KOV method; not CLLocation. CLLocation was not working not sure why.
     */
-    //CLLocationManager.locationServicesEnabled does not work
+    //CLLocationManager.locationServicesEnabled does not workß
     if(CLLocationManager.locationServicesEnabled){
         [self.mapView
                     addObserver:self
@@ -65,15 +64,17 @@
                     options:NSKeyValueObservingOptionNew
                     context:NULL
         ];
-        
     } else {
-        //TODO: error handle
+        [self.delegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
+        }];
         NSLog(@"Location issues :((");
     }
     [self.stackView addArrangedSubview:self.mapView];
     
     return self;
 }
+
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change

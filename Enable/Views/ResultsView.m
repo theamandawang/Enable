@@ -8,8 +8,10 @@
 #import "ResultsView.h"
 #import "UserProfile.h"
 #import "Parse/PFImageView.h"
-#import "ParseUtilities.h"
+#import "Utilities.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
+
+
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -83,27 +85,38 @@ bool liked;
     if (self.review) {
         [self present:self.review];
     } else if (self.reviewID) {
-        [ParseUtilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review) {
-            self.review = review;
-            [self present:self.review];
+        [Utilities getReviewFromID:self.reviewID withCompletion:^(Review * _Nullable review, NSDictionary * _Nullable error) {
+            if(!error){
+                self.review = review;
+                [self present:self.review];
+            } else {
+                [self.delegate showAlertWithTitle:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            }
+
         }];
     } else {
-        // TODO: error handle
+        [self.delegate showAlertWithTitle:@"Failed to load data" message:@"review and revewID are both undefined" completion:^{
+        }];
         NSLog(@"Fail loadData in ResultsView %@", @"review and reviewID are both undefined");
-        
+
     }
 }
 
 - (void) present: (Review * _Nullable) review {
-    [ParseUtilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile) {
-                self.titleLabel.text = review.title;
-                self.detailsLabel.text = review.reviewText;
-                self.starRatingView.value = review.rating;
-                self.usernameLabel.text = profile.username;
-                self.images = review.images;
-        self.likeCountLabel.text = [NSString stringWithFormat: @"%u", review.likes];
-        if(review.images.count > 0){
-            [self loadImage:    [NSURL URLWithString:[review.images[0] valueForKey:@"url"]]];
+    [Utilities getUserProfileFromID: review.userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+        if(error){
+            [self.delegate showAlertWithTitle:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            self.titleLabel.text = review.title;
+            self.detailsLabel.text = review.reviewText;
+            self.starRatingView.value = review.rating;
+            self.usernameLabel.text = profile.username;
+            self.likeCountLabel.text = [NSString stringWithFormat: @"%u", review.likes];
+            if(review.images.count > 0){
+                [self loadImage:    [NSURL URLWithString:[review.images[0] valueForKey:@"url"]]];
+            }
         }
     }];
 }
@@ -116,7 +129,7 @@ bool liked;
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
         liked = true;
     }
-    
+
 }
 
 
