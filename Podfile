@@ -13,4 +13,7 @@ target 'Enable' do
   pod 'Parse/UI'
 
   pod 'HCSStarRatingView', '~> 1.5'
+  
+  pod 'AFNetworking', '~> 4.0'
+
 end

@@ -10,8 +10,7 @@
 #import "Parse/PFImageView.h"
 #import "Utilities.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
-
-
+#import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
@@ -57,30 +56,6 @@ bool liked;
     return self;
 }
 
-//TODO: figure out how to make this async and refactor it.
-- (void)loadImage:(NSURL *)imageURL
-{
-    NSOperationQueue *queue = [NSOperationQueue new];
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc]
-                                        initWithTarget:self
-                                        selector:@selector(requestRemoteImage:)
-                                        object:imageURL];
-    [queue addOperation:operation];
-}
-
-- (void)requestRemoteImage:(NSURL *)imageURL
-{
-    NSData *imageData = [[NSData alloc] initWithContentsOfURL:imageURL];
-    UIImage *image = [[UIImage alloc] initWithData:imageData];
-
-    [self performSelectorOnMainThread:@selector(placeImageInUI:) withObject:image waitUntilDone:YES];
-}
-
-- (void)placeImageInUI:(UIImage *)image
-{
-    [self.photosImageView setImage:image];
-}
-
 - (void) loadData {
     if (self.review) {
         [self present:self.review];
@@ -115,10 +90,23 @@ bool liked;
             self.usernameLabel.text = profile.username;
             self.likeCountLabel.text = [NSString stringWithFormat: @"%u", review.likes];
             if(review.images.count > 0){
-                [self loadImage:    [NSURL URLWithString:[review.images[0] valueForKey:@"url"]]];
+                NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[review.images[0] valueForKey:@"url"]]];
+                [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed:@""] success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+                    if(image){
+                        self.photosImageView.image = image;
+                    }
+                } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+                    //set loading state
+                }];
             }
         }
     }];
+}
+- (IBAction)didSwipeRight:(id)sender {
+    NSLog(@"swipe right");
+}
+- (IBAction)didSwipeLeft:(id)sender {
+    NSLog(@"swipe left");
 }
 
 - (IBAction)didLike:(id)sender {
