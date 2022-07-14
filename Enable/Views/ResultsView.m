@@ -44,13 +44,7 @@
     [[NSBundle mainBundle] loadNibNamed: @"ResultsView" owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
-    self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(100, 100, 100, 50)];
-    self.starRatingView.maximumValue = 5;
-    self.starRatingView.minimumValue = 0;
-    self.starRatingView.value = 0;
-    self.starRatingView.tintColor = [UIColor systemYellowColor];
-    [self.starRatingView setUserInteractionEnabled:NO];
-    [self.contentView addSubview:self.starRatingView];
+    [self setupStartRatingView];
 
     return self;
 }
@@ -79,6 +73,9 @@
                 }];
             }
 }
+
+# pragma mark - IBActions
+
 - (IBAction)didSwipeRight:(id)sender {
     NSLog(@"swipe right");
 }
@@ -97,6 +94,35 @@
         [self.delegate addLikeFromUserProfile:self.currentProfile review:self.review];
     }
 
+}
+
+# pragma mark - Private functions
+
+- (void)setupStartRatingView {
+    self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
+    [self setupStartRatingViewValues];
+    self.starRatingView.tintColor = [UIColor systemYellowColor];
+    [self.starRatingView setUserInteractionEnabled:NO];
+    [self.starRatingView setBackgroundColor:UIColor.greenColor];
+    
+    self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.contentView addSubview:self.starRatingView];
+    [self setupStartRatingViewConstraints];
+}
+
+- (void)setupStartRatingViewValues {
+    self.starRatingView.maximumValue = 5;
+    self.starRatingView.minimumValue = 0;
+    self.starRatingView.value = 0;
+}
+
+- (void)setupStartRatingViewConstraints {
+    // Y
+    [self.starRatingView.centerYAnchor constraintEqualToAnchor:self.titleLabel.centerYAnchor].active = YES;
+    [self.starRatingView.heightAnchor constraintEqualToConstant:40].active = YES;
+    // X
+    [self.starRatingView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-30].active = YES;
+    [self.starRatingView.widthAnchor constraintEqualToConstant:80].active = YES;
 }
 
 
