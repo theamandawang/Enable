@@ -242,6 +242,7 @@ const int kCustomizedErrorCode = 0;
             review.rating = rating;
             review.locationID = location;
             review.images = images;
+            review.likes = 0;
         }
         
         [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
@@ -265,6 +266,67 @@ const int kCustomizedErrorCode = 0;
                 completion(errorDict);
             }
         }];
+    }];
+}
+
+
+#pragma mark Like
+
++ (void) addLikeToReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion {
+    [review.userLikes addObject:profile];
+    [review incrementKey:@"likes" byAmount:[NSNumber numberWithInt:1]];
+    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if(error){
+            NSDictionary * errorDict = @{@"title" : @"Failed to like post",
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
+            completion(errorDict);
+        } else if (!succeeded) {
+            NSDictionary * errorDict = @{@"title" : @"Failed to like post",
+                                         @"message" : @"Unable to like",
+                                         @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
+            completion(errorDict);
+        }
+    }];
+}
+
++ (void) removeLikeFromReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion {
+    [review.userLikes removeObject:profile];
+    [review incrementKey:@"likes" byAmount:[NSNumber numberWithInt:-1]];
+
+    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if(error){
+            NSDictionary * errorDict = @{@"title" : @"Failed to unlike post",
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
+            completion(errorDict);
+        } else if (!succeeded) {
+            NSDictionary * errorDict = @{@"title" : @"Failed to unlike post",
+                                         @"message" : @"Unable to unlike",
+                                         @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
+            completion(errorDict);
+        }
+    }];
+}
++ (void) isLikedbyUser: (UserProfile * _Nonnull) profile  review:(Review * _Nonnull) review completion: (void (^_Nonnull)(bool liked, NSDictionary * _Nullable error))completion{
+    PFRelation * relation = review.userLikes;
+    [[relation query] findObjectsInBackgroundWithBlock:^(NSArray<UserProfile *> * _Nullable objects, NSError * _Nullable error) {
+        if (error) {
+            NSDictionary * errorDict = @{@"title" : @"Failed to unlike post",
+                                         @"message" : @"Unable to unlike",
+                                         @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
+            completion(false, errorDict);
+        } else {
+            if(objects){
+                for(int i = 0; i < objects.count; i++){
+                    if([objects[i].objectId isEqualToString: profile.objectId]){
+                        completion(true, nil);
+                        return;
+                    }
+                }
+            }
+            completion(false, nil);
+        }
     }];
 }
 

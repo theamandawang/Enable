@@ -6,13 +6,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Location.h"
-#import "UserProfile.h"
-#import "ErrorHandler.h"
+#import "ResultsView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ReviewByLocationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ViewErrorHandle>
+@interface ReviewByLocationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (strong, nonatomic) NSString * POI_idStr;
 @end
 

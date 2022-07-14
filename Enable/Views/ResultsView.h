@@ -7,17 +7,23 @@
 
 #import <UIKit/UIKit.h>
 #import "Review.h"
-#import "ErrorHandler.h"
+#import "UserProfile.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 
+@protocol ResultsViewDelegate
+- (void) addLikeFromUserProfile: (UserProfile*) currentProfile review: (Review *) review;
+- (void) removeLikeFromReview: (Review*) review currentUser: (UserProfile *) currentProfile;
+@end
+
 
 @interface ResultsView : UIView
-@property (weak, nonatomic) id<ViewErrorHandle> delegate;
-@property (strong, nonatomic) id reviewID;
+@property (weak, nonatomic) id<ResultsViewDelegate> delegate;
 @property (strong, nonatomic) Review *review;
--(void) loadData;
+@property (strong, nonatomic) UserProfile * currentProfile;
+@property bool liked;
+- (void) presentReview: (Review * _Nullable) review byUser: (UserProfile * _Nonnull) profile;
 @end
 
 NS_ASSUME_NONNULL_END

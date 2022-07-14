@@ -7,16 +7,19 @@
 
 #import "ReviewByLocationViewController.h"
 #import "Review.h"
+#import "UserProfile.h"
 #import "Utilities.h"
 #import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
 #import <GooglePlaces/GooglePlaces.h>
+#import "ErrorHandler.h"
 
-@interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ViewErrorHandle>
+@interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (strong, nonatomic) Location * location;
+@property (strong, nonatomic) UserProfile * _Nullable currentProfile;
 @end
 
 @implementation ReviewByLocationViewController
@@ -28,6 +31,7 @@ const int kNoMatchErrorCode = 101;
     self.reviews = [[NSMutableArray alloc] init];
     UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
+    [self getCurrentUserProfile];
     [self queryForLocationData];
     // Do any additional setup after loading the view.
 }
@@ -74,8 +78,39 @@ const int kNoMatchErrorCode = 101;
         }
     }];
 }
+- (void) getCurrentUserProfile {
+    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            self.currentProfile = profile;
+        }
+    }];
+}
 
-
+#pragma mark Protocol methods for liking / removing likes
+- (void) addLikeFromUserProfile:(UserProfile *)currentProfile review:(Review *)review{
+    [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        }
+    }];
+    
+    // TODO: need to figure out how to sort reviews after liking them. I'm just querying them again, but
+    // there should probably be a better way.
+    [self queryForLocationData];
+}
+- (void) removeLikeFromReview:(Review *)review currentUser:(UserProfile *)currentProfile{
+    [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        }
+    }];
+    [self queryForLocationData];
+}
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -114,16 +149,25 @@ const int kNoMatchErrorCode = 101;
     //section 3 is all the regular reviews
     //if indexPath.section == VARNAME...
     //constants start w/ 'k'
-    
-    //TODO: remove the logic from the view
-    //replace below 3 lines w/ [cell present:review]
-    //for detailsVC -> send in review ID -> get review -> present it as modal?
-    //think of a view as a visual UI element; want to instantiate it.
-    //content of a view is defined by VC.
-    cell.resultsView.reviewID = self.reviews[indexPath.row - 2].objectId;
-    cell.resultsView.review = self.reviews[indexPath.row-2];
-    [cell.resultsView loadData];
-
+    [Utilities getUserProfileFromID:self.reviews[indexPath.row-2].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row - 2] completion:^(bool liked, NSDictionary * _Nullable error) {
+                if(error){
+                    [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                    }];
+                } else {
+                    cell.resultsView.liked = liked;
+                    cell.resultsView.currentProfile = self.currentProfile;
+                    cell.resultsView.review = self.reviews[indexPath.row - 2];
+                    [cell.resultsView presentReview: self.reviews[indexPath.row - 2] byUser: profile];
+                }
+            }];
+            
+        }
+    }];
     return cell;
     
 }
