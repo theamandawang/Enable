@@ -24,6 +24,9 @@
 
 @implementation ReviewByLocationViewController
 const int kNoMatchErrorCode = 101;
+const int kSummarySection = 0;
+const int kComposeSection = 1;
+const int kReviewsSection = 2;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
@@ -123,11 +126,12 @@ const int kNoMatchErrorCode = 101;
         vc.location = self.location;
     }
 }
-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 3;
+}
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
-    // create a uitableview cell for the regular reviews, the aggregated review, and  the cell that opens the compose view.
-    if(indexPath.row == 0){
+    if(indexPath.section == kSummarySection){
         SummaryReviewTableViewCell *summaryCell = [self.tableView dequeueReusableCellWithIdentifier:@"SummaryCell"];
         if(self.reviews && self.reviews.count > 0){
             summaryCell.locationNameLabel.text = self.location.name;
@@ -135,48 +139,45 @@ const int kNoMatchErrorCode = 101;
             summaryCell.locationNameLabel.text = [NSString stringWithFormat:@"%@%@", self.location.name, @" has no reviews yet!"];
         }
         return summaryCell;
-    } else if (indexPath.row == 1) {
+    } else if (indexPath.section == kComposeSection) {
         UITableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier:@"ComposeCell"];
         return composeCell;
     }
-    ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
-    cell.resultsView.delegate = self;
-    
-
-    //TODO: use sections instead
-    //section 1 is summary review
-    //section 2 is compose cell
-    //section 3 is all the regular reviews
-    //if indexPath.section == VARNAME...
-    //constants start w/ 'k'
-    [Utilities getUserProfileFromID:self.reviews[indexPath.row-2].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
-        if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-            }];
-        } else {
-            [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row - 2] completion:^(bool liked, NSDictionary * _Nullable error) {
-                if(error){
-                    [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-                    }];
-                } else {
-                    cell.resultsView.liked = liked;
-                    cell.resultsView.currentProfile = self.currentProfile;
-                    cell.resultsView.review = self.reviews[indexPath.row - 2];
-                    [cell.resultsView presentReview: self.reviews[indexPath.row - 2] byUser: profile];
-                }
-            }];
-            
-        }
-    }];
-    return cell;
-    
+    else {
+        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+        cell.resultsView.delegate = self;
+        [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            } else {
+                [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSDictionary * _Nullable error) {
+                    if(error){
+                        [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                        }];
+                    } else {
+                        cell.resultsView.liked = liked;
+                        cell.resultsView.currentProfile = self.currentProfile;
+                        cell.resultsView.review = self.reviews[indexPath.row];
+                        [cell.resultsView presentReview: self.reviews[indexPath.row] byUser: profile];
+                    }
+                }];
+                
+            }
+        }];
+        return cell;
+    }
 }
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2 + (self.reviews ? self.reviews.count : 0);
+    switch(section) {
+        case kSummarySection: return 1;
+        case kComposeSection: return 1;
+        default: return self.reviews.count;
+    }
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.row == 1){
+    if(indexPath.section == kComposeSection){
         if([PFUser currentUser]){
             [self performSegueWithIdentifier:@"compose" sender:nil];
         } else {
