@@ -229,7 +229,11 @@ const int kCustomizedErrorCode = 0;
     }];
 }
 
-+ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<PFFileObject *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion{
++ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion{
+    NSMutableArray<PFFileObject *> * parseFiles = [[NSMutableArray alloc] init];
+    for(UIImage * img in images){
+        [parseFiles addObject: [Utilities getPFFileFromImage:img]];
+    }
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
         Review *review = [[Review alloc] initWithClassName:@"Review"];
         if(error){
@@ -241,7 +245,7 @@ const int kCustomizedErrorCode = 0;
             review.reviewText = description;
             review.rating = rating;
             review.locationID = location;
-            review.images = images;
+            review.images = (NSArray *)parseFiles;
             review.likes = 0;
         }
         

@@ -44,7 +44,7 @@
     [[NSBundle mainBundle] loadNibNamed: @"ResultsView" owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
-    [self setupStartRatingView];
+    [self setupStarRatingView];
 
     return self;
 }
@@ -62,7 +62,7 @@
     }
     if(review.images.count > 0){
         NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[review.images[0] valueForKey:@"url"]]];
-        [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed:@"photo.fill"]
+        [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed:@"photo.on.rectangle.angled"]
             success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
                     if(image){
                         self.photosImageView.image = image;
@@ -70,8 +70,9 @@
             }
             failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
                     //set loading state
-                }];
-            }
+                }
+        ];
+    }
 }
 
 # pragma mark - IBActions
@@ -98,33 +99,35 @@
 
 # pragma mark - Private functions
 
-- (void)setupStartRatingView {
+- (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
-    [self setupStartRatingViewValues];
+    [self setupStarRatingViewValues];
     self.starRatingView.tintColor = [UIColor systemYellowColor];
     [self.starRatingView setUserInteractionEnabled:NO];
-    [self.starRatingView setBackgroundColor:UIColor.greenColor];
+//    [self.starRatingView setBackgroundColor:UIColor.greenColor];
     
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.starRatingView];
-    [self setupStartRatingViewConstraints];
+    [self setupStarRatingViewConstraints];
 }
 
-- (void)setupStartRatingViewValues {
+- (void)setupStarRatingViewValues {
     self.starRatingView.maximumValue = 5;
     self.starRatingView.minimumValue = 0;
     self.starRatingView.value = 0;
 }
 
-- (void)setupStartRatingViewConstraints {
+- (void)setupStarRatingViewConstraints {
     // Y
     [self.starRatingView.centerYAnchor constraintEqualToAnchor:self.titleLabel.centerYAnchor].active = YES;
-    [self.starRatingView.heightAnchor constraintEqualToConstant:40].active = YES;
+    [self.starRatingView.heightAnchor constraintEqualToConstant:50].active = YES;
     // X
     [self.starRatingView.trailingAnchor constraintEqualToAnchor:self.contentView.trailingAnchor constant:-30].active = YES;
-    [self.starRatingView.widthAnchor constraintEqualToConstant:80].active = YES;
+    [self.starRatingView.widthAnchor constraintEqualToConstant:150].active = YES;
 }
 
 
 
+- (IBAction)imageStepper:(id)sender {
+}
 @end

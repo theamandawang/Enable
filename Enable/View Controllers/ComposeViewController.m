@@ -17,17 +17,18 @@
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
-@property (strong, nonatomic) NSMutableArray <PFFileObject *> *images;
+@property (weak, nonatomic) IBOutlet UIStepper *imageStepper;
+@property (strong, nonatomic) NSMutableArray <UIImage *> *images;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ScrollViewBottomConstraint;
 @end
 
 @implementation ComposeViewController
 //TODO: add tableview for dropdown.
-bool didUpload = false;
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 // this doesn't seem to be working? not sure what to do.
 // when keyboard is already open, and i click the textview, this works really well. but not when i click the textView first.
+int imageIndex = 0;
 UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)viewDidLoad {
@@ -174,16 +175,17 @@ UITapGestureRecognizer *scrollViewTapGesture;
     UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.photosImageView.image = editedImage;
-    didUpload = true;
-        // Dismiss UIImagePickerController to go back to your original view controller
+    if(imageIndex == self.images.count && imageIndex != 2){
+        [self.images addObject: editedImage];
+    } else {
+        self.images[imageIndex] = editedImage;
+    }
+    // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
 - (IBAction)didTapSubmit:(id)sender {
-    if(didUpload){
-        [self.images addObject: [Utilities  getPFFileFromImage: self.photosImageView.image]];
-    }
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
         [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSDictionary * _Nullable error){
             //TODO: go back to the reviews screen, not the maps screen.
@@ -260,6 +262,33 @@ UITapGestureRecognizer *scrollViewTapGesture;
         }
         [self.scrollView setContentOffset:CGPointMake(0, scrollViewYOffset)];
     }];
+}
+
+
+- (IBAction)didChangeImageNumber:(id)sender {
+    NSLog(@"%f", self.imageStepper.value);
+    if(imageIndex < self.imageStepper.value){
+        [self didTapPhoto:nil];
+        imageIndex = self.imageStepper.value;
+    } else {
+        [self.images removeObjectAtIndex:imageIndex];
+        [self didSwipeRight:nil];
+    }
+}
+
+- (IBAction)didSwipeLeft:(id)sender {
+    if((imageIndex + 1) < self.images.count){
+        imageIndex ++;
+        self.photosImageView.image = self.images[imageIndex];
+        [self.photosImageView loadInBackground];
+    }
+}
+- (IBAction)didSwipeRight:(id)sender {
+    if(imageIndex > 0){
+        imageIndex --;
+        self.photosImageView.image = self.images[imageIndex];
+        [self.photosImageView loadInBackground];
+    }
 }
 
 
