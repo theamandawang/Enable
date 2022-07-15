@@ -42,6 +42,16 @@ const int kReviewsSection = 2;
     [super viewWillAppear:animated];
     
 }
+-(void)willMoveToParentViewController:(UIViewController *)parent {
+     [super willMoveToParentViewController:parent];
+    if (!parent){
+        //TODO: call a delegate method to make homeview controller set it's map center to here.
+        NSLog(@"going back to home");
+        [self.delegate setGMSCameraCoordinatesWithLatitude:self.location.coordinates.latitude longitude:self.location.coordinates.longitude];
+       // The back button was pressed or interactive gesture used
+    }
+}
+
 - (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
     [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
 }

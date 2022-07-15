@@ -7,11 +7,10 @@
 
 #import "HomeViewController.h"
 #import "MapView.h"
-#import "ReviewByLocationViewController.h"
 #import "Location.h"
 #import "ProfileViewController.h"
 #import "ErrorHandler.h"
-@interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
+@interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) GMSAutocompleteResultsViewController *resultsViewController;
@@ -63,10 +62,11 @@ GMSMarker *infoMarker;
     // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"review"]){
         ReviewByLocationViewController* vc = [segue destinationViewController];
+        vc.delegate = self;
         vc.POI_idStr = self.POI_idStr;
     }
 }
-
+#pragma mark - Google Maps
 -(void) mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate{
     [self.searchController setActive:NO];
 
@@ -125,6 +125,15 @@ didFailAutocompleteWithError:(NSError *)error {
 
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker{
     [self performSegueWithIdentifier:@"review" sender:nil];
+}
+
+//TODO: this doesn't work yet because of the way MapView.m deals with location updates.
+- (void)setGMSCameraCoordinatesWithLatitude:(double)latitude longitude:(double)longitude {
+    GMSCameraPosition *camera = [GMSCameraPosition
+                                 cameraWithLatitude:latitude
+                                 longitude:longitude
+                                 zoom:14];
+    [self.mapView.mapView setCamera:camera];
 }
 
 @end

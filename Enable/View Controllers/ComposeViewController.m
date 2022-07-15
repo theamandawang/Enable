@@ -277,18 +277,28 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 - (IBAction)didSwipeLeft:(id)sender {
+    // takes care of unsigned vs. signed arithmetic
     if((imageIndex + 1) < self.images.count){
         imageIndex ++;
-        self.photosImageView.image = self.images[imageIndex];
-        [self.photosImageView loadInBackground];
+        [self animateSwipe];
+
     }
 }
 - (IBAction)didSwipeRight:(id)sender {
     if(imageIndex > 0){
         imageIndex --;
-        self.photosImageView.image = self.images[imageIndex];
-        [self.photosImageView loadInBackground];
+        [self animateSwipe];
     }
+}
+- (void) animateSwipe {
+    [UIView transitionWithView:self.photosImageView
+            duration:0.5f
+            options:UIViewAnimationOptionTransitionCrossDissolve
+            animations:^{
+                self.photosImageView.image = self.images[imageIndex];
+            }
+            completion:nil
+    ];
 }
 
 
