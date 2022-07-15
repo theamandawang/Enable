@@ -24,6 +24,7 @@
 
 @implementation ReviewByLocationViewController
 const int kNoMatchErrorCode = 101;
+//const int kCustomizedErrorCode = 0; // for no user signed in
 const int kSummarySection = 0;
 const int kComposeSection = 1;
 const int kReviewsSection = 2;
@@ -93,7 +94,7 @@ const int kReviewsSection = 2;
 }
 - (void) getCurrentUserProfile {
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
-        if(error){
+        if(error && ([error[@"code"] intValue] != 0)){
             [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
             }];
         } else {

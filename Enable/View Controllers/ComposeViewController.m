@@ -26,8 +26,7 @@
 //TODO: add tableview for dropdown.
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
-// this doesn't seem to be working? not sure what to do.
-// when keyboard is already open, and i click the textview, this works really well. but not when i click the textView first.
+
 int imageIndex = 0;
 UITapGestureRecognizer *scrollViewTapGesture;
 
@@ -41,18 +40,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
     [self registerForKeyboardNotifications];
+    
+    [self setupStarRatingView];
 
-
-
-
-    self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectMake(100, 200, 200, 100)];
-
-    self.starRatingView.maximumValue = 5;
-    self.starRatingView.minimumValue = 0;
-    self.starRatingView.value = 0;
-    self.starRatingView.backgroundColor = [UIColor systemBackgroundColor];
-    self.starRatingView.tintColor = [UIColor systemYellowColor];
-    [self.scrollView addSubview:self.starRatingView];
 }
 
 
@@ -264,9 +254,47 @@ UITapGestureRecognizer *scrollViewTapGesture;
     }];
 }
 
+#pragma mark - starReview
+
+
+- (void)setupStarRatingView {
+    self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
+    self.starRatingView.backgroundColor = [UIColor systemBackgroundColor];
+    self.starRatingView.tintColor = [UIColor systemYellowColor];
+    [self.scrollView addSubview:self.starRatingView];
+    
+    [self setupStarRatingViewValues];
+    
+    self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self setupStarRatingViewConstraints];
+}
+
+- (void)setupStarRatingViewValues {
+    self.starRatingView.maximumValue = 5;
+    self.starRatingView.minimumValue = 0;
+    self.starRatingView.value = 0;
+}
+
+- (void)setupStarRatingViewConstraints {
+    // Y
+    [self.starRatingView.topAnchor constraintEqualToAnchor:self.imageStepper.bottomAnchor constant:30].active = YES;
+    [self.starRatingView.heightAnchor constraintEqualToConstant:80].active = YES;
+    [self.titleTextField.topAnchor constraintEqualToAnchor:self.starRatingView.bottomAnchor constant:30].active = YES;
+    // X
+    [self.starRatingView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.starRatingView.widthAnchor constraintEqualToConstant:250].active = YES;
+}
+
+
+#pragma mark - image uploading
 
 - (IBAction)didChangeImageNumber:(id)sender {
     NSLog(@"%f", self.imageStepper.value);
+    if(self.images.count == 0 && self.imageStepper.value == 1){
+        self.imageStepper.value = 0;
+        [self didTapPhoto:nil];
+        return;
+    }
     if(imageIndex < self.imageStepper.value){
         [self didTapPhoto:nil];
         imageIndex = self.imageStepper.value;

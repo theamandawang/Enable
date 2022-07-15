@@ -60,7 +60,10 @@
         if(error){
             [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
             }];
+        } else {
+            [self navigateToProfile];
         }
+        
     }];
 }
 - (BOOL)isEmail:(NSString *)email{

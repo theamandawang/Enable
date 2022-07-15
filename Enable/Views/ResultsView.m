@@ -23,7 +23,7 @@
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
 
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
-
+@property int imageIndex;
 @end
 @implementation ResultsView
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
@@ -50,6 +50,7 @@
 }
 
 - (void) presentReview: (Review * _Nullable) review byUser: (UserProfile * _Nonnull) profile{
+    self.imageIndex = 0;
     self.titleLabel.text = review.title;
     self.detailsLabel.text = review.reviewText;
     self.starRatingView.value = review.rating;
@@ -61,27 +62,48 @@
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
     }
     if(review.images.count > 0){
-        NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[review.images[0] valueForKey:@"url"]]];
-        [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed:@"photo.on.rectangle.angled"]
-            success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
-                    if(image){
-                        self.photosImageView.image = image;
-                    }
-            }
-            failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
-                    //set loading state
-                }
-        ];
+        [self setCurrentImage:0];
     }
 }
+
+
+- (void) setCurrentImage: (int) i {
+    NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.review.images[i] valueForKey:@"url"]]];
+    [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed:@"photo.on.rectangle.angled"]
+        success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+                if(image){
+                    [UIView transitionWithView:self.photosImageView
+                            duration:0.5f
+                            options:UIViewAnimationOptionTransitionCrossDissolve
+                            animations:^{
+                                self.photosImageView.image = image;
+                            }
+                            completion:nil
+                    ];
+                }
+        }
+        failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+                //set loading state
+            }
+    ];
+}
+
+
 
 # pragma mark - IBActions
 
 - (IBAction)didSwipeRight:(id)sender {
+    if(self.imageIndex > 0){
+        self.imageIndex --;
+        [self setCurrentImage:self.imageIndex];
+    }
     NSLog(@"swipe right");
 }
 - (IBAction)didSwipeLeft:(id)sender {
-    NSLog(@"swipe left");
+    if(self.imageIndex + 1 < self.review.images.count){
+        self.imageIndex ++;
+        [self setCurrentImage:self.imageIndex];
+    }
 }
 
 - (IBAction)didLike:(id)sender {
