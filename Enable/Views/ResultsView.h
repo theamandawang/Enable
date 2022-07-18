@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ResultsViewDelegate
 - (void) addLikeFromUserProfile: (UserProfile*) currentProfile review: (Review *) review;
 - (void) removeLikeFromReview: (Review*) review currentUser: (UserProfile *) currentProfile;
+- (void) toLogin;
 @end
 
 

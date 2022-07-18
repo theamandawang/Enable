@@ -35,7 +35,7 @@
 */
 
 // allow iCloud Keychain ? for future development.
-- (void)navigateToProfile {
+- (void)navigateBack {
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
 - (IBAction)didTapSignUp:(id)sender {
@@ -45,7 +45,7 @@
                 [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
                 }];
             } else {
-                [self navigateToProfile];
+                [self navigateBack];
             }
         }];
     } else {
@@ -61,7 +61,7 @@
             [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
             }];
         } else {
-            [self navigateToProfile];
+            [self navigateBack];
         }
         
     }];

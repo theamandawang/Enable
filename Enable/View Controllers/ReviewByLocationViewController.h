@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol ReviewByLocationViewControllerDelegate
-- (void) setGMSCameraCoordinatesWithLatitude: (double) latitude longitude: (double) longitude;
+- (void) setGMSCameraCoordinatesWithLatitude: (CLLocationDegrees) latitude longitude: (CLLocationDegrees) longitude;
 @end
 
 

@@ -140,9 +140,11 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 - (void) openCamera {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        //TODO: error handle
-        NSLog(@"Camera 🚫 available so we will use photo library instead");
-        [self openLibrary];
+        [ErrorHandler showAlertFromViewController:self title:@"Camera unavailable" message:@"Use photo library instead" completion:^{
+            NSLog(@"Camera unavailable so we will use photo library instead");
+            [self openLibrary];
+        }];
+        
         return;
     }
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
@@ -207,42 +209,21 @@ UITapGestureRecognizer *scrollViewTapGesture;
 // Called when the UIKeyboardDidShowNotification is sent.
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
-//    NSDictionary* info = [aNotification userInfo];
-//    CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
-    CGFloat kbHeight = 216;
+    NSDictionary* info = [aNotification userInfo];
+    CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+//    CGFloat kbHeight = 216;
     [self moveScrollView:kbHeight + 20];
     
-//    NSDictionary* info = [aNotification userInfo];
-//    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-//    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-//    self.scrollView.contentInset = contentInsets;
-//    self.scrollView.scrollIndicatorInsets = contentInsets;
-//
-//    // If active text field is hidden by keyboard, scroll it so it's visible
-//    // Your application might not need or want this behavior.
-//    CGRect aRect = self.view.frame;
-//    aRect.size.height -= kbSize.height;
-//    UITextView * activeField = self.reviewTextView;
-//    NSLog(@"%f", activeField.frame.size.height);
-//    NSLog(@"%f", activeField.frame.origin.y);
-//    CGPoint point = CGPointMake(0, activeField.frame.origin.y + activeField.frame.size.height);
-//    if(!CGRectContainsPoint(aRect,point)) {
-//        CGPoint scrollPoint = CGPointMake(0.0, activeField.frame.origin.y + activeField.frame.size.height - kbSize.height);
-//        [self.scrollView setContentOffset:scrollPoint animated:YES];
-//    }
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
     [self moveScrollView:0];
-//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//    self.scrollView.contentInset = contentInsets;
-//    self.scrollView.scrollIndicatorInsets = contentInsets;
 }
-
+// push scroll view up so that keyboard doesn't block anything
 - (void)moveScrollView: (CGFloat)constant {
-    [self.scrollView setBackgroundColor:UIColor.greenColor];
+//    [self.scrollView setBackgroundColor:UIColor.greenColor];
     self.ScrollViewBottomConstraint.constant = -constant;
     [UIView animateWithDuration:0.1 animations:^{
         [self.view layoutIfNeeded];

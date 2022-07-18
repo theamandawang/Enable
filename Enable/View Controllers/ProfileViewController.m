@@ -19,7 +19,9 @@
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
-    [self getUserProfile];
+    [self getCurrentProfile:^{
+        [self getUserProfile];
+    }];
 }
 
 /*
@@ -39,22 +41,42 @@
                 }];
             } else {
                 self.profileView.userProfile = userProfile;
+                [self getReviewsByUserProfile:userProfile];
                 [self.profileView reloadUserData];
+
             }
         }];
     } else {
-        [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
-            if(error){
-                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-                }];
-            } else {
-                self.profileView.userProfile = profile;
-                [self.profileView reloadUserData];
-            }
-        }];
+        self.profileView.userProfile = self.currentProfile;
+        [self getReviewsByUserProfile:self.currentProfile];
+        [self.profileView reloadUserData];
     }
-    
 
+}
+
+- (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
+    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            self.currentProfile = profile;
+            self.profileView.currentProfile = profile;
+            completion();
+        }
+    }];
+}
+
+- (void) getReviewsByUserProfile: (UserProfile *) userProfile {
+    [Utilities getReviewsByUserProfile:userProfile withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            // TODO: handle reviews by this user profile
+
+        }
+    }];
 }
 
 - (IBAction)didTapLogout:(id)sender {

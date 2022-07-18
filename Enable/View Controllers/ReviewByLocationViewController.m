@@ -17,6 +17,7 @@
 
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
@@ -24,43 +25,66 @@
 
 @implementation ReviewByLocationViewController
 const int kNoMatchErrorCode = 101;
-//const int kCustomizedErrorCode = 0; // for no user signed in
 const int kSummarySection = 0;
 const int kComposeSection = 1;
 const int kReviewsSection = 2;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.refreshControl = [[UIRefreshControl alloc] init];
     self.reviews = [[NSMutableArray alloc] init];
     UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
     [self getCurrentUserProfile];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
+    [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
     [self queryForLocationData];
-    // Do any additional setup after loading the view.
 }
-- (void) viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    
-}
+
 -(void)willMoveToParentViewController:(UIViewController *)parent {
      [super willMoveToParentViewController:parent];
     if (!parent){
-        //TODO: call a delegate method to make homeview controller set it's map center to here.
-        NSLog(@"going back to home");
+        // recenters camera to the current location
         [self.delegate setGMSCameraCoordinatesWithLatitude:self.location.coordinates.latitude longitude:self.location.coordinates.longitude];
-       // The back button was pressed or interactive gesture used
     }
 }
+
+#pragma mark - Delegate Methods
 
 - (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
     [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
 }
+
+- (void) addLikeFromUserProfile:(UserProfile *)currentProfile review:(Review *)review{
+    [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        }
+    }];
+}
+- (void) removeLikeFromReview:(Review *)review currentUser:(UserProfile *)currentProfile{
+    [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        }
+    }];
+}
+- (void) toLogin{
+    [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
+}
+
+
+#pragma mark - Queries
 - (void) queryForLocationData {
     [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
         if(locationError && ([locationError[@"code"] integerValue] != kNoMatchErrorCode)){
             [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
             }];
+            [self.refreshControl endRefreshing];
         } else {
             if(location){
                 self.location = location;
@@ -73,6 +97,8 @@ const int kReviewsSection = 2;
                         [self.tableView reloadData];
                     }
                 }];
+                [self.refreshControl endRefreshing];
+
             } else {
                 GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
                 [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSDictionary * _Nullable error) {
@@ -87,6 +113,8 @@ const int kReviewsSection = 2;
                         self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
                         [self.tableView reloadData];
                     }
+                    [self.refreshControl endRefreshing];
+
                 }];
             }
         }
@@ -103,28 +131,6 @@ const int kReviewsSection = 2;
     }];
 }
 
-#pragma mark Protocol methods for liking / removing likes
-- (void) addLikeFromUserProfile:(UserProfile *)currentProfile review:(Review *)review{
-    [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
-        if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-            }];
-        }
-    }];
-    
-    // TODO: need to figure out how to sort reviews after liking them. I'm just querying them again, but
-    // there should probably be a better way.
-    [self queryForLocationData];
-}
-- (void) removeLikeFromReview:(Review *)review currentUser:(UserProfile *)currentProfile{
-    [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
-        if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-            }];
-        }
-    }];
-    [self queryForLocationData];
-}
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -137,6 +143,9 @@ const int kReviewsSection = 2;
         vc.location = self.location;
     }
 }
+
+# pragma mark - Table View
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
 }

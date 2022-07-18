@@ -9,6 +9,7 @@
 #import "MapView.h"
 #import "Location.h"
 #import "ProfileViewController.h"
+#import "Utilities.h"
 #import "ErrorHandler.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
@@ -23,7 +24,7 @@ GMSMarker *infoMarker;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.mapView.delegate = self;
-    [self.mapView init];
+//    [self.mapView init];
     self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
     self.searchController = [[UISearchController alloc]
                                 initWithSearchResultsController:self.resultsViewController
@@ -77,7 +78,13 @@ GMSMarker *infoMarker;
                                       location:(CLLocationCoordinate2D)location {
     
     infoMarker = [GMSMarker markerWithPosition:location];
-    infoMarker.snippet = placeID;
+    [Utilities getLocationFromPOI_idStr:placeID withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable error) {
+        if(location){
+            infoMarker.snippet = [NSString stringWithFormat:@"Average Rating: %0.2f/5", location.rating];
+        } else {
+            infoMarker.snippet = @"No reviews yet!";
+        }
+    }];
     self.POI_idStr = placeID;
     infoMarker.title = name;
     infoMarker.opacity = 0;
@@ -86,6 +93,7 @@ GMSMarker *infoMarker;
     infoMarker.infoWindowAnchor = pos;
     infoMarker.map = mapView;
     mapView.selectedMarker = infoMarker;
+//    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:location.latitude longitude:location.longitude zoom:14]];
 }
 
 - (void)resultsController:(nonnull GMSAutocompleteResultsViewController *)resultsController didAutocompleteWithPlace:(nonnull GMSPlace *)place {
@@ -127,13 +135,8 @@ didFailAutocompleteWithError:(NSError *)error {
     [self performSegueWithIdentifier:@"review" sender:nil];
 }
 
-//TODO: this doesn't work yet because of the way MapView.m deals with location updates.
-- (void)setGMSCameraCoordinatesWithLatitude:(double)latitude longitude:(double)longitude {
-    GMSCameraPosition *camera = [GMSCameraPosition
-                                 cameraWithLatitude:latitude
-                                 longitude:longitude
-                                 zoom:14];
-    [self.mapView.mapView setCamera:camera];
+- (void)setGMSCameraCoordinatesWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
+    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
 }
 
 @end

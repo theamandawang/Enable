@@ -16,13 +16,6 @@
 @implementation MapView
 float preciseLocationZoomLevel = 14;
 float approximateLocationZoomLevel = 10;
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -60,6 +53,7 @@ float approximateLocationZoomLevel = 10;
 
 
 - (void) setupMap {
+    // default location
     GMSCameraPosition *camera = [GMSCameraPosition
                                  cameraWithLatitude:-33.86
                                  longitude:151.20
@@ -81,10 +75,9 @@ float approximateLocationZoomLevel = 10;
 
 
 #pragma mark - CLLocationManagerDelegate
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
-{
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
   CLLocation *location = locations.lastObject;
-  NSLog(@"Location: %@", location);
+  NSLog(@"MapView Location Manager Location: %@", location);
 
   float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
   GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude

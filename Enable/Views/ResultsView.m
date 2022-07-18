@@ -107,13 +107,19 @@
 }
 
 - (IBAction)didLike:(id)sender {
+    if(!self.currentProfile){
+        [self.delegate toLogin];
+        return;
+    }
     if(self.liked){
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
         self.liked = false;
+        self.likeCountLabel.text = [NSString stringWithFormat:@"%u", self.review.likes - 1];
         [self.delegate removeLikeFromReview:self.review currentUser: self.currentProfile];
     } else {
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
         self.liked = true;
+        self.likeCountLabel.text = [NSString stringWithFormat:@"%u", self.review.likes + 1];
         [self.delegate addLikeFromUserProfile:self.currentProfile review:self.review];
     }
 
@@ -126,8 +132,6 @@
     [self setupStarRatingViewValues];
     self.starRatingView.tintColor = [UIColor systemYellowColor];
     [self.starRatingView setUserInteractionEnabled:NO];
-//    [self.starRatingView setBackgroundColor:UIColor.greenColor];
-    
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.starRatingView];
     [self setupStarRatingViewConstraints];
@@ -148,8 +152,4 @@
     [self.starRatingView.widthAnchor constraintEqualToConstant:150].active = YES;
 }
 
-
-
-- (IBAction)imageStepper:(id)sender {
-}
 @end

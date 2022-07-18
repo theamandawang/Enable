@@ -185,6 +185,25 @@ const int kCustomizedErrorCode = 0;
     }];
 }
 
++ (void) getReviewsByUserProfile:(UserProfile *) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
+    PFQuery *query = [PFQuery queryWithClassName:@"Review"];
+    //TODO: infinite scroll
+    query.limit = 20;
+    [query whereKey:@"userProfileID" equalTo:profile];
+    [query addDescendingOrder:@"createdAt"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if(!error){
+            completion((NSMutableArray<Review *> *) objects, nil);
+        } else {
+            NSDictionary * errorDict = @{@"title" : @"Failed to get reviews",
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
+            completion(nil, errorDict);
+            NSLog(@"Fail getReviewsByUserProfileID %@", error.localizedDescription);
+        }
+    }];
+}
+
 
 
 #pragma mark Location
@@ -360,4 +379,19 @@ static GMSPlacesClient * placesClient = nil;
     }];
     
 }
+
+
+#pragma mark - Cloud functions
+
+//TODO: finish this
++ (void) getLocationAverage : (Location *) location {
+    [PFCloud callFunctionInBackground:@"average"
+                       withParameters:@{@"location": location}
+                                block:^(NSNumber *ratings, NSError *error) {
+      if (!error) {
+         // ratings is 4.5
+      }
+    }];
+}
+
 @end
