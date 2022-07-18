@@ -18,14 +18,12 @@
                                    actionWithTitle:@"Close"
                                    style:UIAlertActionStyleCancel
                                    handler:^(UIAlertAction * _Nonnull action) {
-                                        // handle cancel response here. Doing nothing will dismiss the view.
                                     }];
     [alert addAction:closeAction];
     [vc presentViewController:alert animated:YES completion:^{
         if(completion){
             completion();
         }
-        // optional code for what happens after the alert controller has finished presenting
     }];
 }
 @end

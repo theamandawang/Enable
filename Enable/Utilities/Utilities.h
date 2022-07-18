@@ -15,17 +15,12 @@
 + (PFFileObject *_Nullable)getPFFileFromImage: (UIImage * _Nullable)image;
 
 #pragma mark User Signup/Login/Logout
-//user login
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSDictionary  * _Nullable  error))completion;
-//user signup
 + (void) signUpWithEmail : (NSString * _Nonnull) email password: (NSString * _Nonnull) password completion:(void (^_Nonnull)(NSDictionary  * _Nullable  error))completion;
-
-//log out
 + (void) logOutWithCompletion:(void (^_Nonnull)(NSDictionary  * _Nullable  error))completion;
 
 
 #pragma mark UserProfile
-//get user profile
 + (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile, NSDictionary  * _Nullable  error))completion;
 + (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSDictionary  * _Nullable  error))completion;
 

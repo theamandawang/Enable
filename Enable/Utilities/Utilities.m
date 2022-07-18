@@ -10,12 +10,10 @@
 @implementation Utilities
 #pragma mark Image -> PFFileObject
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
-    // check if image is not nil
     if (!image) {
         return nil;
     }
     NSData *imageData = UIImageJPEGRepresentation(image, 0.6);
-    // get image data and check if that is not nil
     if (!imageData) {
         return nil;
     }

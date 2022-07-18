@@ -32,7 +32,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     self.images = [[NSMutableArray alloc] init];
 
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
@@ -45,7 +44,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 }
 
-
+#pragma mark - Querying
 -(void) getLocationDataWithCompletion: (void (^_Nonnull)(void)) completion {
     GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
     [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSDictionary * _Nullable error) {
@@ -62,15 +61,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
         }
     }];
 }
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 - (bool) checkValuesWithRating:(int)rating title:(NSString *)title description:(NSString*) description{
     if(rating && title && description){
         return !([title isEqualToString:@""] || [description isEqualToString:@""]);
@@ -97,15 +88,24 @@ UITapGestureRecognizer *scrollViewTapGesture;
     }
 }
 
-//- (void)textViewDidBeginEditing:(UITextView *)textView{
-//}
-//- (void) textViewDidEndEditing:(UITextView *)textView{
-//}
-// method to hide keyboard when user taps on a scrollview
--(void)hideKeyboard
-{
-    [self.scrollView endEditing:YES];
+- (IBAction)didTapSubmit:(id)sender {
+    if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSDictionary * _Nullable error){
+            //TODO: go back to the reviews screen, not the maps screen.
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                }];
+            } else {
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            }
+        }];
+    } else {
+        [ErrorHandler showAlertFromViewController:self title:@"Cannot post review" message:@"Please fill in all fields." completion:^{
+        }];
+    }
 }
+
+#pragma mark - ImagePicker / Camera
 - (IBAction)didTapPhoto:(id)sender {
     UIAlertController *alert =
         [UIAlertController
@@ -176,26 +176,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-
-- (IBAction)didTapSubmit:(id)sender {
-    if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSDictionary * _Nullable error){
-            //TODO: go back to the reviews screen, not the maps screen.
-            if(error){
-                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
-                }];
-            } else {
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }
-        }];
-    } else {
-        [ErrorHandler showAlertFromViewController:self title:@"Cannot post review" message:@"Please fill in all fields." completion:^{
-        }];
-    }
-}
-
-
-// Call this method somewhere in your view controller setup code.
+#pragma mark - Keyboard
 - (void)registerForKeyboardNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -221,6 +202,12 @@ UITapGestureRecognizer *scrollViewTapGesture;
 {
     [self moveScrollView:0];
 }
+
+- (void) hideKeyboard
+{
+    [self.scrollView endEditing:YES];
+}
+
 // push scroll view up so that keyboard doesn't block anything
 - (void)moveScrollView: (CGFloat)constant {
 //    [self.scrollView setBackgroundColor:UIColor.greenColor];
@@ -235,7 +222,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     }];
 }
 
-#pragma mark - starReview
+#pragma mark - Star Review
 
 
 - (void)setupStarRatingView {
@@ -267,7 +254,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 
-#pragma mark - image uploading
+#pragma mark - Image Uploading
 
 - (IBAction)didChangeImageNumber:(id)sender {
     NSLog(@"%f", self.imageStepper.value);

@@ -29,7 +29,7 @@ const int kSummarySection = 0;
 const int kComposeSection = 1;
 const int kReviewsSection = 2;
 
-- (void)viewDidLoad {
+- (void) viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -43,7 +43,7 @@ const int kReviewsSection = 2;
     [self queryForLocationData];
 }
 
--(void)willMoveToParentViewController:(UIViewController *)parent {
+- (void) willMoveToParentViewController:(UIViewController *)parent {
      [super willMoveToParentViewController:parent];
     if (!parent){
         // recenters camera to the current location
@@ -51,7 +51,7 @@ const int kReviewsSection = 2;
     }
 }
 
-#pragma mark - Delegate Methods
+#pragma mark - ResultsViewDelegate
 
 - (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
     [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
