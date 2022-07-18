@@ -39,7 +39,7 @@ float approximateLocationZoomLevel = 10;
     [self setupMap];
 
     [self.stackView addArrangedSubview:self.mapView];
-    
+
     return self;
 }
 - (void) setupLocationManager {
@@ -50,7 +50,6 @@ float approximateLocationZoomLevel = 10;
     [self.locationManager startUpdatingLocation];
     self.locationManager.delegate = self;
 }
-
 
 - (void) setupMap {
     // default location
@@ -64,11 +63,10 @@ float approximateLocationZoomLevel = 10;
     self.mapView.settings.myLocationButton = YES;
     self.mapView.padding = UIEdgeInsetsMake(0, 0, 20, 0);
     [self.mapView setMapType:kGMSTypeTerrain];
-    
     if(CLLocationManager.locationServicesEnabled){
         [self.mapView setCamera: [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14]];
     } else {
-        [self.delegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
+        [self.errorDelegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
         }];
     }
 }
@@ -84,8 +82,7 @@ float approximateLocationZoomLevel = 10;
                                                            longitude:location.coordinate.longitude
                                                                 zoom:zoomLevel];
 
-    [self.mapView animateToCameraPosition:camera];
-
+    [self.mapView setCamera:camera];
 }
 
 // Handle authorization for the location manager.
@@ -121,11 +118,10 @@ float approximateLocationZoomLevel = 10;
             NSLog(@"Location status is OK.");
     }
 }
-
 // Handle location manager errors.
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [manager stopUpdatingLocation];
-    [self.delegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:^{}];
+    [self.errorDelegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:^{}];
     NSLog(@"Error: %@", error.localizedDescription);
 }
 @end

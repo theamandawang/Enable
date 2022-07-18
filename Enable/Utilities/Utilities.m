@@ -48,8 +48,8 @@ const int kCustomizedErrorCode = 0;
     UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
-    
-    
+
+
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
             userProfile.userID = [PFUser currentUser];
@@ -159,7 +159,7 @@ const int kCustomizedErrorCode = 0;
             completion(nil, errorDict);
             NSLog(@"Fail getReviewFromID %@", error.localizedDescription);
         }
-        
+
     }];
 }
 
@@ -222,6 +222,28 @@ const int kCustomizedErrorCode = 0;
     }];
 }
 
++ (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSDictionary * _Nullable error))completion{
+
+    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
+    PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
+    float radius = [point distanceInMilesTo:farRightCorner];
+    if(radius > 50) return;
+    [query whereKey:@"coordinates" nearGeoPoint:point withinMiles:radius];
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Location *> * _Nullable dbLocations, NSError * _Nullable error) {
+        if(!error){
+            completion(dbLocations, nil);
+        } else {
+            NSLog(@"Fail getLocationsFromLatitude longitude %@", error.localizedDescription);
+            NSDictionary * errorDict = @{@"title" : @"Failed to get the location",
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
+            completion(nil, errorDict);
+        }
+    }];
+}
+
+
 #pragma mark Posting
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion {
     Location *location = [[Location alloc] initWithClassName:@"Location"];
@@ -230,7 +252,7 @@ const int kCustomizedErrorCode = 0;
     location.coordinates = coordinates;
     location.name = name;
     location.address = address;
-    
+
     [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if(!error){
             if(succeeded){
@@ -265,7 +287,7 @@ const int kCustomizedErrorCode = 0;
             review.images = (NSArray *)parseFiles;
             review.likes = 0;
         }
-        
+
         [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if(!error){
                 if(succeeded){
@@ -375,7 +397,7 @@ static GMSPlacesClient * placesClient = nil;
             completion(place, nil);
         }
     }];
-    
+
 }
 
 
