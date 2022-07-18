@@ -6,7 +6,8 @@
 //
 
 #import "LoginViewController.h"
-#import "Parse/Parse.h"
+#import "Utilities.h"
+#import "ErrorHandler.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -17,75 +18,41 @@
 @implementation LoginViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
+//TODO: automatically scroll up when keyboard opens
+//https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-// allow iCloud Keychain ? for future development.
-- (void)navigateToProfile {
+// TODO: consider allowing iCloud Keychain for future development.
+- (void)navigateBack {
     [self.navigationController popToRootViewControllerAnimated:TRUE];
 }
-
-- (void) signUp {
-    NSString *email = self.emailTextField.text;
-    NSString *password = self.passTextField.text;
-    PFUser *user = [PFUser user];
-    user.username = email;
-    user.password = password;
-    UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
-    userProfile.username = @"Anonymous User";
-    userProfile.email = email;
-    
-    if([self isEmail:email]){
-        [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (!error) {
-                userProfile.userID = [PFUser currentUser];
-                [userProfile saveInBackgroundWithBlock:^(BOOL saveSucceeded, NSError * _Nullable saveError) {
-                    if(!saveError){
-                        [self navigateToProfile];
-                    } else {
-                        NSLog(@"%@", saveError.localizedDescription);
-                    }
+- (IBAction)didTapSignUp:(id)sender {
+    if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
+        [Utilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+            if(error){
+                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
                 }];
             } else {
-                NSLog(@"%@", error.localizedDescription);
+                [self navigateBack];
             }
         }];
     } else {
-        NSLog(@"NOT AN EMAIL !!!!!!!!!!!!!");
+        [ErrorHandler showAlertFromViewController:self title:@"Invalid username/password" message:@"Not a valid email" completion:^{
+        }];
     }
-
-}
-
-- (void) logIn {
-    NSString * email = self.emailTextField.text;
-    NSString * password = self.passTextField.text;
-    [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
-            if(!error){
-                NSLog(@"success");
-                [self navigateToProfile];
-            } else {
-                NSLog(@"%@", error.localizedDescription);
-            }
-    }];
-}
-
-
-- (IBAction)didTapSignUp:(id)sender {
-    [self signUp];
+    
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [self logIn];
+    [Utilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+        if(error){
+            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            }];
+        } else {
+            [self navigateBack];
+        }
+        
+    }];
 }
 - (BOOL)isEmail:(NSString *)email{
     NSString *emailRegEx =

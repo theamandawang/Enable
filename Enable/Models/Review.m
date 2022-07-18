@@ -8,13 +8,14 @@
 #import <Foundation/Foundation.h>
 #import "Review.h"
 @implementation Review
-    @dynamic userID;
+    @dynamic userProfileID;
     @dynamic rating;
     @dynamic title;
     @dynamic reviewText;
     @dynamic locationID;
     @dynamic likes;
     @dynamic images;
+    @dynamic userLikes;
 + (nonnull NSString *)parseClassName {
     return @"Review";
 }

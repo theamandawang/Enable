@@ -13,13 +13,6 @@
 @end
 @implementation ProfileView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self){
@@ -42,8 +35,8 @@
     return self;
 }
 - (void) reloadUserData {
-    if(self.user) {
-        self.userDisplayNameLabel.text = self.user.username;
+    if(self.userProfile) {
+        self.userDisplayNameLabel.text = self.userProfile.username;
     } else {
         NSLog(@"user is null");
     }

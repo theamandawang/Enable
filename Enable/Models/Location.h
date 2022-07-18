@@ -10,5 +10,8 @@
 
 @property float rating;
 @property (nonatomic, strong) NSString * _Nonnull POI_idStr;
-@property (nonatomic, strong) PFObject * _Nonnull coordinates;
+@property (nonatomic, strong) PFGeoPoint * _Nonnull coordinates;
+@property (nonatomic, strong) NSString * _Nonnull name;
+@property (nonatomic, strong) NSString * _Nonnull address;
+
 @end

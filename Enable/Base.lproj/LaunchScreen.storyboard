@@ -16,18 +16,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="3xTransparentLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="joR-F0-rba">
-                                <rect key="frame" x="117" y="358" width="180" height="180"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="3xTransparentLogo.png" translatesAutoresizingMaskIntoConstraints="NO" id="joR-F0-rba">
+                                <rect key="frame" x="117" y="363" width="180" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="joR-F0-rba" secondAttribute="height" multiplier="1:1" id="v5V-28-2yr"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="joR-F0-rba" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="Yg9-4k-onI"/>
+                            <constraint firstItem="joR-F0-rba" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="iKC-4J-AAv"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52.173913043478265" y="375"/>
         </scene>
     </scenes>
     <resources>

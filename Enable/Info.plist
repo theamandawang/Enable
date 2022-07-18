@@ -7,8 +7,14 @@
 		<string>googlechromes</string>
 		<string>comgooglemaps</string>
 	</array>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access photos library to get pictures</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location needed to show user nearby areas</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera needed so user can take pictures</string>
+	<key></key>
+	<string></string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapView">
             <connections>
                 <outlet property="contentView" destination="iN0-l3-epB" id="aeT-Vt-TSv"/>
+                <outlet property="stackView" destination="YML-UT-80W" id="Dj0-vo-DlV"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -18,18 +19,17 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" restorationIdentifier="MapView" translatesAutoresizingMaskIntoConstraints="NO" id="Ttu-Od-Yzj">
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="YML-UT-80W">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                </view>
+                </stackView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Ttu-Od-Yzj" secondAttribute="bottom" id="FLV-Yc-6BJ"/>
-                <constraint firstItem="Ttu-Od-Yzj" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="JE2-F7-nae"/>
-                <constraint firstItem="Ttu-Od-Yzj" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="kGj-Ow-bcd"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Ttu-Od-Yzj" secondAttribute="trailing" id="sfh-uN-oYt"/>
+                <constraint firstItem="YML-UT-80W" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2Q4-Mq-MVg"/>
+                <constraint firstItem="YML-UT-80W" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="F1J-Hb-GfT"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="YML-UT-80W" secondAttribute="trailing" id="kb7-YP-XMA"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="YML-UT-80W" secondAttribute="bottom" id="ns6-Zr-7ba"/>
             </constraints>
             <point key="canvasLocation" x="139" y="114"/>
         </view>

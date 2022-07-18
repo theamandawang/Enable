@@ -7,12 +7,15 @@
 
 #import "HomeViewController.h"
 #import "MapView.h"
-#import "Parse/Parse.h"
-@interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate>
+#import "Location.h"
+#import "ProfileViewController.h"
+#import "Utilities.h"
+#import "ErrorHandler.h"
+@interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
 @property (strong, nonatomic) GMSAutocompleteResultsViewController *resultsViewController;
-
+@property (strong, nonatomic) NSString * POI_idStr;
 @end
 
 @implementation HomeViewController
@@ -20,22 +23,19 @@ GMSMarker *infoMarker;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.mapView.delegate = self;
+//    [self.mapView init];
     self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
     self.searchController = [[UISearchController alloc]
-                             initWithSearchResultsController:self.resultsViewController
+                                initWithSearchResultsController:self.resultsViewController
                             ];
     self.resultsViewController.delegate = self;
     self.searchController.searchResultsUpdater = self.resultsViewController;
     
-    
-    
     // search bar covers nav bar; need to constrain somehow
+    // TODO: either fix styling or change search controller to using tableview
     [self.searchController setHidesNavigationBarDuringPresentation:NO];
     UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
-    
-    // gives "Impossible to set up layout with view hierarchy unprepared for constraint" exception
-//    NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:subView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-//    [subView addConstraint:top];
     
     [subView addSubview:self.searchController.searchBar];
     [self.searchController.searchBar sizeToFit];
@@ -45,35 +45,52 @@ GMSMarker *infoMarker;
     self.searchController.searchBar.text = @"";
     self.searchController.searchBar.placeholder = @"Search location...";
     [self.mapView.mapView setBounds:self.mapView.bounds];
-    // Do any additional setup after loading the view.
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self viewDidLoad];
 }
 
-/*
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
+    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
+}
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if([segue.identifier isEqualToString:@"review"]){
+        ReviewByLocationViewController* vc = [segue destinationViewController];
+        vc.delegate = self;
+        vc.POI_idStr = self.POI_idStr;
+    }
 }
-*/
+#pragma mark - Google Maps
 -(void) mapView:(GMSMapView *)mapView didTapAtCoordinate:(CLLocationCoordinate2D)coordinate{
     [self.searchController setActive:NO];
 
 }
-- (void)mapView:(GMSMapView *)mapView
-    didTapPOIWithPlaceID:(NSString *)placeID
-                    name:(NSString *)name
-                location:(CLLocationCoordinate2D)location {
-  infoMarker = [GMSMarker markerWithPosition:location];
-  infoMarker.snippet = placeID;
-  infoMarker.title = name;
-  infoMarker.opacity = 0;
-  CGPoint pos = infoMarker.infoWindowAnchor;
-  pos.y = 1;
-  infoMarker.infoWindowAnchor = pos;
-  infoMarker.map = mapView;
-  mapView.selectedMarker = infoMarker;
+
+- (void)mapView:(GMSMapView *)mapView didTapPOIWithPlaceID:(NSString *)placeID
+                                      name:(NSString *)name
+                                      location:(CLLocationCoordinate2D)location {
+    
+    infoMarker = [GMSMarker markerWithPosition:location];
+    [Utilities getLocationFromPOI_idStr:placeID withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable error) {
+        if(location){
+            infoMarker.snippet = [NSString stringWithFormat:@"Average Rating: %0.2f/5", location.rating];
+        } else {
+            infoMarker.snippet = @"No reviews yet!";
+        }
+    }];
+    self.POI_idStr = placeID;
+    infoMarker.title = name;
+    infoMarker.opacity = 0;
+    CGPoint pos = infoMarker.infoWindowAnchor;
+    pos.y = 1;
+    infoMarker.infoWindowAnchor = pos;
+    infoMarker.map = mapView;
+    mapView.selectedMarker = infoMarker;
+//    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:location.latitude longitude:location.longitude zoom:14]];
 }
 
 - (void)resultsController:(nonnull GMSAutocompleteResultsViewController *)resultsController didAutocompleteWithPlace:(nonnull GMSPlace *)place {
@@ -81,16 +98,18 @@ GMSMarker *infoMarker;
     // Do something with the selected place.
     NSLog(@"Place name %@", place.name);
     NSLog(@"Place address %@", place.formattedAddress);
-    NSLog(@"Place attributions %@", place.attributions.string);
-    
     
     self.searchController.searchBar.text = place.formattedAddress;
+    CLLocationCoordinate2D loc = [place coordinate];
+    
+    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:loc.latitude longitude:loc.longitude zoom:20]];
 }
 - (void)resultsController:(GMSAutocompleteResultsViewController *)resultsController
 didFailAutocompleteWithError:(NSError *)error {
-  [self dismissViewControllerAnimated:YES completion:nil];
-  // TODO: handle the error.
-  NSLog(@"Error: %@", [error description]);
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [ErrorHandler showAlertFromViewController:self title:@"Cannot Autocomplete" message:[error description] completion:^{
+    }];
+    
 }
 
 -(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
@@ -108,7 +127,15 @@ didFailAutocompleteWithError:(NSError *)error {
         [self performSegueWithIdentifier:@"signedOut" sender:nil];
     }
 }
+
 - (void)mapView:(GMSMapView *)mapView didTapInfoWindowOfMarker:(GMSMarker *)marker{
     [self performSegueWithIdentifier:@"review" sender:nil];
 }
+
+
+#pragma mark - ReviewByLocationViewControllerDelegate
+- (void)setGMSCameraCoordinatesWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
+    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
+}
+
 @end

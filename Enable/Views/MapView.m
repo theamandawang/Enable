@@ -7,17 +7,15 @@
 
 #import "MapView.h"
 #import <CoreLocation/CoreLocation.h>
-@implementation MapView{
-    BOOL firstLocationUpdate;
-}
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+@interface MapView() <CLLocationManagerDelegate>
+@property (weak, nonatomic) IBOutlet UIStackView *stackView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (strong, nonatomic) CLLocationManager * locationManager;
+@property (strong, nonatomic) CLLocation * _Nullable currentLocation;
+@end
+@implementation MapView
+float preciseLocationZoomLevel = 14;
+float approximateLocationZoomLevel = 10;
 
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -37,52 +35,97 @@
     [[NSBundle mainBundle] loadNibNamed: @"MapView" owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
-    firstLocationUpdate = NO;
-    //default camera value, Sydney, Australia
+    [self setupLocationManager];
+    [self setupMap];
+
+    [self.stackView addArrangedSubview:self.mapView];
+    
+    return self;
+}
+- (void) setupLocationManager {
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [self.locationManager requestWhenInUseAuthorization];
+    self.locationManager.distanceFilter = 50;
+    [self.locationManager startUpdatingLocation];
+    self.locationManager.delegate = self;
+}
+
+
+- (void) setupMap {
+    // default location
     GMSCameraPosition *camera = [GMSCameraPosition
                                  cameraWithLatitude:-33.86
                                  longitude:151.20
                                  zoom:6];
-    self.mapView = [GMSMapView mapWithFrame:self.contentView.frame camera:camera];
+    self.mapView = [GMSMapView mapWithFrame:self.stackView.frame camera:camera];
+
     self.mapView.myLocationEnabled = YES;
     self.mapView.settings.myLocationButton = YES;
-    self.mapView.settings.myLocationButton = YES;
+    self.mapView.padding = UIEdgeInsetsMake(0, 0, 20, 0);
     [self.mapView setMapType:kGMSTypeTerrain];
-    /*
-     https://stackoverflow.com/questions/17366403/gmsmapview-mylocation-not-giving-actual-location
-     using KOV method; not CLLocation. CLLocation was not working not sure why.
-    */
-    //CLLocationManager.locationServicesEnabled does not work
-    if(CLLocationManager.locationServicesEnabled){
-        [self.mapView
-                    addObserver:self
-                    forKeyPath:@"myLocation"
-                    options:NSKeyValueObservingOptionNew
-                    context:NULL
-        ];
-        
-    } else {
-        NSLog(@"Location issues :((");
-    }
     
-    [self.contentView addSubview:self.mapView];
-
-    return self;
+    if(CLLocationManager.locationServicesEnabled){
+        [self.mapView setCamera: [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14]];
+    } else {
+        [self.delegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
+        }];
+    }
 }
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary *)change
-                       context:(void *)context {
-  if (!firstLocationUpdate) {
-    // If the first location update has not yet been received, then jump
-    firstLocationUpdate = YES;
-    CLLocation *location = [change objectForKey:NSKeyValueChangeNewKey];
-      if(!CLLocationManager.locationServicesEnabled){
-          return;
-      }
-    self.mapView.camera = [GMSCameraPosition
-                      cameraWithTarget:location.coordinate
-                      zoom:14];
-  }
+
+
+#pragma mark - CLLocationManagerDelegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+  CLLocation *location = locations.lastObject;
+  NSLog(@"MapView Location Manager Location: %@", location);
+
+  float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
+  GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude
+                                                           longitude:location.coordinate.longitude
+                                                                zoom:zoomLevel];
+
+    [self.mapView animateToCameraPosition:camera];
+
+}
+
+// Handle authorization for the location manager.
+- (void)locationManagerDidChangeAuthorization:(CLLocationManager *)manager{
+    CLAccuracyAuthorization accuracy = manager.accuracyAuthorization;
+    switch (accuracy) {
+      case CLAccuracyAuthorizationFullAccuracy:
+        NSLog(@"Location accuracy is precise.");
+        break;
+      case CLAccuracyAuthorizationReducedAccuracy:
+        NSLog(@"Location accuracy is not precise.");
+        break;
+    }
+    switch(manager.authorizationStatus){
+        case kCLAuthorizationStatusRestricted:
+            NSLog(@"Location access was restricted.");
+            break;
+        case kCLAuthorizationStatusDenied:
+        {
+            NSLog(@"User denied access to location.");
+            // Display the map using the default location.
+            GMSCameraPosition *camera = [GMSCameraPosition
+                                       cameraWithLatitude:-33.86
+                                       longitude:151.20
+                                       zoom:6];
+            [self.mapView setCamera:camera];
+            self.mapView.hidden = NO;
+        }
+        case kCLAuthorizationStatusNotDetermined:
+            NSLog(@"Location status not determined.");
+        case kCLAuthorizationStatusAuthorizedAlways:
+        case kCLAuthorizationStatusAuthorizedWhenInUse:
+            NSLog(@"Location status is OK.");
+    }
+}
+
+// Handle location manager errors.
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
+    [manager stopUpdatingLocation];
+    [self.delegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:^{}];
+    NSLog(@"Error: %@", error.localizedDescription);
 }
 @end
