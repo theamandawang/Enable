@@ -135,6 +135,11 @@ didFailAutocompleteWithError:(NSError *)error {
     [self.customMarkers removeAllObjects];
     [self showLocationMarkers];
 }
+// prevents map from centering to tapped marker. prevents constant refresh
+- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker{
+    mapView.selectedMarker = marker;
+    return YES;
+}
 
 -(void) showLocationMarkers {
     NSLog(@"camera position %f,%f", self.mapView.mapView.camera.target.latitude, self.mapView.mapView.camera.target.longitude);

@@ -288,6 +288,9 @@ const int kZoomOutRadius = 20;
         }
     }];
 }
++ (double) calculateNewAverage: (double) currAvg withRating: (int) rating numReviews: (int) numReviews{
+    return (currAvg * numReviews + rating) / (numReviews + 1);
+}
 
 + (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion{
     NSMutableArray<PFFileObject *> * parseFiles = [[NSMutableArray alloc] init];
@@ -300,9 +303,8 @@ const int kZoomOutRadius = 20;
             completion(error);
             return;
         } else {
-            
+            [location setRating: [Utilities calculateNewAverage:location.rating withRating:rating numReviews:location.reviewCount]];
             [location incrementKey:@"reviewCount" byAmount:[NSNumber numberWithInt:1]];
-            [location setRating: (location.rating * (location.reviewCount - 1) + rating) / location.reviewCount];
             [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                 if(error){
                     NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
