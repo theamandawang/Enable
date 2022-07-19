@@ -33,8 +33,7 @@ GMSMarker *infoMarker;
     self.resultsViewController.delegate = self;
     self.searchController.searchResultsUpdater = self.resultsViewController;
 
-    // search bar covers nav bar; need to constrain somehow
-    // TODO: either fix styling or change search controller to using tableview
+    // TODO: change search controller to using tableview
     [self.searchController setHidesNavigationBarDuringPresentation:NO];
     UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
 
@@ -93,7 +92,6 @@ GMSMarker *infoMarker;
     infoMarker.infoWindowAnchor = pos;
     infoMarker.map = mapView;
     mapView.selectedMarker = infoMarker;
-//    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:location.latitude longitude:location.longitude zoom:14]];
 }
 
 - (void)resultsController:(nonnull GMSAutocompleteResultsViewController *)resultsController didAutocompleteWithPlace:(nonnull GMSPlace *)place {
@@ -121,17 +119,19 @@ didFailAutocompleteWithError:(NSError *)error {
         if([self.currentProjection containsCoordinate: region.farRight] && [self.currentProjection containsCoordinate: region.farLeft] && [self.currentProjection containsCoordinate: region.nearRight] && [self.currentProjection containsCoordinate: region.nearLeft]){
             return;
         }
-        self.currentProjection = mapView.projection;
-        [self.mapView.mapView clear];
-        [self.customMarkers removeAllObjects];
-        [self showLocationMarkers];
+        [self updateLocationMarkersWithProjection:mapView.projection];
     } else {
-        self.currentProjection = mapView.projection;
-        [self.mapView.mapView clear];
-        [self.customMarkers removeAllObjects];
-        [self showLocationMarkers];
+        [self updateLocationMarkersWithProjection:mapView.projection];
     }
 }
+
+- (void) updateLocationMarkersWithProjection: (GMSProjection *) projection {
+    self.currentProjection = projection;
+    [self.mapView.mapView clear];
+    [self.customMarkers removeAllObjects];
+    [self showLocationMarkers];
+}
+
 -(void) showLocationMarkers {
     NSLog(@"camera position %f,%f", self.mapView.mapView.camera.target.latitude, self.mapView.mapView.camera.target.longitude);
     [Utilities getLocationsFromLocation:self.mapView.mapView.camera.target corner:self.mapView.mapView.projection.visibleRegion.farRight withCompletion:^(NSArray<Location *> * _Nullable locations, NSDictionary * _Nullable error) {
