@@ -230,7 +230,7 @@ const int kZoomOutRadius = 20;
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
     double radius = [point distanceInMilesTo:farRightCorner];
     if(radius > kMaxRadius) {
-        return;
+        radius = kMaxRadius;
     }
     if(radius > kZoomOutRadius) {
         [query addDescendingOrder:@"rating"];
@@ -251,16 +251,18 @@ const int kZoomOutRadius = 20;
     }];
 }
 + (bool) shouldUpdateLocation: (GMSProjection * _Nonnull) prevProjection currentRegion: (GMSVisibleRegion) currentRegion radius: (double) radius prevRadius: (double) prevRadius {
+    // if the current camera view contains the previous
     if([prevProjection containsCoordinate: currentRegion.farRight] && [prevProjection containsCoordinate: currentRegion.farLeft] && [prevProjection containsCoordinate: currentRegion.nearRight] && [prevProjection containsCoordinate: currentRegion.nearLeft]){
         if(radius > kMaxRadius) {
             return false;
         }
-        else if ((prevRadius > kZoomOutRadius && radius < kZoomOutRadius ) || (prevRadius > kMaxRadius && radius < kMaxRadius)) {
+        else if ((prevRadius >= kZoomOutRadius && radius < kZoomOutRadius ) || (prevRadius >= kMaxRadius && radius < kMaxRadius)) {
             return true;
         } else {
             return false;
         }
     }
+    // otherwise, current camera view isn't in the previously fetched
     return true;
 }
 
