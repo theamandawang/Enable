@@ -12,6 +12,7 @@
 #import "Utilities.h"
 #import "ErrorHandler.h"
 #import "InfoWindowView.h"
+#import "Reachability.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
@@ -65,7 +66,6 @@ GMSMarker *infoMarker;
     self.searchController.searchBar.text = @"";
     self.searchController.searchBar.placeholder = @"Search location...";
 }
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
