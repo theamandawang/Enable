@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSString * POI_idStr;
 @property (strong, nonatomic) NSMutableArray<GMSMarker *> * customMarkers;
 @property (strong, nonatomic) GMSProjection * currentProjection;
+@property double radiusMiles;
 @end
 
 @implementation HomeViewController
@@ -115,17 +116,28 @@ didFailAutocompleteWithError:(NSError *)error {
 - (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position{
 
     GMSVisibleRegion region = mapView.projection.visibleRegion;
-    if(self.currentProjection){
+    PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:region.farRight.latitude longitude:region.farRight.longitude];
+    PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:position.target.latitude longitude:position.target.longitude];
+    double radius = [point distanceInMilesTo:farRightCorner];
+    if(self.currentProjection && self.radiusMiles){
         if([self.currentProjection containsCoordinate: region.farRight] && [self.currentProjection containsCoordinate: region.farLeft] && [self.currentProjection containsCoordinate: region.nearRight] && [self.currentProjection containsCoordinate: region.nearLeft]){
-            return;
+            if(radius > 50) {
+                return;
+            }
+            else if ((self.radiusMiles > 20 && radius < 20 ) || (self.radiusMiles > 50 && radius < 50)) {
+                [self updateLocationMarkersWithProjection:mapView.projection radius: radius];
+            } else {
+                return;
+            }
         }
-        [self updateLocationMarkersWithProjection:mapView.projection];
+        [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
     } else {
-        [self updateLocationMarkersWithProjection:mapView.projection];
+        [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
     }
 }
 
-- (void) updateLocationMarkersWithProjection: (GMSProjection *) projection {
+- (void) updateLocationMarkersWithProjection: (GMSProjection *) projection radius: (double) radius {
+    self.radiusMiles = radius;
     self.currentProjection = projection;
     [self.mapView.mapView clear];
     [self.customMarkers removeAllObjects];
@@ -183,6 +195,7 @@ didFailAutocompleteWithError:(NSError *)error {
 #pragma mark - ReviewByLocationViewControllerDelegate
 - (void)setGMSCameraCoordinatesWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
     [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
+    [self updateLocationMarkersWithProjection:self.mapView.mapView.projection radius:self.radiusMiles];
 }
 
 @end

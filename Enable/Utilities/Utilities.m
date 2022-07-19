@@ -223,12 +223,18 @@ const int kCustomizedErrorCode = 0;
 }
 
 + (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSDictionary * _Nullable error))completion{
-
     PFQuery * query = [PFQuery queryWithClassName:@"Location"];
     PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
-    float radius = [point distanceInMilesTo:farRightCorner];
-    if(radius > 50) return;
+    double radius = [point distanceInMilesTo:farRightCorner];
+    if(radius > 50) {
+        return;
+    }
+    if(radius > 20) {
+        [query addDescendingOrder:@"rating"];
+        [query addDescendingOrder:@"reviews"];
+        query.limit = 5;
+    }
     [query whereKey:@"coordinates" nearGeoPoint:point withinMiles:radius];
     [query findObjectsInBackgroundWithBlock:^(NSArray<Location *> * _Nullable dbLocations, NSError * _Nullable error) {
         if(!error){
