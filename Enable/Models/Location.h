@@ -13,5 +13,6 @@
 @property (nonatomic, strong) PFGeoPoint * _Nonnull coordinates;
 @property (nonatomic, strong) NSString * _Nonnull name;
 @property (nonatomic, strong) NSString * _Nonnull address;
+@property long reviews;
 
 @end

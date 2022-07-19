@@ -248,6 +248,7 @@ const int kCustomizedErrorCode = 0;
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion {
     Location *location = [[Location alloc] initWithClassName:@"Location"];
     location.rating = 0;
+    location.reviews = 0;
     location.POI_idStr = POI_idStr;
     location.coordinates = coordinates;
     location.name = name;
@@ -279,36 +280,54 @@ const int kCustomizedErrorCode = 0;
             completion(error);
             return;
         } else {
-            review.userProfileID = profile;
-            review.title = title;
-            review.reviewText = description;
-            review.rating = rating;
-            review.locationID = location;
-            review.images = (NSArray *)parseFiles;
-            review.likes = 0;
-        }
-
-        [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-            if(!error){
-                if(succeeded){
-                    NSLog(@"Successful post review");
-                    completion(nil);
-                } else {
-                    NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
-                    NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                                 @"message" : @"Couldn't save review in background",
-                                                 @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
+            
+            [location incrementKey:@"reviews" byAmount:[NSNumber numberWithInt:1]];
+            [location setRating: (location.rating * (location.reviews - 1) + rating) / location.reviews];
+            [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if(error){
+                    NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
+                                                 @"message" : error.localizedDescription,
+                                                 @"code" : [NSNumber numberWithLong:error.code]};
                     completion(errorDict);
+                    return;
+                } else if (!succeeded) {
+                    NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
+                                                 @"message" : @"Did not succeed",
+                                                 @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
+                    completion(errorDict);
+                    return;
+                } else if (succeeded) {
+                    review.userProfileID = profile;
+                    review.title = title;
+                    review.reviewText = description;
+                    review.rating = rating;
+                    review.locationID = location;
+                    review.images = (NSArray *)parseFiles;
+                    review.likes = 0;
+                    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                        if(!error){
+                            if(succeeded){
+                                NSLog(@"Successful post review");
+                                completion(nil);
+                            } else {
+                                NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
+                                NSDictionary * errorDict = @{@"title" : @"Failed to post review",
+                                                             @"message" : @"Couldn't save review in background",
+                                                             @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
+                                completion(errorDict);
+                            }
+                        }
+                        else {
+                            NSLog(@"Fail getCurrentUserProfile (in Post Review) %@", error.localizedDescription);
+                            NSDictionary * errorDict = @{@"title" : @"Failed to post review",
+                                                         @"message" : error.localizedDescription,
+                                                         @"code" : [NSNumber numberWithLong:error.code]};
+                            completion(errorDict);
+                        }
+                    }];
                 }
-            }
-            else {
-                NSLog(@"Fail getCurrentUserProfile (in Post Review) %@", error.localizedDescription);
-                NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                             @"message" : error.localizedDescription,
-                                             @"code" : [NSNumber numberWithLong:error.code]};
-                completion(errorDict);
-            }
-        }];
+            }];
+        }
     }];
 }
 
