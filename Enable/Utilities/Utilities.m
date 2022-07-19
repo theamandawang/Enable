@@ -183,7 +183,7 @@ const int kCustomizedErrorCode = 0;
     }];
 }
 
-+ (void) getReviewsByUserProfile:(UserProfile *) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
++ (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     //TODO: infinite scroll
     query.limit = 20;
