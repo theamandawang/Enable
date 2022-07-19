@@ -97,7 +97,6 @@
         self.imageIndex --;
         [self setCurrentImage:self.imageIndex];
     }
-    NSLog(@"swipe right");
 }
 - (IBAction)didSwipeLeft:(id)sender {
     if(self.imageIndex + 1 < self.review.images.count){

@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSString * POI_idStr;
 @property (strong, nonatomic) NSMutableArray<GMSMarker *> * customMarkers;
 @property (strong, nonatomic) GMSProjection * currentProjection;
+@property double radiusMiles;
 @end
 
 @implementation HomeViewController
@@ -115,21 +116,29 @@ didFailAutocompleteWithError:(NSError *)error {
 - (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position{
 
     GMSVisibleRegion region = mapView.projection.visibleRegion;
-    if(self.currentProjection){
-        if([self.currentProjection containsCoordinate: region.farRight] && [self.currentProjection containsCoordinate: region.farLeft] && [self.currentProjection containsCoordinate: region.nearRight] && [self.currentProjection containsCoordinate: region.nearLeft]){
-            return;
+    PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:region.farRight.latitude longitude:region.farRight.longitude];
+    PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:position.target.latitude longitude:position.target.longitude];
+    double radius = [point distanceInMilesTo:farRightCorner];
+    if(self.currentProjection && self.radiusMiles){
+        if([Utilities shouldUpdateLocation:self.currentProjection currentRegion:region radius:radius prevRadius:self.radiusMiles]){
+            [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
         }
-        [self updateLocationMarkersWithProjection:mapView.projection];
     } else {
-        [self updateLocationMarkersWithProjection:mapView.projection];
+        [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
     }
 }
 
-- (void) updateLocationMarkersWithProjection: (GMSProjection *) projection {
+- (void) updateLocationMarkersWithProjection: (GMSProjection *) projection radius: (double) radius {
+    self.radiusMiles = radius;
     self.currentProjection = projection;
     [self.mapView.mapView clear];
     [self.customMarkers removeAllObjects];
     [self showLocationMarkers];
+}
+// prevents map from centering to tapped marker. prevents constant refresh
+- (BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker{
+    mapView.selectedMarker = marker;
+    return YES;
 }
 
 -(void) showLocationMarkers {
@@ -183,6 +192,7 @@ didFailAutocompleteWithError:(NSError *)error {
 #pragma mark - ReviewByLocationViewControllerDelegate
 - (void)setGMSCameraCoordinatesWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
     [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
+    [self updateLocationMarkersWithProjection:self.mapView.mapView.projection radius:self.radiusMiles];
 }
 
 @end
