@@ -10,6 +10,7 @@
 #import "Review.h"
 #import "Location.h"
 #import <GooglePlaces/GooglePlaces.h>
+#import <GoogleMaps/GoogleMaps.h>
 @interface Utilities : NSObject
 #pragma mark Image -> PFFileObject
 + (PFFileObject *_Nullable)getPFFileFromImage: (UIImage * _Nullable)image;
@@ -37,7 +38,7 @@
 #pragma mark Posting
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion;
 + (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<PFFileObject *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion;
-
++ (bool) shouldUpdateLocation: (GMSProjection * _Nonnull) prevProjection currentRegion: (GMSVisibleRegion) currentRegion radius: (double) radius prevRadius: (double) prevRadius;
 
 #pragma mark Like
 + (void) addLikeToReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion;

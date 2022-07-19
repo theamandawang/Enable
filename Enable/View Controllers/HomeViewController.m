@@ -120,17 +120,9 @@ didFailAutocompleteWithError:(NSError *)error {
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:position.target.latitude longitude:position.target.longitude];
     double radius = [point distanceInMilesTo:farRightCorner];
     if(self.currentProjection && self.radiusMiles){
-        if([self.currentProjection containsCoordinate: region.farRight] && [self.currentProjection containsCoordinate: region.farLeft] && [self.currentProjection containsCoordinate: region.nearRight] && [self.currentProjection containsCoordinate: region.nearLeft]){
-            if(radius > 50) {
-                return;
-            }
-            else if ((self.radiusMiles > 20 && radius < 20 ) || (self.radiusMiles > 50 && radius < 50)) {
-                [self updateLocationMarkersWithProjection:mapView.projection radius: radius];
-            } else {
-                return;
-            }
+        if([Utilities shouldUpdateLocation:self.currentProjection currentRegion:region radius:radius prevRadius:self.radiusMiles]){
+            [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
         }
-        [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
     } else {
         [self updateLocationMarkersWithProjection:mapView.projection radius:radius];
     }

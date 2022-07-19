@@ -27,6 +27,8 @@
         - code
  */
 const int kCustomizedErrorCode = 0;
+const int kMaxRadius = 50;
+const int kZoomOutRadius = 20;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSDictionary  * _Nullable  error))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
@@ -227,10 +229,10 @@ const int kCustomizedErrorCode = 0;
     PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
     double radius = [point distanceInMilesTo:farRightCorner];
-    if(radius > 50) {
+    if(radius > kMaxRadius) {
         return;
     }
-    if(radius > 20) {
+    if(radius > kZoomOutRadius) {
         [query addDescendingOrder:@"rating"];
         [query addDescendingOrder:@"reviews"];
         query.limit = 5;
@@ -248,7 +250,19 @@ const int kCustomizedErrorCode = 0;
         }
     }];
 }
-
++ (bool) shouldUpdateLocation: (GMSProjection * _Nonnull) prevProjection currentRegion: (GMSVisibleRegion) currentRegion radius: (double) radius prevRadius: (double) prevRadius {
+    if([prevProjection containsCoordinate: currentRegion.farRight] && [prevProjection containsCoordinate: currentRegion.farLeft] && [prevProjection containsCoordinate: currentRegion.nearRight] && [prevProjection containsCoordinate: currentRegion.nearLeft]){
+        if(radius > kMaxRadius) {
+            return false;
+        }
+        else if ((prevRadius > kZoomOutRadius && radius < kZoomOutRadius ) || (prevRadius > kMaxRadius && radius < kMaxRadius)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
 
 #pragma mark Posting
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion {
