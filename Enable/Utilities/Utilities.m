@@ -439,18 +439,4 @@ static GMSPlacesClient * placesClient = nil;
 
 }
 
-
-#pragma mark - Cloud functions
-
-//TODO: finish this
-+ (void) getLocationAverage : (Location *) location {
-    [PFCloud callFunctionInBackground:@"average"
-                       withParameters:@{@"location": location}
-                                block:^(NSNumber *ratings, NSError *error) {
-      if (!error) {
-         // ratings is 4.5
-      }
-    }];
-}
-
 @end
