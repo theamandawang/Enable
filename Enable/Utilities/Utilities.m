@@ -234,7 +234,7 @@ const int kZoomOutRadius = 20;
     }
     if(radius > kZoomOutRadius) {
         [query addDescendingOrder:@"rating"];
-        [query addDescendingOrder:@"reviews"];
+        [query addDescendingOrder:@"reviewCount"];
         query.limit = 5;
     }
     [query whereKey:@"coordinates" nearGeoPoint:point withinMiles:radius];
@@ -268,7 +268,7 @@ const int kZoomOutRadius = 20;
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion {
     Location *location = [[Location alloc] initWithClassName:@"Location"];
     location.rating = 0;
-    location.reviews = 0;
+    location.reviewCount = 0;
     location.POI_idStr = POI_idStr;
     location.coordinates = coordinates;
     location.name = name;
@@ -301,8 +301,8 @@ const int kZoomOutRadius = 20;
             return;
         } else {
             
-            [location incrementKey:@"reviews" byAmount:[NSNumber numberWithInt:1]];
-            [location setRating: (location.rating * (location.reviews - 1) + rating) / location.reviews];
+            [location incrementKey:@"reviewCount" byAmount:[NSNumber numberWithInt:1]];
+            [location setRating: (location.rating * (location.reviewCount - 1) + rating) / location.reviewCount];
             [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
                 if(error){
                     NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
