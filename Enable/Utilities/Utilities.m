@@ -253,10 +253,12 @@ const int kZoomOutRadius = 20;
 + (bool) shouldUpdateLocation: (GMSProjection * _Nonnull) prevProjection currentRegion: (GMSVisibleRegion) currentRegion radius: (double) radius prevRadius: (double) prevRadius {
     // if the current camera view contains the previous
     if([prevProjection containsCoordinate: currentRegion.farRight] && [prevProjection containsCoordinate: currentRegion.farLeft] && [prevProjection containsCoordinate: currentRegion.nearRight] && [prevProjection containsCoordinate: currentRegion.nearLeft]){
+        // i.e. prevRadius = 70 -> radius = 60 should not cause a refetch
         if(radius > kMaxRadius) {
             return false;
         }
-        else if ((prevRadius >= kZoomOutRadius && radius < kZoomOutRadius ) || (prevRadius >= kMaxRadius && radius < kMaxRadius)) {
+        // i.e. prevRadius = 30 and radius = 10 or prevRadius = 60 and radius = 40, then refetch
+        else if ((prevRadius > kZoomOutRadius && radius <= kZoomOutRadius ) || (prevRadius >= kMaxRadius && radius < kMaxRadius)) {
             return true;
         } else {
             return false;
