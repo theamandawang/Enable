@@ -63,17 +63,17 @@ const int kReviewsSection = 2;
 }
 
 - (void) addLikeFromUserProfile:(UserProfile *)currentProfile review:(Review *)review{
-    [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
+    [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to like" message:error.localizedDescription completion:^{
             }];
         }
     }];
 }
 - (void) removeLikeFromReview:(Review *)review currentUser:(UserProfile *)currentProfile{
-    [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSDictionary * _Nullable error) {
+    [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to unlike" message:error.localizedDescription completion:^{
             }];
         }
     }];
@@ -85,17 +85,17 @@ const int kReviewsSection = 2;
 
 #pragma mark - Queries
 - (void) queryForLocationData {
-    [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
-        if(locationError && ([locationError[@"code"] integerValue] != kNoMatchErrorCode)){
-            [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
+    [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
+        if(locationError && (locationError.code != kNoMatchErrorCode)){
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to get location" message:locationError.localizedDescription completion:^{
             }];
             [self.refreshControl endRefreshing];
         } else {
             if(location){
                 self.location = location;
-                [Utilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error) {
+                [Utilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error) {
                     if(error){
-                        [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                        [ErrorHandler showAlertFromViewController:self title:@"Failed to get reviews" message:error.localizedDescription completion:^{
                         }];
                     } else {
                         self.reviews = reviews;
@@ -106,9 +106,9 @@ const int kReviewsSection = 2;
 
             } else {
                 GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-                [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSDictionary * _Nullable error) {
+                [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
                     if(error){
-                        [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                        [ErrorHandler showAlertFromViewController:self title:@"Failed to get Place data" message:error.localizedDescription completion:^{
                         }];
                     } else {
                         self.location = [[Location alloc] initWithClassName:@"Location"];
@@ -126,9 +126,9 @@ const int kReviewsSection = 2;
     }];
 }
 - (void) getCurrentUserProfile {
-    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
-        if(error && ([error[@"code"] intValue] != 0)){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
+        if(error && (error.code != 0)){
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to get current user" message:error.localizedDescription completion:^{
             }];
         } else {
             self.currentProfile = profile;
@@ -172,14 +172,14 @@ const int kReviewsSection = 2;
     else {
         ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
         cell.resultsView.delegate = self;
-        [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+        [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                [ErrorHandler showAlertFromViewController:self title:@"Failed to get user" message:error.localizedDescription completion:^{
                 }];
             } else {
-                [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSDictionary * _Nullable error) {
+                [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
                     if(error){
-                        [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                        [ErrorHandler showAlertFromViewController:self title:@"Failed to check likes" message:error.localizedDescription completion:^{
                         }];
                     } else {
                         cell.resultsView.liked = liked;

@@ -49,9 +49,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
 #pragma mark - Querying
 -(void) getLocationDataWithCompletion: (void (^_Nonnull)(void)) completion {
     GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-    [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSDictionary * _Nullable error) {
+    [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to get Place data" message:error.localizedDescription completion:^{
             }];
         } else {
             self.location = [[Location alloc] initWithClassName:@"Location"];
@@ -71,14 +71,14 @@ UITapGestureRecognizer *scrollViewTapGesture;
     return false;
 }
 
-- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images didPost: (void (^_Nonnull)(NSDictionary * error))didPost{
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images didPost: (void (^_Nonnull)(NSError * error))didPost{
     // I have created an option so that if there is no location provided then I will have it request
     // location on its own, but the default is still probably going to rely on the location already provided.
     if(!self.location){
         [self getLocationDataWithCompletion:^{
-            [Utilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSDictionary * _Nullable locationError) {
+            [Utilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSError * _Nullable locationError) {
                 if(locationError){
-                    [ErrorHandler showAlertFromViewController:self title:locationError[@"title"] message:locationError[@"message"] completion:^{
+                    [ErrorHandler showAlertFromViewController:self title:@"Failed to post location" message:locationError.localizedDescription completion:^{
                     }];
                 } else {
                     [Utilities postReviewWithLocation:location rating:rating title:title description:description images:images completion:didPost];
@@ -92,9 +92,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (IBAction)didTapSubmit:(id)sender {
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSDictionary * _Nullable error){
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSError * _Nullable error){
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                [ErrorHandler showAlertFromViewController:self title:@"Failed to post review" message:error.localizedDescription completion:^{
                 }];
             } else {
                 [self.navigationController popViewControllerAnimated:YES];

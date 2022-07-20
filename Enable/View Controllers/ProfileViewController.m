@@ -26,9 +26,9 @@
 }
 - (void) getUserProfile {
     if(self.userProfileID){
-        [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSDictionary * _Nullable error) {
+        [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                [ErrorHandler showAlertFromViewController:self title:@"Failed to get user" message:error.localizedDescription completion:^{
                 }];
             } else {
                 self.profileView.userProfile = userProfile;
@@ -46,9 +46,9 @@
 }
 
 - (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
-    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to get current user" message:error.localizedDescription completion:^{
             }];
         } else {
             self.currentProfile = profile;
@@ -59,9 +59,9 @@
 }
 
 - (void) getReviewsByUserProfile: (UserProfile *) userProfile {
-    [Utilities getReviewsByUserProfile:userProfile withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error) {
+    [Utilities getReviewsByUserProfile:userProfile withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to get reviews by user" message:error.localizedDescription completion:^{
             }];
         } else {
             // TODO: handle reviews by this user profile
@@ -71,9 +71,9 @@
 }
 
 - (IBAction)didTapLogout:(id)sender {
-    [Utilities logOutWithCompletion:^(NSDictionary * _Nullable error){
+    [Utilities logOutWithCompletion:^(NSError * _Nullable error){
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to log out" message:error.localizedDescription completion:^{
             }];
         } else {
             [self.navigationController popToRootViewControllerAnimated:TRUE];

@@ -20,30 +20,21 @@
     return [PFFileObject fileObjectWithName:@"image.jpeg" data:imageData];
 }
 
-/* each function now provides a dictionary to the completion block
-    the dictionary will contain
-        - title
-        - message (localizedDescription)
-        - code
- */
 const int kCustomizedErrorCode = 0;
 const int kMaxRadius = 50;
 const int kZoomOutRadius = 20;
 #pragma mark User Signup/Login/Logout
-+ (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSDictionary  * _Nullable  error))completion{
++ (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSError  * _Nullable  error))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
             if(!error){
                 completion(nil);
             } else {
                 NSLog(@"Fail logIn %@", error.localizedDescription);
-                NSDictionary * errorDict = @{@"title" : @"Failed to log in",
-                                             @"message" : error.localizedDescription,
-                                             @"code" : [NSNumber numberWithLong:error.code]};
-                completion(errorDict);
+                completion(error);
             }
     }];
 }
-+ (void) signUpWithEmail : (NSString * _Nonnull) email password: (NSString * _Nonnull) password completion:(void (^_Nonnull)(NSDictionary  * _Nullable  error))completion{
++ (void) signUpWithEmail : (NSString * _Nonnull) email password: (NSString * _Nonnull) password completion:(void (^_Nonnull)(NSError  * _Nullable  error))completion{
     PFUser *user = [PFUser user];
     user.username = email;
     user.password = password;
@@ -60,32 +51,23 @@ const int kZoomOutRadius = 20;
                     completion(nil);
                 } else {
                     NSLog(@"Fail save UserProfile (in signUp) %@", saveError.localizedDescription);
-                    NSDictionary * errorDict = @{@"title" : @"Failed to sign up",
-                                                 @"message" : saveError.localizedDescription,
-                                                 @"code" : [NSNumber numberWithLong:saveError.code]};
-                    completion(errorDict);
+                    completion(saveError);
                 }
             }];
         } else {
             NSLog(@"Fail signUp %@", error.localizedDescription);
-            NSDictionary * errorDict = @{@"title" : @"Failed to sign up",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(errorDict);
+            completion(error);
         }
     }];
 }
 
-+ (void) logOutWithCompletion:(void (^_Nonnull)(NSDictionary  * _Nullable  error))completion{
++ (void) logOutWithCompletion:(void (^_Nonnull)(NSError  * _Nullable  error))completion{
     [PFUser logOutInBackgroundWithBlock:^(NSError * _Nullable error) {
         if(!error) {
             completion(nil);
         } else {
             NSLog(@"Fail logOut %@", error.localizedDescription);
-            NSDictionary * errorDict = @{@"title" : @"Failed to log out",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(errorDict);
+            completion(error);
         }
 
     }];
@@ -93,13 +75,11 @@ const int kZoomOutRadius = 20;
 
 
 #pragma mark UserProfile
-+ (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile, NSDictionary  * _Nullable  error))completion {
++ (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion {
     PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
     if(![PFUser currentUser]){
-        NSDictionary * errorDict = @{@"title" : @"Failed to get the current user",
-                                     @"message" : @"No user signed in",
-                                     @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
-        completion(nil, errorDict);
+        NSError * error = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"No user signed in"}];
+        completion(nil, error);
         return;
     }
     [query whereKey:@"userID" equalTo:[PFUser currentUser]];
@@ -107,10 +87,7 @@ const int kZoomOutRadius = 20;
     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable userProfile, NSError * _Nullable error) {
         if(error){
             NSLog(@"Fail getCurrentUserProfile %@", error.localizedDescription);
-            NSDictionary * errorDict = @{@"title" : @"Failed to get the current user",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
         } else {
             if(userProfile){
                 completion((UserProfile *) userProfile, nil);
@@ -124,17 +101,14 @@ const int kZoomOutRadius = 20;
 }
 
 
-+ (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSDictionary  * _Nullable  error))completion {
++ (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion {
     PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
     [query getObjectInBackgroundWithId:userProfileID block:^(PFObject * _Nullable userProfile, NSError * _Nullable error) {
         if(!error){
             completion((UserProfile *) userProfile, nil);
 
         } else {
-            NSDictionary * errorDict = @{@"title" : @"Failed to get the user",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
             NSLog(@"Fail getUserProfileFromID %@", error.localizedDescription);
         }
     }];
@@ -142,30 +116,24 @@ const int kZoomOutRadius = 20;
 
 #pragma mark Review
 
-+ (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review, NSDictionary * _Nullable error))completion {
++ (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review, NSError * _Nullable error))completion {
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     [query getObjectInBackgroundWithId:reviewID block:^(PFObject * _Nullable dbReview, NSError * _Nullable error) {
         if(!error){
             if(dbReview){
                 completion((Review *) dbReview, nil);
             } else {
-                NSDictionary * errorDict = @{@"title" : @"No review found",
-                                             @"message" : @"This review doesn't exist",
-                                             @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
-                completion(nil, errorDict);
+                completion(nil, error);
             }
         } else {
-            NSDictionary * errorDict = @{@"title" : @"Failed to get the review",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
             NSLog(@"Fail getReviewFromID %@", error.localizedDescription);
         }
 
     }];
 }
 
-+ (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
++ (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     //TODO: infinite scroll
     query.limit = 20;
@@ -176,16 +144,13 @@ const int kZoomOutRadius = 20;
         if(!error){
             completion((NSMutableArray<Review *> *) objects, nil);
         } else {
-            NSDictionary * errorDict = @{@"title" : @"Failed to get reviews",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
             NSLog(@"Fail getReviewsByLocation %@", error.localizedDescription);
         }
     }];
 }
 
-+ (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
++ (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     //TODO: infinite scroll
     query.limit = 20;
@@ -195,10 +160,7 @@ const int kZoomOutRadius = 20;
         if(!error){
             completion((NSMutableArray<Review *> *) objects, nil);
         } else {
-            NSDictionary * errorDict = @{@"title" : @"Failed to get reviews",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
             NSLog(@"Fail getReviewsByUserProfileID %@", error.localizedDescription);
         }
     }];
@@ -208,7 +170,7 @@ const int kZoomOutRadius = 20;
 
 #pragma mark Location
 
-+ (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion{
++ (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
     PFQuery * query = [PFQuery queryWithClassName:@"Location"];
     [query whereKey:@"POI_idStr" equalTo:POI_idStr];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable dbLocation, NSError * _Nullable error) {
@@ -216,15 +178,12 @@ const int kZoomOutRadius = 20;
             completion((Location *)dbLocation, nil);
         } else {
             NSLog(@"Fail getLocationFromPOI_idStr %@", error.localizedDescription);
-            NSDictionary * errorDict = @{@"title" : @"Failed to get the location",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
         }
     }];
 }
 
-+ (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSDictionary * _Nullable error))completion{
++ (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSError * _Nullable error))completion{
     PFQuery * query = [PFQuery queryWithClassName:@"Location"];
     PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
@@ -243,10 +202,7 @@ const int kZoomOutRadius = 20;
             completion(dbLocations, nil);
         } else {
             NSLog(@"Fail getLocationsFromLatitude longitude %@", error.localizedDescription);
-            NSDictionary * errorDict = @{@"title" : @"Failed to get the location",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
         }
     }];
 }
@@ -269,7 +225,7 @@ const int kZoomOutRadius = 20;
 }
 
 #pragma mark Posting
-+ (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion {
++ (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion {
     Location *location = [[Location alloc] initWithClassName:@"Location"];
     location.rating = 0;
     location.reviewCount = 0;
@@ -285,10 +241,7 @@ const int kZoomOutRadius = 20;
             }
         } else {
             NSLog(@"Fail postLocationWithPOI_idStr %@", error.localizedDescription);
-            NSDictionary * errorDict = @{@"title" : @"Failed to post this location",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
         }
     }];
 }
@@ -296,31 +249,26 @@ const int kZoomOutRadius = 20;
     return (currAvg * numReviews + rating) / (numReviews + 1);
 }
 
-+ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion{
++ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSError * _Nullable error))completion{
     NSMutableArray<PFFileObject *> * parseFiles = [[NSMutableArray alloc] init];
     for(UIImage * img in images){
         [parseFiles addObject: [Utilities getPFFileFromImage:img]];
     }
-    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSDictionary * _Nullable error) {
+    [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable profileError) {
         Review *review = [[Review alloc] initWithClassName:@"Review"];
-        if(error){
-            completion(error);
+        if(profileError){
+            completion(profileError);
             return;
         } else {
             [location setRating: [Utilities calculateNewAverage:location.rating withRating:rating numReviews:location.reviewCount]];
             [location incrementKey:@"reviewCount" byAmount:[NSNumber numberWithInt:1]];
-            [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                if(error){
-                    NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
-                                                 @"message" : error.localizedDescription,
-                                                 @"code" : [NSNumber numberWithLong:error.code]};
-                    completion(errorDict);
+            [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable locationError) {
+                if(locationError){
+                    completion(locationError);
                     return;
                 } else if (!succeeded) {
-                    NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
-                                                 @"message" : @"Did not succeed",
-                                                 @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
-                    completion(errorDict);
+                    NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not increment location reviews"}];
+                    completion(customError);
                     return;
                 } else if (succeeded) {
                     review.userProfileID = profile;
@@ -330,25 +278,19 @@ const int kZoomOutRadius = 20;
                     review.locationID = location;
                     review.images = (NSArray *)parseFiles;
                     review.likes = 0;
-                    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-                        if(!error){
+                    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable reviewError) {
+                        if(!reviewError){
                             if(succeeded){
                                 NSLog(@"Successful post review");
                                 completion(nil);
                             } else {
                                 NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
-                                NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                                             @"message" : @"Couldn't save review in background",
-                                                             @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
-                                completion(errorDict);
+                                NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not save review"}];
+                                completion(customError);
                             }
                         }
                         else {
-                            NSLog(@"Fail getCurrentUserProfile (in Post Review) %@", error.localizedDescription);
-                            NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                                         @"message" : error.localizedDescription,
-                                                         @"code" : [NSNumber numberWithLong:error.code]};
-                            completion(errorDict);
+                            completion(reviewError);
                         }
                     }];
                 }
@@ -360,50 +302,37 @@ const int kZoomOutRadius = 20;
 
 #pragma mark Like
 
-+ (void) addLikeToReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion {
++ (void) addLikeToReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSError * _Nullable error))completion {
     [review.userLikes addObject:profile];
     [review incrementKey:@"likes" byAmount:[NSNumber numberWithInt:1]];
     [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if(error){
-            NSDictionary * errorDict = @{@"title" : @"Failed to like post",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(errorDict);
+            completion(error);
         } else if (!succeeded) {
-            NSDictionary * errorDict = @{@"title" : @"Failed to like post",
-                                         @"message" : @"Unable to like",
-                                         @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
-            completion(errorDict);
+            NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not like"}];
+            completion(customError);
         }
     }];
 }
 
-+ (void) removeLikeFromReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion {
++ (void) removeLikeFromReview: (Review * _Nonnull) review fromUserProfile: (UserProfile * _Nonnull) profile completion: (void (^_Nonnull)(NSError * _Nullable error))completion {
     [review.userLikes removeObject:profile];
     [review incrementKey:@"likes" byAmount:[NSNumber numberWithInt:-1]];
 
     [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if(error){
-            NSDictionary * errorDict = @{@"title" : @"Failed to unlike post",
-                                         @"message" : error.localizedDescription,
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(errorDict);
+            completion(error);
         } else if (!succeeded) {
-            NSDictionary * errorDict = @{@"title" : @"Failed to unlike post",
-                                         @"message" : @"Unable to unlike",
-                                         @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
-            completion(errorDict);
+            NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not unlike"}];
+            completion(customError);
         }
     }];
 }
-+ (void) isLikedbyUser: (UserProfile * _Nonnull) profile  review:(Review * _Nonnull) review completion: (void (^_Nonnull)(bool liked, NSDictionary * _Nullable error))completion{
++ (void) isLikedbyUser: (UserProfile * _Nonnull) profile  review:(Review * _Nonnull) review completion: (void (^_Nonnull)(bool liked, NSError * _Nullable error))completion{
     PFRelation * relation = review.userLikes;
     [[relation query] findObjectsInBackgroundWithBlock:^(NSArray<UserProfile *> * _Nullable objects, NSError * _Nullable error) {
         if (error) {
-            NSDictionary * errorDict = @{@"title" : @"Failed to unlike post",
-                                         @"message" : @"Unable to unlike",
-                                         @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
-            completion(false, errorDict);
+            completion(false, error);
         } else {
             if(objects){
                 for(int i = 0; i < objects.count; i++){
@@ -427,15 +356,12 @@ static GMSPlacesClient * placesClient = nil;
     }
 }
 
-+ (void) getPlaceDataFromPOI_idStr:(NSString * _Nonnull)POI_idStr withFields: (GMSPlaceField) fields withCompletion: (void (^_Nonnull)(GMSPlace * _Nullable place, NSDictionary * _Nullable error)) completion{
++ (void) getPlaceDataFromPOI_idStr:(NSString * _Nonnull)POI_idStr withFields: (GMSPlaceField) fields withCompletion: (void (^_Nonnull)(GMSPlace * _Nullable place, NSError * _Nullable error)) completion{
     [self initializePlacesClient];
     [placesClient fetchPlaceFromPlaceID:POI_idStr placeFields:fields sessionToken:nil callback:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
         if (error != nil) {
             NSLog(@"An error occurred %@", [error localizedDescription]);
-            NSDictionary * errorDict = @{@"title" : @"Failed to get Place data",
-                                         @"message" : [error localizedDescription],
-                                         @"code" : [NSNumber numberWithLong:error.code]};
-            completion(nil, errorDict);
+            completion(nil, error);
             return;
         }
         if (place != nil) {
