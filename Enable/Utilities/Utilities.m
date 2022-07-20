@@ -27,6 +27,8 @@
         - code
  */
 const int kCustomizedErrorCode = 0;
+const int kMaxRadius = 50;
+const int kZoomOutRadius = 20;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSDictionary  * _Nullable  error))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
@@ -48,8 +50,8 @@ const int kCustomizedErrorCode = 0;
     UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
-    
-    
+
+
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (!error) {
             userProfile.userID = [PFUser currentUser];
@@ -159,7 +161,7 @@ const int kCustomizedErrorCode = 0;
             completion(nil, errorDict);
             NSLog(@"Fail getReviewFromID %@", error.localizedDescription);
         }
-        
+
     }];
 }
 
@@ -183,7 +185,7 @@ const int kCustomizedErrorCode = 0;
     }];
 }
 
-+ (void) getReviewsByUserProfile:(UserProfile *) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
++ (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSDictionary * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     //TODO: infinite scroll
     query.limit = 20;
@@ -222,15 +224,60 @@ const int kCustomizedErrorCode = 0;
     }];
 }
 
++ (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSDictionary * _Nullable error))completion{
+    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
+    PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
+    double radius = [point distanceInMilesTo:farRightCorner];
+    if(radius > kMaxRadius) {
+        radius = kMaxRadius;
+    }
+    if(radius > kZoomOutRadius) {
+        [query addDescendingOrder:@"rating"];
+        [query addDescendingOrder:@"reviewCount"];
+        query.limit = 5;
+    }
+    [query whereKey:@"coordinates" nearGeoPoint:point withinMiles:radius];
+    [query findObjectsInBackgroundWithBlock:^(NSArray<Location *> * _Nullable dbLocations, NSError * _Nullable error) {
+        if(!error){
+            completion(dbLocations, nil);
+        } else {
+            NSLog(@"Fail getLocationsFromLatitude longitude %@", error.localizedDescription);
+            NSDictionary * errorDict = @{@"title" : @"Failed to get the location",
+                                         @"message" : error.localizedDescription,
+                                         @"code" : [NSNumber numberWithLong:error.code]};
+            completion(nil, errorDict);
+        }
+    }];
+}
++ (bool) shouldUpdateLocation: (GMSProjection * _Nonnull) prevProjection currentRegion: (GMSVisibleRegion) currentRegion radius: (double) radius prevRadius: (double) prevRadius {
+    // if the current camera view contains the previous
+    if([prevProjection containsCoordinate: currentRegion.farRight] && [prevProjection containsCoordinate: currentRegion.farLeft] && [prevProjection containsCoordinate: currentRegion.nearRight] && [prevProjection containsCoordinate: currentRegion.nearLeft]){
+        // i.e. prevRadius = 70 -> radius = 60 should not cause a refetch
+        if(radius > kMaxRadius) {
+            return false;
+        }
+        // i.e. prevRadius = 30 and radius = 10 or prevRadius = 60 and radius = 40, then refetch
+        else if ((prevRadius > kZoomOutRadius && radius <= kZoomOutRadius ) || (prevRadius >= kMaxRadius && radius < kMaxRadius)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // otherwise, current camera view isn't in the previously fetched
+    return true;
+}
+
 #pragma mark Posting
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSDictionary * _Nullable error))completion {
     Location *location = [[Location alloc] initWithClassName:@"Location"];
     location.rating = 0;
+    location.reviewCount = 0;
     location.POI_idStr = POI_idStr;
     location.coordinates = coordinates;
     location.name = name;
     location.address = address;
-    
+
     [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
         if(!error){
             if(succeeded){
@@ -245,6 +292,9 @@ const int kCustomizedErrorCode = 0;
         }
     }];
 }
++ (double) calculateNewAverage: (double) currAvg withRating: (int) rating numReviews: (int) numReviews{
+    return (currAvg * numReviews + rating) / (numReviews + 1);
+}
 
 + (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSDictionary * _Nullable error))completion{
     NSMutableArray<PFFileObject *> * parseFiles = [[NSMutableArray alloc] init];
@@ -257,36 +307,53 @@ const int kCustomizedErrorCode = 0;
             completion(error);
             return;
         } else {
-            review.userProfileID = profile;
-            review.title = title;
-            review.reviewText = description;
-            review.rating = rating;
-            review.locationID = location;
-            review.images = (NSArray *)parseFiles;
-            review.likes = 0;
-        }
-        
-        [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
-            if(!error){
-                if(succeeded){
-                    NSLog(@"Successful post review");
-                    completion(nil);
-                } else {
-                    NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
-                    NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                                 @"message" : @"Couldn't save review in background",
-                                                 @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
+            [location setRating: [Utilities calculateNewAverage:location.rating withRating:rating numReviews:location.reviewCount]];
+            [location incrementKey:@"reviewCount" byAmount:[NSNumber numberWithInt:1]];
+            [location saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if(error){
+                    NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
+                                                 @"message" : error.localizedDescription,
+                                                 @"code" : [NSNumber numberWithLong:error.code]};
                     completion(errorDict);
+                    return;
+                } else if (!succeeded) {
+                    NSDictionary * errorDict = @{@"title" : @"Failed to increment location reviews",
+                                                 @"message" : @"Did not succeed",
+                                                 @"code" : [NSNumber numberWithInt:kCustomizedErrorCode]};
+                    completion(errorDict);
+                    return;
+                } else if (succeeded) {
+                    review.userProfileID = profile;
+                    review.title = title;
+                    review.reviewText = description;
+                    review.rating = rating;
+                    review.locationID = location;
+                    review.images = (NSArray *)parseFiles;
+                    review.likes = 0;
+                    [review saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                        if(!error){
+                            if(succeeded){
+                                NSLog(@"Successful post review");
+                                completion(nil);
+                            } else {
+                                NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
+                                NSDictionary * errorDict = @{@"title" : @"Failed to post review",
+                                                             @"message" : @"Couldn't save review in background",
+                                                             @"code" : [NSNumber numberWithInt: kCustomizedErrorCode]};
+                                completion(errorDict);
+                            }
+                        }
+                        else {
+                            NSLog(@"Fail getCurrentUserProfile (in Post Review) %@", error.localizedDescription);
+                            NSDictionary * errorDict = @{@"title" : @"Failed to post review",
+                                                         @"message" : error.localizedDescription,
+                                                         @"code" : [NSNumber numberWithLong:error.code]};
+                            completion(errorDict);
+                        }
+                    }];
                 }
-            }
-            else {
-                NSLog(@"Fail getCurrentUserProfile (in Post Review) %@", error.localizedDescription);
-                NSDictionary * errorDict = @{@"title" : @"Failed to post review",
-                                             @"message" : error.localizedDescription,
-                                             @"code" : [NSNumber numberWithLong:error.code]};
-                completion(errorDict);
-            }
-        }];
+            }];
+        }
     }];
 }
 
@@ -375,21 +442,7 @@ static GMSPlacesClient * placesClient = nil;
             completion(place, nil);
         }
     }];
-    
-}
 
-
-#pragma mark - Cloud functions
-
-//TODO: finish this
-+ (void) getLocationAverage : (Location *) location {
-    [PFCloud callFunctionInBackground:@"average"
-                       withParameters:@{@"location": location}
-                                block:^(NSNumber *ratings, NSError *error) {
-      if (!error) {
-         // ratings is 4.5
-      }
-    }];
 }
 
 @end

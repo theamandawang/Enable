@@ -38,6 +38,8 @@
 		7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7DEDB2874AE0F0080E4A9 /* MapView.xib */; };
 		7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */; };
 		7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEE12874AEB90080E4A9 /* MapView.m */; };
+		7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1A288862F5005D857B /* InfoWindowView.m */; };
+		7FD3FF1D28886305005D857B /* InfoWindowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1C28886305005D857B /* InfoWindowView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +95,9 @@
 		7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		7FA7DEE02874AEB90080E4A9 /* MapView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
 		7FA7DEE12874AEB90080E4A9 /* MapView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapView.m; sourceTree = "<group>"; };
+		7FD3FF19288862F5005D857B /* InfoWindowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoWindowView.h; sourceTree = "<group>"; };
+		7FD3FF1A288862F5005D857B /* InfoWindowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoWindowView.m; sourceTree = "<group>"; };
+		7FD3FF1C28886305005D857B /* InfoWindowView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWindowView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +212,9 @@
 				7F6298E4287C9AC000A550F4 /* ResultsView.xib */,
 				7F6298E1287C9AAD00A550F4 /* ResultsView.h */,
 				7F6298E2287C9AAD00A550F4 /* ResultsView.m */,
+				7FD3FF1C28886305005D857B /* InfoWindowView.xib */,
+				7FD3FF19288862F5005D857B /* InfoWindowView.h */,
+				7FD3FF1A288862F5005D857B /* InfoWindowView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -305,6 +313,7 @@
 				7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */,
 				7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */,
 				7FA7DED82874A87A0080E4A9 /* Keys.plist in Resources */,
+				7FD3FF1D28886305005D857B /* InfoWindowView.xib in Resources */,
 				7F6298CE28779C2C00A550F4 /* 3xTransparentLogo.png in Resources */,
 				7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */,
 				7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */,
@@ -384,6 +393,7 @@
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
 				7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */,
 				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,
+				7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */,
 				7F6298E3287C9AAD00A550F4 /* ResultsView.m in Sources */,
 				7F6298C328776DBD00A550F4 /* Location.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,

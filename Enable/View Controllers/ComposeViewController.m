@@ -91,12 +91,11 @@ UITapGestureRecognizer *scrollViewTapGesture;
 - (IBAction)didTapSubmit:(id)sender {
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
         [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSDictionary * _Nullable error){
-            //TODO: go back to the reviews screen, not the maps screen.
             if(error){
                 [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
                 }];
             } else {
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:YES];
             }
         }];
     } else {

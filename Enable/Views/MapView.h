@@ -9,8 +9,9 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import "ErrorHandler.h"
 NS_ASSUME_NONNULL_BEGIN
+
 @interface MapView : UIView <CLLocationManagerDelegate>
-@property (weak, nonatomic) id<ViewErrorHandle> delegate;
+@property (weak, nonatomic) id<ViewErrorHandle> errorDelegate;
 @property (strong, nonatomic) GMSMapView *mapView;
 @end
 

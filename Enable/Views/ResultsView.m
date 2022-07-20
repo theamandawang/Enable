@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
@@ -64,6 +64,12 @@
     if(review.images.count > 0){
         [self setCurrentImage:0];
     }
+    else {
+        [self.titleTopToImageBottom setActive: NO];
+        [self.photosImageView setHidden: YES];
+        [self.titleLabel.topAnchor constraintEqualToAnchor:self.usernameLabel.bottomAnchor constant:20].active = YES;
+        [self layoutIfNeeded];
+    }
 }
 
 
@@ -97,7 +103,6 @@
         self.imageIndex --;
         [self setCurrentImage:self.imageIndex];
     }
-    NSLog(@"swipe right");
 }
 - (IBAction)didSwipeLeft:(id)sender {
     if(self.imageIndex + 1 < self.review.images.count){

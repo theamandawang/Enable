@@ -13,6 +13,7 @@
     @dynamic coordinates;
     @dynamic name;
     @dynamic address;
+    @dynamic reviewCount;
 + (nonnull NSString *)parseClassName {
     return @"Location";
 }
