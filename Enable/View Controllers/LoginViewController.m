@@ -18,6 +18,8 @@
 @implementation LoginViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ErrorHandler testInternetConnection:self];
+
 }
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears

@@ -12,7 +12,6 @@
 #import "Utilities.h"
 #import "ErrorHandler.h"
 #import "InfoWindowView.h"
-#import "Reachability.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
@@ -28,6 +27,7 @@
 GMSMarker *infoMarker;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ErrorHandler testInternetConnection:self];
     self.mapView.errorDelegate = self;
     self.mapView.mapView.delegate = self;
     [self setUpSearch];
@@ -60,8 +60,6 @@ GMSMarker *infoMarker;
     
     [subView addSubview:self.searchController.searchBar];
     [self.searchController.searchBar sizeToFit];
-
-
 
     self.searchController.searchBar.text = @"";
     self.searchController.searchBar.placeholder = @"Search location...";

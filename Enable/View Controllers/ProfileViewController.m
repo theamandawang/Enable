@@ -16,6 +16,7 @@
 @implementation ProfileViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ErrorHandler testInternetConnection:self];
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
