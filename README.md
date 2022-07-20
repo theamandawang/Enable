@@ -15,16 +15,16 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 
 **What This Will Look Like**
 - [X] Able to log in with email + password
-- Able to post a review with a single picture (no multiple images yet...)
-- Able to read reviews
-- Similar to Instagram, be able to see the user who posted
+- [X] Able to post a review with a single picture (no multiple images yet...)
+- [X] Able to read reviews
+- [X] Similar to Instagram, be able to see the user who posted
 
 
 ## Week 5 ##
 - Allow filtering
 - User profiles; allow editing
-- Create image slideshows; users can swipe between images that reviewers have left
-- Allow liking + disliking reviews. Top reviews come first.
+- [X] Create image slideshows; users can swipe between images that reviewers have left
+- [X] Allow liking + disliking reviews. Top reviews come first.
 - Begin heavier work with API; try to connect Places in detail with Google Maps more
     - Users can see GoogleMaps users' reviews
 - Consider how to add reviews for sidewalks / crosswalks
@@ -36,12 +36,12 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 **What This Will Look Like**
 - Able to use all of the functionality involving searching/filtering
 - Able to customize profile information
-- Able to sort by best reviews
+- [X] Able to sort by best reviews
 - Able to reverse search; get a POI (point of interest) from user's current coordinates
 - User profile!
 
 ## Week 6 ##
-- Fix formatting + look. Create images for the launch screen, app icon etc.
+- [X] Fix formatting + look. Create images for the launch screen, app icon etc.
 - Provide customizable color palette / font sizes.
     - Will cache this locally
 - Complete the minimum viable product
