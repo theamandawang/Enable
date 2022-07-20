@@ -24,6 +24,8 @@
 		7F6298E3287C9AAD00A550F4 /* ResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298E2287C9AAD00A550F4 /* ResultsView.m */; };
 		7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298E4287C9AC000A550F4 /* ResultsView.xib */; };
 		7F6298F1287D1A7000A550F4 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298F0287D1A7000A550F4 /* Utilities.m */; };
+		7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E9DAF28876D4C00EC4C27 /* Reachability.m */; };
+		7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
@@ -72,6 +74,9 @@
 		7F6298E4287C9AC000A550F4 /* ResultsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ResultsView.xib; sourceTree = "<group>"; };
 		7F6298EF287D1A7000A550F4 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utilities.h; sourceTree = "<group>"; };
 		7F6298F0287D1A7000A550F4 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
+		7F6E9DAF28876D4C00EC4C27 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		7F6E9DB128876D6400EC4C27 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -105,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */,
 				41558699EC86FC28050BA611 /* Pods_Enable.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -115,6 +121,7 @@
 		724CCB2007FB637C69E28CC1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */,
 				6A11B032ED5684F2B46225F4 /* Pods_Enable.framework */,
 			);
 			name = Frameworks;
@@ -151,6 +158,8 @@
 				7F6298F0287D1A7000A550F4 /* Utilities.m */,
 				7F06A2FC287E135800F45C63 /* ErrorHandler.h */,
 				7F06A2FD287E135800F45C63 /* ErrorHandler.m */,
+				7F6E9DAF28876D4C00EC4C27 /* Reachability.m */,
+				7F6E9DB128876D6400EC4C27 /* Reachability.h */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -398,6 +407,7 @@
 				7F6298C328776DBD00A550F4 /* Location.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,
 				7F06A2FE287E135800F45C63 /* ErrorHandler.m in Sources */,
+				7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */,
 				7F841C022876323D00CBD922 /* ProfileView.m in Sources */,
 				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,

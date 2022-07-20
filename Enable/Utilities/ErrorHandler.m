@@ -8,6 +8,8 @@
 #import "ErrorHandler.h"
 
 @implementation ErrorHandler
+Reachability *internetReachable;
+
 + (void) showAlertFromViewController: (UIViewController* _Nonnull)vc title: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nonnull)(void))completion{
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:title
@@ -25,5 +27,25 @@
             completion();
         }
     }];
+}
+
+
+#pragma mark - Reachability
++ (void)testInternetConnection: (UIViewController* _Nonnull)vc {
+    internetReachable = [Reachability reachabilityWithHostname:@"www.google.com"];
+    internetReachable.reachableBlock = ^(Reachability*reach)
+    {
+        NSLog(@"Connected to network");
+    };
+
+    internetReachable.unreachableBlock = ^(Reachability*reach)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [ErrorHandler showAlertFromViewController:vc title:@"No network" message:@"Connect to network!" completion:^{
+            }];
+        });
+    };
+
+    [internetReachable startNotifier];
 }
 @end

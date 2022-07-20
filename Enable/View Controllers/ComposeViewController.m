@@ -32,6 +32,8 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ErrorHandler testInternetConnection:self];
+
     self.images = [[NSMutableArray alloc] init];
 
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];

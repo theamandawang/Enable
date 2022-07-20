@@ -31,6 +31,7 @@ const int kReviewsSection = 2;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    [ErrorHandler testInternetConnection:self];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.refreshControl = [[UIRefreshControl alloc] init];

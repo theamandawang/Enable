@@ -27,6 +27,7 @@
 GMSMarker *infoMarker;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [ErrorHandler testInternetConnection:self];
     self.mapView.errorDelegate = self;
     self.mapView.mapView.delegate = self;
     [self setUpSearch];
@@ -60,12 +61,9 @@ GMSMarker *infoMarker;
     [subView addSubview:self.searchController.searchBar];
     [self.searchController.searchBar sizeToFit];
 
-
-
     self.searchController.searchBar.text = @"";
     self.searchController.searchBar.placeholder = @"Search location...";
 }
-
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
