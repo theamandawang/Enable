@@ -84,7 +84,7 @@ GMSMarker *infoMarker;
                                       location:(CLLocationCoordinate2D)location {
 
     infoMarker = [GMSMarker markerWithPosition:location];
-    [Utilities getLocationFromPOI_idStr:placeID withCompletion:^(Location * _Nullable location, NSDictionary * _Nullable error) {
+    [Utilities getLocationFromPOI_idStr:placeID withCompletion:^(Location * _Nullable location, NSError * _Nullable error) {
         if(location){
             infoMarker.snippet = [NSString stringWithFormat:@"Average Rating: %0.2f/5", location.rating];
         } else {
@@ -148,9 +148,9 @@ didFailAutocompleteWithError:(NSError *)error {
 
 -(void) showLocationMarkers {
     NSLog(@"camera position %f,%f", self.mapView.mapView.camera.target.latitude, self.mapView.mapView.camera.target.longitude);
-    [Utilities getLocationsFromLocation:self.mapView.mapView.camera.target corner:self.mapView.mapView.projection.visibleRegion.farRight withCompletion:^(NSArray<Location *> * _Nullable locations, NSDictionary * _Nullable error) {
+    [Utilities getLocationsFromLocation:self.mapView.mapView.camera.target corner:self.mapView.mapView.projection.visibleRegion.farRight withCompletion:^(NSArray<Location *> * _Nullable locations, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to get nearby locations" message:error.localizedDescription completion:^{
             }];
         }
         else if(locations){

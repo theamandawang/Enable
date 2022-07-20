@@ -30,9 +30,9 @@
 }
 - (IBAction)didTapSignUp:(id)sender {
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
-        [Utilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+        [Utilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSError * _Nullable error) {
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+                [ErrorHandler showAlertFromViewController:self title:@"Failed to sign up" message:error.localizedDescription completion:^{
                 }];
             } else {
                 [self navigateBack];
@@ -46,9 +46,9 @@
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [Utilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSDictionary * _Nullable error) {
+    [Utilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:error[@"title"] message:error[@"message"] completion:^{
+            [ErrorHandler showAlertFromViewController:self title:@"Failed to login" message:error.localizedDescription completion:^{
             }];
         } else {
             [self navigateBack];
