@@ -16,6 +16,7 @@
                 <outlet property="likeImageView" destination="woy-kx-gfW" id="Ha0-1e-Ikx"/>
                 <outlet property="photosImageView" destination="3nt-zU-KKQ" id="LVZ-kp-odn"/>
                 <outlet property="titleLabel" destination="Gan-sS-eyd" id="7w6-L1-oDI"/>
+                <outlet property="titleTopToImageBottom" destination="4DR-Ae-7eO" id="SWH-6d-KHQ"/>
                 <outlet property="usernameLabel" destination="oSG-iB-K3w" id="cDm-9Z-C6H"/>
             </connections>
         </placeholder>
@@ -35,8 +36,8 @@
                         <outletCollection property="gestureRecognizers" destination="ibh-sG-dk0" appends="YES" id="9uW-Sd-DDx"/>
                     </connections>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5pT-8H-b2V">
-                    <rect key="frame" x="20" y="590" width="374" height="20.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Details" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5pT-8H-b2V">
+                    <rect key="frame" x="20" y="590" width="374" height="192"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -108,7 +109,7 @@
                 <constraint firstItem="5pT-8H-b2V" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="ocO-I8-ONf"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="woy-kx-gfW" secondAttribute="bottom" constant="10" id="pub-4v-Jjh"/>
                 <constraint firstItem="5pT-8H-b2V" firstAttribute="top" secondItem="Gan-sS-eyd" secondAttribute="bottom" constant="20" id="vui-aZ-k4J"/>
-                <constraint firstItem="woy-kx-gfW" firstAttribute="top" relation="greaterThanOrEqual" secondItem="5pT-8H-b2V" secondAttribute="bottom" constant="10" id="z7y-Ck-Mf8"/>
+                <constraint firstItem="woy-kx-gfW" firstAttribute="top" secondItem="5pT-8H-b2V" secondAttribute="bottom" constant="10" id="z7y-Ck-Mf8"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Gan-sS-eyd" secondAttribute="trailing" constant="20" id="zt4-H0-bxx"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="127.90178571428571"/>

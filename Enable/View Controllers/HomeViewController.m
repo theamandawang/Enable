@@ -11,6 +11,7 @@
 #import "ProfileViewController.h"
 #import "Utilities.h"
 #import "ErrorHandler.h"
+#import "InfoWindowView.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
 @property (strong, nonatomic) UISearchController *searchController;
@@ -18,6 +19,7 @@
 @property (strong, nonatomic) NSString * POI_idStr;
 @property (strong, nonatomic) NSMutableArray<GMSMarker *> * customMarkers;
 @property (strong, nonatomic) GMSProjection * currentProjection;
+@property (strong, nonatomic) InfoWindowView * infoWindowView;
 @property double radiusMiles;
 @end
 
@@ -160,7 +162,7 @@ didFailAutocompleteWithError:(NSError *)error {
                 [self.customMarkers addObject:[GMSMarker markerWithPosition:position]];
                 self.customMarkers[i].title = locations[i].name;
                 self.customMarkers[i].userData = locations[i].POI_idStr;
-                self.customMarkers[i].snippet = [NSString stringWithFormat:@"Average Rating: %0.2f/5", locations[i].rating];
+                self.customMarkers[i].snippet = [NSString stringWithFormat:@"%0.2f", locations[i].rating];
                 self.customMarkers[i].appearAnimation = kGMSMarkerAnimationPop;
                 self.customMarkers[i].map = self.mapView.mapView;
 
@@ -168,6 +170,13 @@ didFailAutocompleteWithError:(NSError *)error {
         }
     }];
 
+}
+
+- (UIView *)mapView:(GMSMapView *)mapView markerInfoContents:(nonnull GMSMarker *)marker{
+    self.infoWindowView = [[InfoWindowView alloc] initWithFrame:CGRectMake(marker.infoWindowAnchor.x, marker.infoWindowAnchor.y + 1, 180, 100)];
+    self.infoWindowView.starRatingView.value = [marker.snippet floatValue];
+    self.infoWindowView.placeNameLabel.text = marker.title;
+    return self.infoWindowView;
 }
 
 -(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{

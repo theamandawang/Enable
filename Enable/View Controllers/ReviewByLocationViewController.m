@@ -157,10 +157,11 @@ const int kReviewsSection = 2;
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if(indexPath.section == kSummarySection){
         SummaryReviewTableViewCell *summaryCell = [self.tableView dequeueReusableCellWithIdentifier:@"SummaryCell"];
+        summaryCell.locationNameLabel.text = self.location.name;
         if(self.reviews && self.reviews.count > 0){
-            summaryCell.locationNameLabel.text = self.location.name;
+            summaryCell.locationRatingLabel.text = [NSString stringWithFormat: @"%0.2f/5 stars!", self.location.rating];
         } else {
-            summaryCell.locationNameLabel.text = [NSString stringWithFormat:@"%@%@", self.location.name, @" has no reviews yet!"];
+            summaryCell.locationRatingLabel.text = @"No reviews yet!";
         }
         return summaryCell;
     } else if (indexPath.section == kComposeSection) {
