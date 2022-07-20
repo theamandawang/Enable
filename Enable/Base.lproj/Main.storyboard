@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
+                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
                                 <rect key="frame" x="0.0" y="153" width="428" height="739"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <gestureRecognizers/>
@@ -30,7 +30,6 @@
                             <constraint firstItem="19E-Cg-fHi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="NJI-SL-Kby"/>
                             <constraint firstItem="19E-Cg-fHi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RRc-Fy-al5"/>
                             <constraint firstItem="19E-Cg-fHi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="gbD-0m-dTu"/>
-                            <constraint firstItem="19E-Cg-fHi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="65" id="je4-xS-PsM"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Home" id="RgS-77-QdR">
@@ -486,7 +485,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="22x-Oq-g41"/>
+        <segue reference="glC-rt-CzJ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

@@ -23,39 +23,45 @@
 
 @implementation HomeViewController
 GMSMarker *infoMarker;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.mapView.errorDelegate = self;
+    self.mapView.mapView.delegate = self;
+    [self setUpSearch];
+    [self.mapView.mapView setBounds:self.mapView.bounds];
+    self.customMarkers = [[NSMutableArray alloc] init];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self viewDidLoad];
+}
+
+- (void) setUpSearch {
     self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
     self.searchController = [[UISearchController alloc]
                                 initWithSearchResultsController:self.resultsViewController
                             ];
     self.resultsViewController.delegate = self;
     self.searchController.searchResultsUpdater = self.resultsViewController;
-
-    // TODO: change search controller to using tableview
     [self.searchController setHidesNavigationBarDuringPresentation:NO];
-    UIView *subView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 240, 30)];
-
+    
+    UIView *subView = [[UIView alloc] initWithFrame:CGRectZero];
+    subView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:subView];
+    [subView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0].active = YES;
+    [subView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:0].active = YES;
+    [subView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:0].active = YES;
+    [subView.heightAnchor constraintEqualToConstant:50].active = YES;
+    [subView.bottomAnchor constraintEqualToAnchor:self.mapView.topAnchor constant:0].active = YES;
+    
     [subView addSubview:self.searchController.searchBar];
     [self.searchController.searchBar sizeToFit];
-    [self.view addSubview:subView];
 
-    self.mapView.mapView.delegate = self;
+
+
     self.searchController.searchBar.text = @"";
     self.searchController.searchBar.placeholder = @"Search location...";
-    [self.mapView.mapView setBounds:self.mapView.bounds];
-    
-    self.customMarkers = [[NSMutableArray alloc] init];
-}
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self viewDidLoad];
-}
-
-- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
-    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
 }
 
 #pragma mark - Navigation
@@ -101,10 +107,9 @@ GMSMarker *infoMarker;
     NSLog(@"Place name %@", place.name);
     NSLog(@"Place address %@", place.formattedAddress);
 
-    self.searchController.searchBar.text = place.formattedAddress;
+    self.searchController.searchBar.text = [place name];
     CLLocationCoordinate2D loc = [place coordinate];
-
-    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:loc.latitude longitude:loc.longitude zoom:20]];
+    [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:loc.latitude longitude:loc.longitude zoom:16]];
 }
 - (void)resultsController:(GMSAutocompleteResultsViewController *)resultsController
 didFailAutocompleteWithError:(NSError *)error {
@@ -188,6 +193,10 @@ didFailAutocompleteWithError:(NSError *)error {
     [self performSegueWithIdentifier:@"review" sender:nil];
 }
 
+#pragma mark - ViewErrorHandle
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
+    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
+}
 
 #pragma mark - ReviewByLocationViewControllerDelegate
 - (void)setGMSCameraCoordinatesWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
