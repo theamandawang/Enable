@@ -42,7 +42,11 @@ const int kReviewsSection = 2;
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
     [self queryForLocationData];
 }
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self queryForLocationData];
 
+}
 - (void) willMoveToParentViewController:(UIViewController *)parent {
      [super willMoveToParentViewController:parent];
     if (!parent){

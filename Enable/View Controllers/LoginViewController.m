@@ -24,7 +24,7 @@
 
 // TODO: consider allowing iCloud Keychain for future development.
 - (void)navigateBack {
-    [self.navigationController popToRootViewControllerAnimated:TRUE];
+    [self.navigationController popViewControllerAnimated:TRUE];
 }
 - (IBAction)didTapSignUp:(id)sender {
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
