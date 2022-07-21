@@ -178,11 +178,11 @@ didFailAutocompleteWithError:(NSError *)error {
 }
 
 -(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    [ErrorHandler startLoading:resultsController.view];
 }
 - (void)didUpdateAutocompletePredictionsForResultsController:
     (GMSAutocompleteResultsViewController *)resultsController {
-  [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    [ErrorHandler endLoading:resultsController.view];
 }
 - (IBAction)didTapProfile:(id)sender {
     if([PFUser currentUser]){

@@ -26,15 +26,15 @@
 
 // TODO: consider allowing iCloud Keychain for future development.
 - (void)navigateBack {
-    [ErrorHandler endLoading:self];
-    [self.navigationController popViewControllerAnimated:TRUE];
+    [ErrorHandler endLoading:self.view];
+    [self.navigationController popViewControllerAnimated:NO];
 }
 - (IBAction)didTapSignUp:(id)sender {
-    [ErrorHandler startLoading:self];
+    [ErrorHandler startLoading:self.view];
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
         [Utilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSError * _Nullable error) {
             if(error){
-                [ErrorHandler endLoading:self];
+                [ErrorHandler endLoading:self.view];
                 [ErrorHandler showAlertFromViewController:self title:@"Failed to sign up" message:error.localizedDescription completion:^{
                 }];
             } else {
@@ -42,7 +42,7 @@
             }
         }];
     } else {
-        [ErrorHandler endLoading:self];
+        [ErrorHandler endLoading:self.view];
         [ErrorHandler showAlertFromViewController:self title:@"Invalid username/password" message:@"Not a valid email" completion:^{
         }];
     }
@@ -50,11 +50,11 @@
 }
 
 - (IBAction)didTapLogin:(id)sender {
-    [ErrorHandler startLoading:self];
+    [ErrorHandler startLoading:self.view];
     [ErrorHandler testInternetConnection:self];
     [Utilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler endLoading:self];
+            [ErrorHandler endLoading:self.view];
             [ErrorHandler showAlertFromViewController:self title:@"Failed to login" message:error.localizedDescription completion:^{
             }];
         } else {

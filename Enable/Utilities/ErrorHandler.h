@@ -19,8 +19,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)testInternetConnection: (UIViewController* _Nonnull)vc;
 
 #pragma mark - Loading
-+ (void) startLoading: (UIViewController * _Nonnull) vc;
-+ (void) endLoading: (UIViewController * _Nonnull) vc;
++ (void) startLoading: (UIView * _Nonnull) view;
++ (void) endLoading: (UIView * _Nonnull) view;
 
 @end
 

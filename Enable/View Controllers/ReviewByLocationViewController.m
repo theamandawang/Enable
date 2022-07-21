@@ -85,7 +85,7 @@ const int kReviewsSection = 2;
 
 #pragma mark - Queries
 - (void) queryForLocationData {
-    [ErrorHandler startLoading:self];
+    [ErrorHandler startLoading:self.view];
     [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
         if(locationError && (locationError.code != kNoMatchErrorCode)){
             [ErrorHandler showAlertFromViewController:self title:@"Failed to get location" message:locationError.localizedDescription completion:^{
@@ -219,7 +219,7 @@ const int kReviewsSection = 2;
 
 #pragma mark - Private functions
 - (void) endLoading {
-    [ErrorHandler endLoading:self];
+    [ErrorHandler endLoading:self.view];
     [self.refreshControl endRefreshing];
 }
 

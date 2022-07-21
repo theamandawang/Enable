@@ -91,20 +91,20 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 - (IBAction)didTapSubmit:(id)sender {
-    [ErrorHandler startLoading:self];
+    [ErrorHandler startLoading:self.view];
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
         [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSError * _Nullable error){
             if(error){
-                [ErrorHandler endLoading:self];
+                [ErrorHandler endLoading:self.view];
                 [ErrorHandler showAlertFromViewController:self title:@"Failed to post review" message:error.localizedDescription completion:^{
                 }];
             } else {
-                [ErrorHandler endLoading:self];
+                [ErrorHandler endLoading:self.view];
                 [self.navigationController popViewControllerAnimated:NO];
             }
         }];
     } else {
-        [ErrorHandler endLoading:self];
+        [ErrorHandler endLoading:self.view];
         [ErrorHandler showAlertFromViewController:self title:@"Cannot post review" message:@"Please fill in all fields." completion:^{
         }];
     }

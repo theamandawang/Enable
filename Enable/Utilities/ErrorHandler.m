@@ -6,18 +6,13 @@
 //
 
 #import "ErrorHandler.h"
-#import "LoadingViewController.h"
 @implementation ErrorHandler
 Reachability *internetReachable;
+UIActivityIndicatorView * activityView;
 
 + (void) showAlertFromViewController: (UIViewController* _Nonnull)vc title: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nonnull)(void))completion{
-    if ([vc.navigationController.visibleViewController isKindOfClass:[UIAlertController class]]) {
+    if (vc.presentedViewController) {
         return;
-    }
-    else if ([vc.navigationController.visibleViewController isKindOfClass:[LoadingViewController class]]){
-        [vc.navigationController dismissViewControllerAnimated:YES completion:^{
-            [ErrorHandler testInternetConnection:vc];
-        }];
     }
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:title
@@ -30,7 +25,7 @@ Reachability *internetReachable;
                                    handler:^(UIAlertAction * _Nonnull action) {
                                     }];
     [alert addAction:closeAction];
-    [vc presentViewController:alert animated:YES completion:^{
+    [vc.view.window.rootViewController presentViewController:alert animated:YES completion:^{
         if(completion){
             completion();
         }
@@ -57,19 +52,31 @@ Reachability *internetReachable;
     [internetReachable startNotifier];
 }
 
+
+
 #pragma mark - Loading
-+ (void) startLoading: (UIViewController * _Nonnull) vc {
-    if(vc.presentedViewController){
-        return;
-    }
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LoadingViewController * loadingVC = [storyboard instantiateViewControllerWithIdentifier:@"LoadingViewController"];
-    [vc.navigationController presentViewController:loadingVC animated:NO completion:^{
-    }];
++ (void) startLoading: (UIView * _Nonnull) view {
+    if(!activityView) [ErrorHandler activityInit];
+    [view.subviews setValue:@0.2 forKeyPath:@"alpha"];
+    activityView.center = view.center;
+    [activityView setHidesWhenStopped:YES];
+    [view addSubview:activityView];
+    [activityView setAlpha:1.0];
+    [view setUserInteractionEnabled:NO];
+    [activityView startAnimating];
 }
 
-+ (void) endLoading: (UIViewController * _Nonnull) vc {
-    [vc.navigationController dismissViewControllerAnimated:YES completion:^{
-    }];
++ (void) endLoading: (UIView * _Nonnull) view {
+    [view setUserInteractionEnabled:YES];
+    [activityView stopAnimating];
+    [activityView removeFromSuperview];
+    [view.subviews setValue:@1.0 forKeyPath:@"alpha"];
 }
+
++ (void) activityInit {
+    activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+
+}
+
+
 @end

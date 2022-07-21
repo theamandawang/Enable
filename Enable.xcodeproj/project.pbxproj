@@ -42,7 +42,6 @@
 		7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEE12874AEB90080E4A9 /* MapView.m */; };
 		7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1A288862F5005D857B /* InfoWindowView.m */; };
 		7FD3FF1D28886305005D857B /* InfoWindowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1C28886305005D857B /* InfoWindowView.xib */; };
-		7FD3FF212888C161005D857B /* LoadingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1F2888C161005D857B /* LoadingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,8 +103,6 @@
 		7FD3FF19288862F5005D857B /* InfoWindowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoWindowView.h; sourceTree = "<group>"; };
 		7FD3FF1A288862F5005D857B /* InfoWindowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoWindowView.m; sourceTree = "<group>"; };
 		7FD3FF1C28886305005D857B /* InfoWindowView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWindowView.xib; sourceTree = "<group>"; };
-		7FD3FF1E2888C161005D857B /* LoadingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoadingViewController.h; sourceTree = "<group>"; };
-		7FD3FF1F2888C161005D857B /* LoadingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoadingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,8 +160,6 @@
 				7F06A2FD287E135800F45C63 /* ErrorHandler.m */,
 				7F6E9DAF28876D4C00EC4C27 /* Reachability.m */,
 				7F6E9DB128876D6400EC4C27 /* Reachability.h */,
-				7FD3FF1E2888C161005D857B /* LoadingViewController.h */,
-				7FD3FF1F2888C161005D857B /* LoadingViewController.m */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -411,7 +406,6 @@
 				7F6298E3287C9AAD00A550F4 /* ResultsView.m in Sources */,
 				7F6298C328776DBD00A550F4 /* Location.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,
-				7FD3FF212888C161005D857B /* LoadingViewController.m in Sources */,
 				7F06A2FE287E135800F45C63 /* ErrorHandler.m in Sources */,
 				7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */,
 				7F841C022876323D00CBD922 /* ProfileView.m in Sources */,

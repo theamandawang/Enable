@@ -17,13 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [ErrorHandler testInternetConnection:self];
-    [ErrorHandler startLoading:self];
+    [ErrorHandler startLoading:self.view];
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
     [self getCurrentProfile:^{
         [self getUserProfile];
-        [ErrorHandler endLoading:self];
+        [ErrorHandler endLoading:self.view];
     }];
 }
 - (void) getUserProfile {
