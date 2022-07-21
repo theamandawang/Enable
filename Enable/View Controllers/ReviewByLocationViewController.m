@@ -14,7 +14,6 @@
 #import "ReviewTableViewCell.h"
 #import <GooglePlaces/GooglePlaces.h>
 #import "ErrorHandler.h"
-#import "LoadingViewController.h"
 
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -22,7 +21,6 @@
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
-//@property (strong, nonatomic) LoadingViewController * loadingVC;
 @end
 
 @implementation ReviewByLocationViewController
@@ -87,7 +85,7 @@ const int kReviewsSection = 2;
 
 #pragma mark - Queries
 - (void) queryForLocationData {
-    [self startLoading];
+    [ErrorHandler startLoading:self];
     [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
         if(locationError && (locationError.code != kNoMatchErrorCode)){
             [ErrorHandler showAlertFromViewController:self title:@"Failed to get location" message:locationError.localizedDescription completion:^{
@@ -221,19 +219,8 @@ const int kReviewsSection = 2;
 
 #pragma mark - Private functions
 - (void) endLoading {
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-    }];
+    [ErrorHandler endLoading:self];
     [self.refreshControl endRefreshing];
-}
-
-- (void) startLoading {
-    if(self.presentedViewController){
-        return;
-    }
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LoadingViewController * loadingVC = [storyboard instantiateViewControllerWithIdentifier:@"LoadingViewController"];
-    [self.navigationController presentViewController:loadingVC animated:NO completion:^{
-    }];
 }
 
 @end

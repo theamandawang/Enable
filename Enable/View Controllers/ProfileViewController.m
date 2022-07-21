@@ -8,7 +8,6 @@
 #import "ProfileViewController.h"
 #import "Utilities.h"
 #import "ErrorHandler.h"
-#import "LoadingViewController.h"
 
 @interface ProfileViewController()
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
@@ -18,13 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [ErrorHandler testInternetConnection:self];
-    [self startLoading];
+    [ErrorHandler startLoading:self];
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
     [self getCurrentProfile:^{
         [self getUserProfile];
-        [self endLoading];
+        [ErrorHandler endLoading:self];
     }];
 }
 - (void) getUserProfile {
@@ -83,22 +82,6 @@
 
         }
     } ];
-}
-
-#pragma mark - Private functions
-- (void) endLoading {
-    [self.navigationController dismissViewControllerAnimated:YES completion:^{
-    }];
-}
-
-- (void) startLoading {
-    if(self.presentedViewController){
-        return;
-    }
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    LoadingViewController * loadingVC = [storyboard instantiateViewControllerWithIdentifier:@"LoadingViewController"];
-    [self.navigationController presentViewController:loadingVC animated:NO completion:^{
-    }];
 }
 
 @end

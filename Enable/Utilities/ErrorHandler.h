@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Reachability
 + (void)testInternetConnection: (UIViewController* _Nonnull)vc;
 
+#pragma mark - Loading
++ (void) startLoading: (UIViewController * _Nonnull) vc;
++ (void) endLoading: (UIViewController * _Nonnull) vc;
 
 @end
 

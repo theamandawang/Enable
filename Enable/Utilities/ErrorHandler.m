@@ -6,13 +6,18 @@
 //
 
 #import "ErrorHandler.h"
-
+#import "LoadingViewController.h"
 @implementation ErrorHandler
 Reachability *internetReachable;
 
 + (void) showAlertFromViewController: (UIViewController* _Nonnull)vc title: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nonnull)(void))completion{
-    if(vc.presentedViewController){
+    if ([vc.navigationController.visibleViewController isKindOfClass:[UIAlertController class]]) {
         return;
+    }
+    else if ([vc.navigationController.visibleViewController isKindOfClass:[LoadingViewController class]]){
+        [vc.navigationController dismissViewControllerAnimated:YES completion:^{
+            [ErrorHandler testInternetConnection:vc];
+        }];
     }
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:title
@@ -50,5 +55,21 @@ Reachability *internetReachable;
     };
 
     [internetReachable startNotifier];
+}
+
+#pragma mark - Loading
++ (void) startLoading: (UIViewController * _Nonnull) vc {
+    if(vc.presentedViewController){
+        return;
+    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoadingViewController * loadingVC = [storyboard instantiateViewControllerWithIdentifier:@"LoadingViewController"];
+    [vc.navigationController presentViewController:loadingVC animated:NO completion:^{
+    }];
+}
+
++ (void) endLoading: (UIViewController * _Nonnull) vc {
+    [vc.navigationController dismissViewControllerAnimated:YES completion:^{
+    }];
 }
 @end

@@ -207,6 +207,9 @@ didFailAutocompleteWithError:(NSError *)error {
 
 #pragma mark - ReviewByLocationViewControllerDelegate
 - (void)setGMSCameraCoordinatesWithLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
+    if(!latitude && !longitude){
+        return;
+    }
     [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
     [self updateLocationMarkersWithProjection:self.mapView.mapView.projection radius:self.radiusMiles];
 }
