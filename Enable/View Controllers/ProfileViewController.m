@@ -8,7 +8,7 @@
 #import "ProfileViewController.h"
 #import "Utilities.h"
 
-@interface ProfileViewController()
+@interface ProfileViewController() <ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
 @end
 
@@ -30,6 +30,7 @@
             if(error){
                 [self showAlert:@"Failed to get user" message:error.localizedDescription completion:nil];
             } else {
+                self.profileView.delegate = self;
                 self.profileView.userProfile = userProfile;
                 [self getReviewsByUserProfile:userProfile];
                 [self.profileView reloadUserData];
@@ -37,6 +38,7 @@
             }
         }];
     } else {
+        self.profileView.delegate = self;
         self.profileView.userProfile = self.currentProfile;
         [self getReviewsByUserProfile:self.currentProfile];
         [self.profileView reloadUserData];
@@ -61,7 +63,8 @@
         if(error){
             [self showAlert:@"Failed to get reviews by user" message:error.localizedDescription completion:nil];
         } else {
-            // TODO: handle reviews by this user profile
+            self.profileView.reviews = reviews;
+            [self.profileView reloadUserData];
 
         }
     }];
@@ -76,6 +79,27 @@
 
         }
     } ];
+}
+#pragma mark - ResultsViewDelegate
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
+    [self showAlert:title message:message completion:completion];
+}
+- (void) addLikeFromUserProfile:(UserProfile *)currentProfile review:(Review *)review{
+    [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSError * _Nullable error) {
+        if(error){
+            [self showAlert:@"Failed to like" message:error.localizedDescription completion:nil];
+        }
+    }];
+}
+- (void) removeLikeFromReview:(Review *)review currentUser:(UserProfile *)currentProfile{
+    [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSError * _Nullable error) {
+        if(error){
+            [self showAlert:@"Failed to unlike" message:error.localizedDescription completion:nil];
+        }
+    }];
+}
+- (void) toLogin{
+    [self performSegueWithIdentifier:@"profileToLogin" sender:nil];
 }
 
 @end

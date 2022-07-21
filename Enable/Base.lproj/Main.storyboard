@@ -279,11 +279,12 @@
                     <connections>
                         <outlet property="logOutButton" destination="fVF-0I-Idh" id="tN0-1p-xtS"/>
                         <outlet property="profileView" destination="coL-Q1-gvj" id="V3N-nl-7Bw"/>
+                        <segue destination="yog-pu-u9S" kind="show" identifier="profileToLogin" id="dDK-RE-xwx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXv-o0-HCc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="537" y="422"/>
+            <point key="canvasLocation" x="719" y="464"/>
         </scene>
         <!--Reviews-->
         <scene sceneID="MJ1-pY-JbC">
@@ -513,7 +514,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="22x-Oq-g41"/>
+        <segue reference="dDK-RE-xwx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

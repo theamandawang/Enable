@@ -9,9 +9,10 @@
 #import "ProfileView.h"
 #import "UserProfile.h"
 #import "EnableBaseViewController.h"
+#import "ResultsView.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ProfileViewController : EnableBaseViewController
+@interface ProfileViewController : EnableBaseViewController <ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet ProfileView *profileView;
 @property (strong, nonatomic) id userProfileID;
 @property (strong, nonatomic) UserProfile * currentProfile;

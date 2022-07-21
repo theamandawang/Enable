@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @protocol ResultsViewDelegate
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion;
 - (void) addLikeFromUserProfile: (UserProfile*) currentProfile review: (Review *) review;
 - (void) removeLikeFromReview: (Review*) review currentUser: (UserProfile *) currentProfile;
 - (void) toLogin;

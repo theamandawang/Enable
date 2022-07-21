@@ -42,6 +42,8 @@
 		7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1A288862F5005D857B /* InfoWindowView.m */; };
 		7FD3FF1D28886305005D857B /* InfoWindowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1C28886305005D857B /* InfoWindowView.xib */; };
 		7FD3FF2A288B0172005D857B /* EnableBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF29288B0172005D857B /* EnableBaseViewController.m */; };
+		7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */; };
+		7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -103,6 +105,9 @@
 		7FD3FF1C28886305005D857B /* InfoWindowView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWindowView.xib; sourceTree = "<group>"; };
 		7FD3FF28288B0172005D857B /* EnableBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnableBaseViewController.h; sourceTree = "<group>"; };
 		7FD3FF29288B0172005D857B /* EnableBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnableBaseViewController.m; sourceTree = "<group>"; };
+		7FD3FF23288A10A6005D857B /* ProfileTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewCell.h; sourceTree = "<group>"; };
+		7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewCell.m; sourceTree = "<group>"; };
+		7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +227,9 @@
 				7FD3FF1C28886305005D857B /* InfoWindowView.xib */,
 				7FD3FF19288862F5005D857B /* InfoWindowView.h */,
 				7FD3FF1A288862F5005D857B /* InfoWindowView.m */,
+				7FD3FF23288A10A6005D857B /* ProfileTableViewCell.h */,
+				7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */,
+				7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -317,6 +325,7 @@
 				7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */,
 				7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */,
 				7FA7DECE2874A1A50080E4A9 /* LaunchScreen.storyboard in Resources */,
+				7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */,
 				7FA7DECB2874A1A50080E4A9 /* Assets.xcassets in Resources */,
 				7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */,
 				7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */,
@@ -406,6 +415,7 @@
 				7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */,
 				7F6298E3287C9AAD00A550F4 /* ResultsView.m in Sources */,
 				7F6298C328776DBD00A550F4 /* Location.m in Sources */,
+				7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,
 				7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */,
 				7F841C022876323D00CBD922 /* ProfileView.m in Sources */,
