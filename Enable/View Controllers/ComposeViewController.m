@@ -100,7 +100,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
                 }];
             } else {
                 [ErrorHandler endLoading:self];
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }
         }];
     } else {
