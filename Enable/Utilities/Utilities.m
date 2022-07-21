@@ -21,8 +21,10 @@
 }
 
 const int kCustomizedErrorCode = 0;
+const int kQueryLimit = 3;
 const int kMaxRadius = 50;
-const int kZoomOutRadius = 20;
+const int kMinRadius = 1;
+bool allResultsFound = false;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSError  * _Nullable  error))completion{
     [PFUser logInWithUsernameInBackground:email password:password block:^(PFUser* user, NSError* error){
@@ -188,18 +190,27 @@ const int kZoomOutRadius = 20;
     PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
     double radius = [point distanceInMilesTo:farRightCorner];
+    bool maxRadiusExceeded = false;
+    /* because we limit the max radius, if we are zoomed out enough
+       we won't see locations pop up on the corners of the map
+       if there are no results within that radius, then allResultsFound will become true
+       this is just an additional check!
+     */
     if(radius > kMaxRadius) {
         radius = kMaxRadius;
+        maxRadiusExceeded = true;
     }
-    if(radius > kZoomOutRadius) {
-        [query addDescendingOrder:@"rating"];
-        [query addDescendingOrder:@"reviewCount"];
-        query.limit = 5;
-    }
+    [query addDescendingOrder:@"rating"];
+    [query addDescendingOrder:@"reviewCount"];
     [query whereKey:@"coordinates" nearGeoPoint:point withinMiles:radius];
     [query findObjectsInBackgroundWithBlock:^(NSArray<Location *> * _Nullable dbLocations, NSError * _Nullable error) {
         if(!error){
-            completion(dbLocations, nil);
+            // always query for top X locations; if we are zoomed in far enough, don't limit.
+            NSRange range;
+            range.location = 0;
+            range.length = (dbLocations.count > kQueryLimit && radius > kMinRadius)? kQueryLimit : dbLocations.count;
+            allResultsFound = dbLocations.count <= kQueryLimit && !maxRadiusExceeded;
+            completion([dbLocations subarrayWithRange:range], nil);
         } else {
             NSLog(@"Fail getLocationsFromLatitude longitude %@", error.localizedDescription);
             completion(nil, error);
@@ -207,20 +218,17 @@ const int kZoomOutRadius = 20;
     }];
 }
 + (bool) shouldUpdateLocation: (GMSProjection * _Nonnull) prevProjection currentRegion: (GMSVisibleRegion) currentRegion radius: (double) radius prevRadius: (double) prevRadius {
-    // if the current camera view contains the previous
     if([prevProjection containsCoordinate: currentRegion.farRight] && [prevProjection containsCoordinate: currentRegion.farLeft] && [prevProjection containsCoordinate: currentRegion.nearRight] && [prevProjection containsCoordinate: currentRegion.nearLeft]){
-        // i.e. prevRadius = 70 -> radius = 60 should not cause a refetch
-        if(radius > kMaxRadius) {
-            return false;
-        }
-        // i.e. prevRadius = 30 and radius = 10 or prevRadius = 60 and radius = 40, then refetch
-        else if ((prevRadius > kZoomOutRadius && radius <= kZoomOutRadius ) || (prevRadius >= kMaxRadius && radius < kMaxRadius)) {
-            return true;
-        } else {
+        // all results have been loaded previously! no need
+        if(allResultsFound){
             return false;
         }
     }
-    // otherwise, current camera view isn't in the previously fetched
+    // previously we already fetched everything (for zoom out)
+    if(radius <= kMinRadius && allResultsFound){
+        return false;
+    }
+    // otherwise, refetch
     return true;
 }
 

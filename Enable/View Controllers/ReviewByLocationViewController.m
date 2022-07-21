@@ -175,7 +175,7 @@ const int kReviewsSection = 2;
                         [cell.resultsView presentReview: self.reviews[indexPath.row] byUser: profile];
                     }
                 }];
-                
+
             }
         }];
         return cell;
