@@ -11,6 +11,9 @@
 Reachability *internetReachable;
 
 + (void) showAlertFromViewController: (UIViewController* _Nonnull)vc title: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nonnull)(void))completion{
+    if(vc.presentedViewController){
+        return;
+    }
     UIAlertController * alert = [UIAlertController
                                  alertControllerWithTitle:title
                                  message:message

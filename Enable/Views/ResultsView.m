@@ -14,6 +14,7 @@
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
@@ -50,6 +51,19 @@
 }
 
 - (void) presentReview: (Review * _Nullable) review byUser: (UserProfile * _Nonnull) profile{
+    if(review.images.count > 0){
+        [self.titleTopToProfileBottom setActive: NO];
+        [self.titleTopToImageBottom setActive: YES];
+        [self.photosImageView setHidden: NO];
+        [self layoutIfNeeded];
+        [self setCurrentImage:0];
+    }
+    else {
+        [self.titleTopToImageBottom setActive: NO];
+        [self.titleTopToProfileBottom setActive: YES];
+        [self.photosImageView setHidden: YES];
+        [self layoutIfNeeded];
+    }
     self.imageIndex = 0;
     self.titleLabel.text = review.title;
     self.detailsLabel.text = review.reviewText;
@@ -60,15 +74,6 @@
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
     } else {
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
-    }
-    if(review.images.count > 0){
-        [self setCurrentImage:0];
-    }
-    else {
-        [self.titleTopToImageBottom setActive: NO];
-        [self.photosImageView setHidden: YES];
-        [self.titleLabel.topAnchor constraintEqualToAnchor:self.usernameLabel.bottomAnchor constant:20].active = YES;
-        [self layoutIfNeeded];
     }
 }
 

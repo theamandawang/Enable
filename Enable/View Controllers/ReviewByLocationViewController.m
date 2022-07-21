@@ -14,6 +14,7 @@
 #import "ReviewTableViewCell.h"
 #import <GooglePlaces/GooglePlaces.h>
 #import "ErrorHandler.h"
+#import "LoadingViewController.h"
 
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -21,6 +22,7 @@
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
+//@property (strong, nonatomic) LoadingViewController * loadingVC;
 @end
 
 @implementation ReviewByLocationViewController
@@ -85,11 +87,12 @@ const int kReviewsSection = 2;
 
 #pragma mark - Queries
 - (void) queryForLocationData {
+    [self startLoading];
     [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
         if(locationError && (locationError.code != kNoMatchErrorCode)){
             [ErrorHandler showAlertFromViewController:self title:@"Failed to get location" message:locationError.localizedDescription completion:^{
             }];
-            [self.refreshControl endRefreshing];
+            [self endLoading];
         } else {
             if(location){
                 self.location = location;
@@ -100,10 +103,11 @@ const int kReviewsSection = 2;
                     } else {
                         self.reviews = reviews;
                         [self.tableView reloadData];
+                        [self.tableView sizeToFit];
+
                     }
                 }];
-                [self.refreshControl endRefreshing];
-
+                [self endLoading];
             } else {
                 GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
                 [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
@@ -117,8 +121,10 @@ const int kReviewsSection = 2;
                         self.location.name = [place name];
                         self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
                         [self.tableView reloadData];
+                        [self.tableView sizeToFit];
+
                     }
-                    [self.refreshControl endRefreshing];
+                    [self endLoading];
 
                 }];
             }
@@ -210,6 +216,24 @@ const int kReviewsSection = 2;
             [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
         }
     }
+}
+
+
+#pragma mark - Private functions
+- (void) endLoading {
+    [self.navigationController dismissViewControllerAnimated:YES completion:^{
+    }];
+    [self.refreshControl endRefreshing];
+}
+
+- (void) startLoading {
+    if(self.presentedViewController){
+        return;
+    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoadingViewController * loadingVC = [storyboard instantiateViewControllerWithIdentifier:@"LoadingViewController"];
+    [self.navigationController presentViewController:loadingVC animated:NO completion:^{
+    }];
 }
 
 @end

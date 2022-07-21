@@ -16,6 +16,7 @@
 @implementation MapView
 float preciseLocationZoomLevel = 14;
 float approximateLocationZoomLevel = 10;
+bool didUpdateInitial = false;
 
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -74,15 +75,18 @@ float approximateLocationZoomLevel = 10;
 
 #pragma mark - CLLocationManagerDelegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
-  CLLocation *location = locations.lastObject;
-  NSLog(@"MapView Location Manager Location: %@", location);
+    if(didUpdateInitial){
+        return;
+    }
+    CLLocation *location = locations.lastObject;
+    NSLog(@"MapView Location Manager Location: %@", location);
 
-  float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
-  GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude
+    float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
+    GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude
                                                            longitude:location.coordinate.longitude
                                                                 zoom:zoomLevel];
-
     [self.mapView setCamera:camera];
+    didUpdateInitial = true;
 }
 
 // Handle authorization for the location manager.
