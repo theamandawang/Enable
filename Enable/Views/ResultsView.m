@@ -69,6 +69,7 @@
     self.detailsLabel.text = review.reviewText;
     self.starRatingView.value = review.rating;
     self.usernameLabel.text = profile.username;
+    self.userProfile = profile;
     self.likeCountLabel.text = [NSString stringWithFormat: @"%d", review.likes];
     if(self.liked){
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
@@ -133,6 +134,9 @@
         [self.delegate addLikeFromUserProfile:self.currentProfile review:self.review];
     }
 
+}
+- (IBAction)didTapUser:(id)sender {
+    [self.delegate toProfile:self.userProfile.objectId];
 }
 
 # pragma mark - Private functions

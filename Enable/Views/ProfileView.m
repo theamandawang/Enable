@@ -11,7 +11,6 @@
 #import "Utilities.h"
 @interface ProfileView() <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UILabel *userDisplayNameLabel;
 
 @end
 @implementation ProfileView

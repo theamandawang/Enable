@@ -12,6 +12,7 @@
 #import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
+#import "ProfileViewController.h"
 #import <GooglePlaces/GooglePlaces.h>
 
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
@@ -20,6 +21,7 @@
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
+@property (strong, nonatomic) id userProfileID;
 @end
 
 @implementation ReviewByLocationViewController
@@ -73,6 +75,10 @@ const int kReviewsSection = 2;
 }
 - (void) toLogin{
     [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
+}
+- (void) toProfile: (id) userProfileID {
+    self.userProfileID = userProfileID;
+    [self performSegueWithIdentifier:@"reviewToProfile" sender:nil];
 }
 
 
@@ -135,6 +141,10 @@ const int kReviewsSection = 2;
         ComposeViewController * vc = [segue destinationViewController];
         vc.POI_idStr = self.POI_idStr;
         vc.location = self.location;
+    }
+    if([segue.identifier isEqualToString:@"reviewToProfile"]){
+        ProfileViewController * vc = [segue destinationViewController];
+        vc.userProfileID = self.userProfileID;
     }
 }
 

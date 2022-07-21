@@ -374,6 +374,7 @@
                         <outlet property="tableView" destination="l4v-00-W9T" id="Gfl-I2-d7f"/>
                         <segue destination="FpU-Et-TaW" kind="show" identifier="compose" id="H8M-Gw-tqM"/>
                         <segue destination="yog-pu-u9S" kind="show" identifier="reviewToLogin" id="22x-Oq-g41"/>
+                        <segue destination="u3U-tT-4kE" kind="show" identifier="reviewToProfile" id="F4t-kF-nF8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Jp-b6-Thd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -514,7 +515,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="dDK-RE-xwx"/>
+        <segue reference="F4t-kF-nF8"/>
+        <segue reference="22x-Oq-g41"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>
