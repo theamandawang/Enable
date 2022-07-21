@@ -11,6 +11,7 @@
 #import "Utilities.h"
 @interface ProfileView() <UITableViewDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 @implementation ProfileView
