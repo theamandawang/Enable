@@ -17,6 +17,7 @@
                 <outlet property="photosImageView" destination="3nt-zU-KKQ" id="LVZ-kp-odn"/>
                 <outlet property="titleLabel" destination="Gan-sS-eyd" id="7w6-L1-oDI"/>
                 <outlet property="titleTopToImageBottom" destination="4DR-Ae-7eO" id="SWH-6d-KHQ"/>
+                <outlet property="titleTopToProfileBottom" destination="PwK-Hm-gXa" id="CCl-mT-AUm"/>
                 <outlet property="usernameLabel" destination="oSG-iB-K3w" id="cDm-9Z-C6H"/>
             </connections>
         </placeholder>
@@ -100,6 +101,7 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="3nt-zU-KKQ" secondAttribute="trailing" constant="30" id="Hnr-LX-oaJ"/>
                 <constraint firstItem="Gan-sS-eyd" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="Ivx-7z-4kz"/>
                 <constraint firstItem="8IU-Ud-OVH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Kn6-SU-spu"/>
+                <constraint firstItem="Gan-sS-eyd" firstAttribute="top" secondItem="8IU-Ud-OVH" secondAttribute="bottom" priority="750" constant="30" id="PwK-Hm-gXa"/>
                 <constraint firstItem="dG4-P5-ptH" firstAttribute="leading" secondItem="woy-kx-gfW" secondAttribute="trailing" constant="120" id="QSw-8B-qqy"/>
                 <constraint firstItem="oSG-iB-K3w" firstAttribute="centerY" secondItem="8IU-Ud-OVH" secondAttribute="centerY" id="VfA-pm-TPf"/>
                 <constraint firstItem="8IU-Ud-OVH" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="10" id="coK-Ob-vEK"/>

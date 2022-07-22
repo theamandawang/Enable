@@ -7,14 +7,14 @@
 
 #import <UIKit/UIKit.h>
 #import "ResultsView.h"
-
+#import "EnableBaseViewController.h"
 NS_ASSUME_NONNULL_BEGIN
 @protocol ReviewByLocationViewControllerDelegate
 - (void) setGMSCameraCoordinatesWithLatitude: (CLLocationDegrees) latitude longitude: (CLLocationDegrees) longitude;
 @end
 
 
-@interface ReviewByLocationViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
+@interface ReviewByLocationViewController : EnableBaseViewController <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) id<ReviewByLocationViewControllerDelegate> delegate;
 @property (strong, nonatomic) NSString * POI_idStr;
 @end

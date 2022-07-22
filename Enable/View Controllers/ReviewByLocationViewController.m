@@ -13,7 +13,6 @@
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
 #import <GooglePlaces/GooglePlaces.h>
-#import "ErrorHandler.h"
 
 @interface ReviewByLocationViewController () <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -31,7 +30,6 @@ const int kReviewsSection = 2;
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    [ErrorHandler testInternetConnection:self];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -45,6 +43,7 @@ const int kReviewsSection = 2;
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self testInternetConnection];
     [self queryForLocationData];
 
 }
@@ -58,23 +57,17 @@ const int kReviewsSection = 2;
 
 #pragma mark - ResultsViewDelegate
 
-- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
-    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
-}
-
 - (void) addLikeFromUserProfile:(UserProfile *)currentProfile review:(Review *)review{
     [Utilities addLikeToReview:review fromUserProfile:currentProfile completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to like" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to like" message:error.localizedDescription completion:nil];
         }
     }];
 }
 - (void) removeLikeFromReview:(Review *)review currentUser:(UserProfile *)currentProfile{
     [Utilities removeLikeFromReview:review fromUserProfile:currentProfile completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to unlike" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to unlike" message:error.localizedDescription completion:nil];
         }
     }];
 }
@@ -85,31 +78,30 @@ const int kReviewsSection = 2;
 
 #pragma mark - Queries
 - (void) queryForLocationData {
+    [self startLoading];
     [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
         if(locationError && (locationError.code != kNoMatchErrorCode)){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to get location" message:locationError.localizedDescription completion:^{
-            }];
-            [self.refreshControl endRefreshing];
+            [self showAlert:@"Failed to get location" message:locationError.localizedDescription completion:nil];
+            [self finishLoading];
         } else {
             if(location){
                 self.location = location;
                 [Utilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error) {
                     if(error){
-                        [ErrorHandler showAlertFromViewController:self title:@"Failed to get reviews" message:error.localizedDescription completion:^{
-                        }];
+                        [self showAlert:@"Failed to get reviews" message:error.localizedDescription completion:nil];
                     } else {
                         self.reviews = reviews;
                         [self.tableView reloadData];
+                        [self.tableView sizeToFit];
+
                     }
                 }];
-                [self.refreshControl endRefreshing];
-
+                [self finishLoading];
             } else {
                 GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
                 [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
                     if(error){
-                        [ErrorHandler showAlertFromViewController:self title:@"Failed to get Place data" message:error.localizedDescription completion:^{
-                        }];
+                        [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
                     } else {
                         self.location = [[Location alloc] initWithClassName:@"Location"];
                         self.location.POI_idStr = self.POI_idStr;
@@ -117,9 +109,10 @@ const int kReviewsSection = 2;
                         self.location.name = [place name];
                         self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
                         [self.tableView reloadData];
-                    }
-                    [self.refreshControl endRefreshing];
+                        [self.tableView sizeToFit];
 
+                    }
+                    [self finishLoading];
                 }];
             }
         }
@@ -128,8 +121,7 @@ const int kReviewsSection = 2;
 - (void) getCurrentUserProfile {
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
         if(error && (error.code != 0)){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to get current user" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
         } else {
             self.currentProfile = profile;
         }
@@ -138,10 +130,7 @@ const int kReviewsSection = 2;
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
     if([segue.identifier isEqualToString:@"compose"]){
         ComposeViewController * vc = [segue destinationViewController];
         vc.POI_idStr = self.POI_idStr;
@@ -174,13 +163,11 @@ const int kReviewsSection = 2;
         cell.resultsView.delegate = self;
         [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:@"Failed to get user" message:error.localizedDescription completion:^{
-                }];
+                [self showAlert:@"Failed to get user" message:error.localizedDescription completion:nil];
             } else {
                 [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
                     if(error){
-                        [ErrorHandler showAlertFromViewController:self title:@"Failed to check likes" message:error.localizedDescription completion:^{
-                        }];
+                        [self showAlert:@"Failed to check likes" message:error.localizedDescription completion:nil];
                     } else {
                         cell.resultsView.liked = liked;
                         cell.resultsView.currentProfile = self.currentProfile;
@@ -210,6 +197,13 @@ const int kReviewsSection = 2;
             [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
         }
     }
+}
+
+
+#pragma mark - Private functions
+- (void) finishLoading {
+    [self endLoading];
+    [self.refreshControl endRefreshing];
 }
 
 @end

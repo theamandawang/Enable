@@ -9,7 +9,6 @@
 #import "ComposeViewController.h"
 #import "Parse/PFImageView.h"
 #import "Utilities.h"
-#import "ErrorHandler.h"
 #import "Review.h"
 @interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -32,8 +31,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [ErrorHandler testInternetConnection:self];
-
+    
     self.images = [[NSMutableArray alloc] init];
 
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
@@ -51,8 +49,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
     [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to get Place data" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
         } else {
             self.location = [[Location alloc] initWithClassName:@"Location"];
             self.location.POI_idStr = self.POI_idStr;
@@ -78,8 +75,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
         [self getLocationDataWithCompletion:^{
             [Utilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSError * _Nullable locationError) {
                 if(locationError){
-                    [ErrorHandler showAlertFromViewController:self title:@"Failed to post location" message:locationError.localizedDescription completion:^{
-                    }];
+                    [self showAlert:@"Failed to post location" message:locationError.localizedDescription completion:nil];
                 } else {
                     [Utilities postReviewWithLocation:location rating:rating title:title description:description images:images completion:didPost];
                 }
@@ -91,18 +87,21 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 - (IBAction)didTapSubmit:(id)sender {
+    [self startLoading];
+    [self testInternetConnection];
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
         [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSError * _Nullable error){
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:@"Failed to post review" message:error.localizedDescription completion:^{
-                }];
+                [self endLoading];
+                [self showAlert:@"Failed to post review" message:error.localizedDescription completion:nil];
             } else {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self endLoading];
+                [self.navigationController popViewControllerAnimated:NO];
             }
         }];
     } else {
-        [ErrorHandler showAlertFromViewController:self title:@"Cannot post review" message:@"Please fill in all fields." completion:^{
-        }];
+        [self endLoading];
+        [self showAlert:@"Cannot post review" message:@"Please fill in all fields." completion:nil];
     }
 }
 
@@ -141,11 +140,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 - (void) openCamera {
     if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [ErrorHandler showAlertFromViewController:self title:@"Camera unavailable" message:@"Use photo library instead" completion:^{
-            NSLog(@"Camera unavailable so we will use photo library instead");
+        [self showAlert:@"Camera unavailable" message:@"Use photo library instead" completion:^{
             [self openLibrary];
         }];
-        
         return;
     }
     UIImagePickerController *imagePickerVC = [UIImagePickerController new];
@@ -297,6 +294,5 @@ UITapGestureRecognizer *scrollViewTapGesture;
             completion:nil
     ];
 }
-
 
 @end

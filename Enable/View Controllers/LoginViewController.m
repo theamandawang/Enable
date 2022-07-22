@@ -7,7 +7,6 @@
 
 #import "LoginViewController.h"
 #import "Utilities.h"
-#import "ErrorHandler.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -18,38 +17,42 @@
 @implementation LoginViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [ErrorHandler testInternetConnection:self];
-
 }
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 
 // TODO: consider allowing iCloud Keychain for future development.
 - (void)navigateBack {
-    [self.navigationController popViewControllerAnimated:TRUE];
+    [self endLoading];
+
+    [self.navigationController popViewControllerAnimated:NO];
 }
 - (IBAction)didTapSignUp:(id)sender {
+    [self startLoading];
+    [self testInternetConnection];
     if([self isEmail:self.emailTextField.text] && ![self.passTextField.text isEqualToString:@""]){
         [Utilities signUpWithEmail:self.emailTextField.text password:self.passTextField.text completion:^(NSError * _Nullable error) {
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:@"Failed to sign up" message:error.localizedDescription completion:^{
-                }];
+                [self endLoading];
+                [self showAlert:@"Failed to sign up" message:error.localizedDescription completion:nil];
             } else {
                 [self navigateBack];
             }
         }];
     } else {
-        [ErrorHandler showAlertFromViewController:self title:@"Invalid username/password" message:@"Not a valid email" completion:^{
-        }];
+        [self endLoading];
+        [self showAlert:@"Invalid username/password" message:@"Not a valid email" completion:nil];
     }
     
 }
 
 - (IBAction)didTapLogin:(id)sender {
+    [self startLoading];
+    [self testInternetConnection];
     [Utilities logInWithEmail: self.emailTextField.text password:self.passTextField.text completion:^(NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to login" message:error.localizedDescription completion:^{
-            }];
+            [self endLoading];
+            [self showAlert:@"Failed to login" message:error.localizedDescription completion:nil];
         } else {
             [self navigateBack];
         }
@@ -79,4 +82,5 @@
 - (IBAction)didTapView:(id)sender {
     [self.view endEditing:YES];
 }
+
 @end

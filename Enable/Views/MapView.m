@@ -16,6 +16,7 @@
 @implementation MapView
 float preciseLocationZoomLevel = 14;
 float approximateLocationZoomLevel = 10;
+bool didUpdateInitial = false;
 
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
@@ -66,23 +67,25 @@ float approximateLocationZoomLevel = 10;
     if(CLLocationManager.locationServicesEnabled){
         [self.mapView setCamera: [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14]];
     } else {
-        [self.errorDelegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
-        }];
+        [self.errorDelegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:nil];
     }
 }
 
 
 #pragma mark - CLLocationManagerDelegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
-  CLLocation *location = locations.lastObject;
-  NSLog(@"MapView Location Manager Location: %@", location);
+    if(didUpdateInitial){
+        return;
+    }
+    CLLocation *location = locations.lastObject;
+    NSLog(@"MapView Location Manager Location: %@", location);
 
-  float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
-  GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude
+    float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
+    GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude
                                                            longitude:location.coordinate.longitude
                                                                 zoom:zoomLevel];
-
     [self.mapView setCamera:camera];
+    didUpdateInitial = true;
 }
 
 // Handle authorization for the location manager.
@@ -121,7 +124,7 @@ float approximateLocationZoomLevel = 10;
 // Handle location manager errors.
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [manager stopUpdatingLocation];
-    [self.errorDelegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:^{}];
+    [self.errorDelegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:nil];
     NSLog(@"Error: %@", error.localizedDescription);
 }
 @end
