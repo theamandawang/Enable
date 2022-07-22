@@ -17,30 +17,42 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-3s-pxc" customClass="PFImageView">
-                        <rect key="frame" x="30" y="11.5" width="50" height="47"/>
+                        <rect key="frame" x="30" y="11.5" width="100" height="97"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="sfk-3s-pxc" secondAttribute="height" multiplier="1:1" id="6Gk-q3-H4Z"/>
-                            <constraint firstAttribute="height" constant="50" id="QEz-Ou-ycn"/>
+                            <constraint firstAttribute="width" secondItem="sfk-3s-pxc" secondAttribute="height" multiplier="1:1" id="Vdc-aK-yn5"/>
+                            <constraint firstAttribute="height" constant="100" id="ehc-yK-vcN"/>
                         </constraints>
                     </imageView>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user name" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="ug6-cR-pXC">
-                        <rect key="frame" x="30" y="90" width="40" height="40"/>
+                        <rect key="frame" x="30" y="140" width="95.5" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="yFV-d0-E5g"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
                     </textField>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leU-nZ-pWB">
+                        <rect key="frame" x="414" y="30" width="72" height="31"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="9sZ-Q5-3mc"/>
+                            <constraint firstAttribute="width" secondItem="leU-nZ-pWB" secondAttribute="height" multiplier="72:31" id="WN0-q4-m7I"/>
+                            <constraint firstAttribute="height" constant="31" id="aPM-4C-eIn"/>
+                            <constraint firstAttribute="width" secondItem="leU-nZ-pWB" secondAttribute="height" multiplier="72:31" id="uVo-02-Vz9"/>
+                        </constraints>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="tinted" title="Update"/>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="ug6-cR-pXC" firstAttribute="top" secondItem="sfk-3s-pxc" secondAttribute="bottom" constant="30" id="Jaq-It-rYH"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="ug6-cR-pXC" secondAttribute="bottom" constant="10" id="OAR-4p-LlN"/>
-                    <constraint firstItem="ug6-cR-pXC" firstAttribute="leading" secondItem="sfk-3s-pxc" secondAttribute="leading" id="Qqs-Dj-0G8"/>
-                    <constraint firstItem="sfk-3s-pxc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="YCt-ip-k6X"/>
-                    <constraint firstItem="sfk-3s-pxc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="crN-Oe-TTc"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ug6-cR-pXC" secondAttribute="trailing" constant="30" id="m8y-06-iUa"/>
-                    <constraint firstAttribute="trailing" secondItem="sfk-3s-pxc" secondAttribute="trailing" constant="20" symbolic="YES" id="qYx-g3-ypU"/>
+                    <constraint firstItem="ug6-cR-pXC" firstAttribute="top" secondItem="sfk-3s-pxc" secondAttribute="bottom" constant="30" id="9Wy-Al-Yk0"/>
+                    <constraint firstItem="sfk-3s-pxc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="V15-e3-M6w"/>
+                    <constraint firstAttribute="bottom" secondItem="ug6-cR-pXC" secondAttribute="bottom" constant="30" id="XNy-cv-fTI"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ug6-cR-pXC" secondAttribute="trailing" constant="30" id="Xil-f2-4mh"/>
+                    <constraint firstItem="leU-nZ-pWB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="YuW-YR-T9d"/>
+                    <constraint firstItem="ug6-cR-pXC" firstAttribute="leading" secondItem="sfk-3s-pxc" secondAttribute="leading" id="eYY-Gv-LEg"/>
+                    <constraint firstAttribute="trailing" secondItem="leU-nZ-pWB" secondAttribute="trailing" constant="30" id="jr7-bJ-bjf"/>
+                    <constraint firstItem="sfk-3s-pxc" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="q22-pk-wo6"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>

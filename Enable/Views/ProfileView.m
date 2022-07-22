@@ -14,6 +14,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
+
+//currentProfile = user signed in
+//userProfile = user we are looking at
 @implementation ProfileView
 const int kNumberSections = 2;
 const int kProfileSection = 0;
@@ -60,6 +63,13 @@ const int kProfileSection = 0;
         if(!cell.userProfileImageView.file) {
             cell.userProfileImageView.image = [UIImage systemImageNamed:@"person.fill"];
         }
+        if([self.currentProfile.objectId isEqualToString: self.userProfile.objectId]){
+            // show update button!
+            [cell.contentView setUserInteractionEnabled:YES];
+        } else {
+            // hide update button
+            [cell.contentView setUserInteractionEnabled:NO];
+        }
         cell.userDisplayNameTextField.text = self.userProfile.username;
         return cell;
     } else {
@@ -100,6 +110,15 @@ const int kProfileSection = 0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section != kProfileSection){
         [self.profileDelegate toReviewsByLocation:self.reviews[indexPath.row].locationID.objectId];
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch(section){
+        case kProfileSection:
+            return @"Profile";
+        default:
+            return @"Reviews";
     }
 }
 

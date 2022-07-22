@@ -128,7 +128,7 @@
 }
 - (void) isLikedbyUser: (UserProfile * _Nonnull) profile  review:(Review * _Nonnull) review completion: (void (^_Nonnull)(bool liked, NSError * _Nullable error))completion{
     [Utilities isLikedbyUser:profile review:review completion:^(bool liked, NSError * _Nullable error) {
-        completion(profile, error);
+        completion(liked, error);
     }];
 }
 
