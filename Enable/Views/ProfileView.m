@@ -64,18 +64,20 @@ const int kProfileSection = 0;
         return cell;
     } else {
         ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
-            cell.resultsView.delegate = self.delegate;
+            cell.resultsView.delegate = self.resultsDelegate;
             [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
                 if(error){
-                    [self.delegate showAlertWithTitle:@"Failed to get user" message:error.localizedDescription completion:^{
+                    [self.resultsDelegate showAlertWithTitle:@"Failed to get user" message:error.localizedDescription completion:^{
                     }];
                 } else {
                     [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
                         if(error){
-                            [self.delegate showAlertWithTitle:@"Failed to check likes" message:error.localizedDescription completion:^{
+                            [self.resultsDelegate showAlertWithTitle:@"Failed to check likes" message:error.localizedDescription completion:^{
                             }];
                         } else {
                             cell.resultsView.liked = liked;
+                            [cell.resultsView.profileImageView setUserInteractionEnabled:NO];
+                            [cell.resultsView.usernameLabel setUserInteractionEnabled:NO];
                             cell.resultsView.currentProfile = self.currentProfile;
                             cell.resultsView.review = self.reviews[indexPath.row];
                             [cell.resultsView presentReview: self.reviews[indexPath.row] byUser: profile];
@@ -94,6 +96,11 @@ const int kProfileSection = 0;
             return 1;
         default:
             return self.reviews.count;
+    }
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section != kProfileSection){
+        [self.profileDelegate toReviewsByLocation:self.reviews[indexPath.row].locationID.objectId];
     }
 }
 

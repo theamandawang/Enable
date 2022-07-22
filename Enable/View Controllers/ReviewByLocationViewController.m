@@ -83,46 +83,57 @@ const int kReviewsSection = 2;
 
 
 #pragma mark - Queries
-- (void) queryForLocationData {
-    [self startLoading];
-    [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
-        if(locationError && (locationError.code != kNoMatchErrorCode)){
-            [self showAlert:@"Failed to get location" message:locationError.localizedDescription completion:nil];
-            [self finishLoading];
+
+- (void) getReviewsFromLocation: (Location * _Nonnull) location {
+    self.location = location;
+    [Utilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error) {
+        if(error){
+            [self showAlert:@"Failed to get reviews" message:error.localizedDescription completion:nil];
         } else {
-            if(location){
-                self.location = location;
-                [Utilities getReviewsByLocation:self.location withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error) {
-                    if(error){
-                        [self showAlert:@"Failed to get reviews" message:error.localizedDescription completion:nil];
-                    } else {
-                        self.reviews = reviews;
-                        [self.tableView reloadData];
-                        [self.tableView sizeToFit];
-
-                    }
-                }];
-                [self finishLoading];
-            } else {
-                GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-                [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
-                    if(error){
-                        [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
-                    } else {
-                        self.location = [[Location alloc] initWithClassName:@"Location"];
-                        self.location.POI_idStr = self.POI_idStr;
-                        self.location.address = [place formattedAddress];
-                        self.location.name = [place name];
-                        self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
-                        [self.tableView reloadData];
-                        [self.tableView sizeToFit];
-
-                    }
-                    [self finishLoading];
-                }];
-            }
+            self.reviews = reviews;
+            [self.tableView reloadData];
         }
     }];
+    [self finishLoading];
+}
+- (void) queryForLocationData {
+    [self startLoading];
+    if(self.locationID){
+        [Utilities getLocationFromID:self.locationID withCompletion:^(Location * _Nullable location, NSError * _Nullable error) {
+            if(error){
+                [self showAlert:@"Failed to get location" message:error.localizedDescription completion:nil];
+            } else if (location){
+                [self getReviewsFromLocation : location];
+            }
+        }];
+    } else {
+        [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
+            if(locationError && (locationError.code != kNoMatchErrorCode)){
+                [self showAlert:@"Failed to get location" message:locationError.localizedDescription completion:nil];
+                [self finishLoading];
+            } else {
+                if(location){
+                    [self getReviewsFromLocation : location];
+                } else {
+                    GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
+                    [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
+                        if(error){
+                            [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
+                        } else {
+                            self.location = [[Location alloc] initWithClassName:@"Location"];
+                            self.location.POI_idStr = self.POI_idStr;
+                            self.location.address = [place formattedAddress];
+                            self.location.name = [place name];
+                            self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
+                            [self.tableView reloadData];
+                        }
+                        [self finishLoading];
+
+                    }];
+                }
+            }
+        }];
+    }
 }
 - (void) getCurrentUserProfile {
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
@@ -200,7 +211,11 @@ const int kReviewsSection = 2;
     }
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section == kComposeSection){
+    if(indexPath.section == kSummarySection){
+        [self.delegate setGMSCameraCoordinatesWithLatitude:self.location.coordinates.latitude longitude:self.location.coordinates.longitude];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    else if(indexPath.section == kComposeSection){
         if([PFUser currentUser]){
             [self performSegueWithIdentifier:@"compose" sender:nil];
         } else {

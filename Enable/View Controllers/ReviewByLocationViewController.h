@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ReviewByLocationViewController : EnableBaseViewController <UITableViewDataSource, UITableViewDelegate, ResultsViewDelegate>
 @property (weak, nonatomic) id<ReviewByLocationViewControllerDelegate> delegate;
 @property (strong, nonatomic) NSString * POI_idStr;
+@property (strong, nonatomic) id locationID;
 @end
 
 NS_ASSUME_NONNULL_END

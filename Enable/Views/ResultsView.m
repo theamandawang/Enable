@@ -7,13 +7,11 @@
 
 #import "ResultsView.h"
 #import "UserProfile.h"
-#import "Parse/PFImageView.h"
 #import "Utilities.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
@@ -22,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
-
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property int imageIndex;
 @end
@@ -75,6 +72,19 @@
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
     } else {
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
+    }
+    if(profile.image){
+        self.profileImageView.image = [UIImage systemImageNamed:@"profile.fill"];
+    } else {
+        self.profileImageView.file = profile.image;
+    }
+    if(review.images.count > 0){
+        [self setCurrentImage:0];
+    } else {
+        [self.titleTopToImageBottom setActive: NO];
+        [self.photosImageView setHidden: YES];
+        [self.titleLabel.topAnchor constraintEqualToAnchor:self.usernameLabel.bottomAnchor constant:20].active = YES;
+        [self layoutIfNeeded];
     }
 }
 

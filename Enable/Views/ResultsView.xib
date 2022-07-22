@@ -15,6 +15,7 @@
                 <outlet property="likeCountLabel" destination="dG4-P5-ptH" id="HIg-AH-A65"/>
                 <outlet property="likeImageView" destination="woy-kx-gfW" id="Ha0-1e-Ikx"/>
                 <outlet property="photosImageView" destination="3nt-zU-KKQ" id="LVZ-kp-odn"/>
+                <outlet property="profileImageView" destination="8IU-Ud-OVH" id="ZAv-6B-b4f"/>
                 <outlet property="titleLabel" destination="Gan-sS-eyd" id="7w6-L1-oDI"/>
                 <outlet property="titleTopToImageBottom" destination="4DR-Ae-7eO" id="SWH-6d-KHQ"/>
                 <outlet property="titleTopToProfileBottom" destination="PwK-Hm-gXa" id="CCl-mT-AUm"/>
@@ -77,7 +78,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8IU-Ud-OVH">
+                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="8IU-Ud-OVH" customClass="PFImageView">
                     <rect key="frame" x="10" y="55.5" width="60" height="57"/>
                     <gestureRecognizers/>
                     <constraints>

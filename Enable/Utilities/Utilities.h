@@ -33,6 +33,7 @@
 
 
 #pragma mark Location
++ (void) getLocationFromID: (id _Nonnull ) locationID withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion;
 + (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion;
 + (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSError * _Nullable error))completion;
 #pragma mark Posting

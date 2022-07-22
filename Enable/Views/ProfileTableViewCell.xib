@@ -17,15 +17,15 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-3s-pxc" customClass="PFImageView">
-                        <rect key="frame" x="30" y="11.5" width="100" height="97"/>
+                        <rect key="frame" x="30" y="11.5" width="50" height="47"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="sfk-3s-pxc" secondAttribute="height" multiplier="1:1" id="6Gk-q3-H4Z"/>
-                            <constraint firstAttribute="height" constant="100" id="QEz-Ou-ycn"/>
+                            <constraint firstAttribute="height" constant="50" id="QEz-Ou-ycn"/>
                         </constraints>
                     </imageView>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user name" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="ug6-cR-pXC">
-                        <rect key="frame" x="30" y="140" width="90" height="40"/>
+                        <rect key="frame" x="30" y="90" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="40" id="yFV-d0-E5g"/>
                         </constraints>

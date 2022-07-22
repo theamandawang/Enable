@@ -7,8 +7,9 @@
 
 #import "ProfileViewController.h"
 #import "Utilities.h"
+#import "ReviewByLocationViewController.h"
 
-@interface ProfileViewController() <ResultsViewDelegate>
+@interface ProfileViewController() <ResultsViewDelegate, ProfileViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
 @end
 
@@ -30,15 +31,17 @@
             if(error){
                 [self showAlert:@"Failed to get user" message:error.localizedDescription completion:nil];
             } else {
-                self.profileView.delegate = self;
+                self.profileView.resultsDelegate = self;
+                self.profileView.profileDelegate = self;
                 self.profileView.userProfile = userProfile;
-                [self getReviewsByUserProfile:userProfile];
+                [self getReviewsByUserProfile: userProfile];
                 [self.profileView reloadUserData];
 
             }
         }];
     } else {
-        self.profileView.delegate = self;
+        self.profileView.resultsDelegate = self;
+        self.profileView.profileDelegate = self;
         self.profileView.userProfile = self.currentProfile;
         [self getReviewsByUserProfile:self.currentProfile];
         [self.profileView reloadUserData];
@@ -80,6 +83,17 @@
         }
     } ];
 }
+
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:@"profileToReviews"]){
+        ReviewByLocationViewController * vc = [segue destinationViewController];
+        vc.locationID = sender;
+        vc.delegate =  [self.navigationController.viewControllers objectAtIndex: 0];
+    }
+}
+
+
 #pragma mark - ResultsViewDelegate
 - (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
     [self showAlert:title message:message completion:completion];
@@ -101,5 +115,12 @@
 - (void) toLogin{
     [self performSegueWithIdentifier:@"profileToLogin" sender:nil];
 }
+
+
+#pragma mark - ProfileViewDelegate
+- (void) toReviewsByLocation:(id) locationID{
+    [self performSegueWithIdentifier:@"profileToReviews" sender:locationID];
+}
+
 
 @end

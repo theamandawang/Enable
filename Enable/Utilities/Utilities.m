@@ -172,6 +172,18 @@ bool allResultsFound = false;
 
 #pragma mark Location
 
++ (void) getLocationFromID: (id _Nonnull) locationID withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
+    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    [query getObjectInBackgroundWithId:locationID block:^(PFObject * _Nullable dbLocation, NSError * _Nullable error) {
+        if(!error){
+            completion((Location *)dbLocation, nil);
+        } else {
+            NSLog(@"Fail getLocationFromID %@", error.localizedDescription);
+            completion(nil, error);
+        }
+    }];
+}
+
 + (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
     PFQuery * query = [PFQuery queryWithClassName:@"Location"];
     [query whereKey:@"POI_idStr" equalTo:POI_idStr];
