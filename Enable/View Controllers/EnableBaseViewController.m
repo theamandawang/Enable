@@ -47,6 +47,7 @@
 - (void) startLoading {
     [self.view setUserInteractionEnabled:NO];
     [self hideSubviews:YES];
+    [self.activityView setHidden:NO];
     [self.activityView startAnimating];
 }
 
@@ -81,6 +82,7 @@
 - (void)setupActivityIndicator {
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
     self.activityView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.activityView setHidesWhenStopped:YES];
     [self.view addSubview:self.activityView];
     
     [self.activityView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
