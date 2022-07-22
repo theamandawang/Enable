@@ -65,12 +65,12 @@ const int kProfileSection = 0;
     } else {
         ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
             cell.resultsView.delegate = self.resultsDelegate;
-            [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
+            [self.profileDelegate getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
                 if(error){
                     [self.resultsDelegate showAlertWithTitle:@"Failed to get user" message:error.localizedDescription completion:^{
                     }];
                 } else {
-                    [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
+                    [self.profileDelegate isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
                         if(error){
                             [self.resultsDelegate showAlertWithTitle:@"Failed to check likes" message:error.localizedDescription completion:^{
                             }];
@@ -86,7 +86,6 @@ const int kProfileSection = 0;
                     
                 }
             }];
-        NSLog(@"%@", self.reviews[indexPath.row].title);
             return cell;
     }
 }

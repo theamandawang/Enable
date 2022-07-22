@@ -121,6 +121,15 @@
 - (void) toReviewsByLocation:(id) locationID{
     [self performSegueWithIdentifier:@"profileToReviews" sender:locationID];
 }
-
+- (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion{
+    [Utilities getUserProfileFromID:userProfileID withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
+        completion(profile, error);
+    }];
+}
+- (void) isLikedbyUser: (UserProfile * _Nonnull) profile  review:(Review * _Nonnull) review completion: (void (^_Nonnull)(bool liked, NSError * _Nullable error))completion{
+    [Utilities isLikedbyUser:profile review:review completion:^(bool liked, NSError * _Nullable error) {
+        completion(profile, error);
+    }];
+}
 
 @end
