@@ -224,10 +224,6 @@ bool allResultsFound = false;
             return false;
         }
     }
-    // previously we already fetched everything (for zoom out)
-    if(radius <= kMinRadius && allResultsFound){
-        return false;
-    }
     // otherwise, refetch
     return true;
 }
