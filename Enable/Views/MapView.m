@@ -17,7 +17,6 @@
 float preciseLocationZoomLevel = 14;
 float approximateLocationZoomLevel = 10;
 bool didUpdateInitial = false;
-
 - (instancetype) initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if (self){
@@ -82,8 +81,8 @@ bool didUpdateInitial = false;
 
     float zoomLevel = self.locationManager.accuracyAuthorization == CLAccuracyAuthorizationFullAccuracy ? preciseLocationZoomLevel : approximateLocationZoomLevel;
     GMSCameraPosition * camera = [GMSCameraPosition cameraWithLatitude:location.coordinate.latitude
-                                                           longitude:location.coordinate.longitude
-                                                                zoom:zoomLevel];
+                                                    longitude:location.coordinate.longitude
+                                                    zoom:zoomLevel];
     [self.mapView setCamera:camera];
     didUpdateInitial = true;
 }
