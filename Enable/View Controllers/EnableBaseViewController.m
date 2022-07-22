@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    [self setupActivityIndicator];
     [self testInternetConnection];
 }
 
@@ -45,20 +45,15 @@
 
 #pragma mark - Loading
 - (void) startLoading {
-    [self.view.subviews setValue:@0.2 forKeyPath:@"alpha"];
-    self.activityView.center = self.view.center;
-    [self.activityView setHidesWhenStopped:YES];
-    [self.view addSubview:self.activityView];
-    [self.activityView setAlpha:1.0];
     [self.view setUserInteractionEnabled:NO];
+    [self hideSubviews:YES];
     [self.activityView startAnimating];
 }
 
 - (void) endLoading {
-    [self.view setUserInteractionEnabled:YES];
+    [self hideSubviews:NO];
     [self.activityView stopAnimating];
-    [self.activityView removeFromSuperview];
-    [self.view.subviews setValue:@1.0 forKeyPath:@"alpha"];
+    [self.view setUserInteractionEnabled:YES];
 }
 
 #pragma mark - Reachability
@@ -80,4 +75,24 @@
 
     [self.internetReachable startNotifier];
 }
+
+#pragma mark - Private
+
+- (void)setupActivityIndicator {
+    self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    self.activityView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.activityView];
+    
+    [self.activityView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
+    [self.activityView.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor].active = YES;
+    [self.activityView.widthAnchor constraintEqualToConstant:40].active = YES;
+    [self.activityView.heightAnchor constraintEqualToConstant:40].active = YES;
+}
+
+- (void)hideSubviews: (BOOL)hidden {
+    for (UIView* view in self.view.subviews) {
+        [view setHidden:hidden];
+    }
+}
+
 @end
