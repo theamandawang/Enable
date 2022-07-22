@@ -7,9 +7,10 @@
 
 #import <UIKit/UIKit.h>
 #import <GoogleMaps/GoogleMaps.h>
-#import "ErrorHandler.h"
 NS_ASSUME_NONNULL_BEGIN
-
+@protocol ViewErrorHandle
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nullable)(void))completion;
+@end
 @interface MapView : UIView <CLLocationManagerDelegate>
 @property (weak, nonatomic) id<ViewErrorHandle> errorDelegate;
 @property (strong, nonatomic) GMSMapView *mapView;

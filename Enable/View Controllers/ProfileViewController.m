@@ -7,7 +7,6 @@
 
 #import "ProfileViewController.h"
 #import "Utilities.h"
-#import "ErrorHandler.h"
 
 @interface ProfileViewController()
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
@@ -16,22 +15,20 @@
 @implementation ProfileViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [ErrorHandler testInternetConnection:self];
-    [ErrorHandler startLoading:self.view];
+    [self startLoading];
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
     [self getCurrentProfile:^{
         [self getUserProfile];
-        [ErrorHandler endLoading:self.view];
+        [self endLoading];
     }];
 }
 - (void) getUserProfile {
     if(self.userProfileID){
         [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
             if(error){
-                [ErrorHandler showAlertFromViewController:self title:@"Failed to get user" message:error.localizedDescription completion:^{
-                }];
+                [self showAlert:@"Failed to get user" message:error.localizedDescription completion:nil];
             } else {
                 self.profileView.userProfile = userProfile;
                 [self getReviewsByUserProfile:userProfile];
@@ -50,8 +47,7 @@
 - (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to get current user" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
         } else {
             self.currentProfile = profile;
             self.profileView.currentProfile = profile;
@@ -63,8 +59,7 @@
 - (void) getReviewsByUserProfile: (UserProfile *) userProfile {
     [Utilities getReviewsByUserProfile:userProfile withCompletion:^(NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to get reviews by user" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to get reviews by user" message:error.localizedDescription completion:nil];
         } else {
             // TODO: handle reviews by this user profile
 
@@ -75,8 +70,7 @@
 - (IBAction)didTapLogout:(id)sender {
     [Utilities logOutWithCompletion:^(NSError * _Nullable error){
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to log out" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to log out" message:error.localizedDescription completion:nil];
         } else {
             [self.navigationController popToRootViewControllerAnimated:TRUE];
 

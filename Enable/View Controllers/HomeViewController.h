@@ -9,9 +9,10 @@
 #import <GoogleMaps/GoogleMaps.h>
 #import <GooglePlaces/GooglePlaces.h>
 #import "ReviewByLocationViewController.h"
+#import "EnableBaseViewController.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface HomeViewController : UIViewController <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate>
+@interface HomeViewController : EnableBaseViewController <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate>
 
 @end
 

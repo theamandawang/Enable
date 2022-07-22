@@ -67,8 +67,7 @@ bool didUpdateInitial = false;
     if(CLLocationManager.locationServicesEnabled){
         [self.mapView setCamera: [GMSCameraPosition cameraWithLatitude:self.mapView.myLocation.coordinate.latitude longitude:self.mapView.myLocation.coordinate.longitude zoom:14]];
     } else {
-        [self.errorDelegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:^{
-        }];
+        [self.errorDelegate showAlertWithTitle:@"No location access" message:@"Some features of this app will not work." completion:nil];
     }
 }
 
@@ -125,7 +124,7 @@ bool didUpdateInitial = false;
 // Handle location manager errors.
 - (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
     [manager stopUpdatingLocation];
-    [self.errorDelegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:^{}];
+    [self.errorDelegate showAlertWithTitle:@"Location Manager Failed" message:error.localizedDescription completion:nil];
     NSLog(@"Error: %@", error.localizedDescription);
 }
 @end

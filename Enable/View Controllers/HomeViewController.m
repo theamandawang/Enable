@@ -10,7 +10,6 @@
 #import "Location.h"
 #import "ProfileViewController.h"
 #import "Utilities.h"
-#import "ErrorHandler.h"
 #import "InfoWindowView.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
@@ -27,7 +26,6 @@
 GMSMarker *infoMarker;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [ErrorHandler testInternetConnection:self];
     self.mapView.errorDelegate = self;
     self.mapView.mapView.delegate = self;
     [self setUpSearch];
@@ -114,8 +112,7 @@ GMSMarker *infoMarker;
 - (void)resultsController:(GMSAutocompleteResultsViewController *)resultsController
 didFailAutocompleteWithError:(NSError *)error {
     [self dismissViewControllerAnimated:YES completion:nil];
-    [ErrorHandler showAlertFromViewController:self title:@"Cannot Autocomplete" message:[error description] completion:^{
-    }];
+    [self showAlert:@"Cannot Autocomplete" message:[error description] completion:nil];
 }
 
 - (void)mapView:(GMSMapView *)mapView idleAtCameraPosition:(GMSCameraPosition *)position{
@@ -150,8 +147,7 @@ didFailAutocompleteWithError:(NSError *)error {
     NSLog(@"camera position %f,%f", self.mapView.mapView.camera.target.latitude, self.mapView.mapView.camera.target.longitude);
     [Utilities getLocationsFromLocation:self.mapView.mapView.camera.target corner:self.mapView.mapView.projection.visibleRegion.farRight withCompletion:^(NSArray<Location *> * _Nullable locations, NSError * _Nullable error) {
         if(error){
-            [ErrorHandler showAlertFromViewController:self title:@"Failed to get nearby locations" message:error.localizedDescription completion:^{
-            }];
+            [self showAlert:@"Failed to get nearby locations" message:error.localizedDescription completion:nil];
         }
         else if(locations){
             for(int i = 0; i < locations.count; i++){
@@ -178,11 +174,11 @@ didFailAutocompleteWithError:(NSError *)error {
 }
 
 -(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
-    [ErrorHandler startLoading:resultsController.view];
+    [self startLoading];
 }
 - (void)didUpdateAutocompletePredictionsForResultsController:
     (GMSAutocompleteResultsViewController *)resultsController {
-    [ErrorHandler endLoading:resultsController.view];
+    [self endLoading];
 }
 - (IBAction)didTapProfile:(id)sender {
     if([PFUser currentUser]){
@@ -201,8 +197,8 @@ didFailAutocompleteWithError:(NSError *)error {
 }
 
 #pragma mark - ViewErrorHandle
-- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nonnull)(void))completion{
-    [ErrorHandler showAlertFromViewController:self title:title message:message completion:completion];
+- (void) showAlertWithTitle: (NSString *) title message: (NSString * _Nonnull) message completion: (void (^ _Nullable)(void))completion{
+    [self showAlert:title message:message completion:completion];
 }
 
 #pragma mark - ReviewByLocationViewControllerDelegate
