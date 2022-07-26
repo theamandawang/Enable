@@ -11,5 +11,6 @@
 @property (nonatomic, strong) PFUser * _Nonnull userID;
 @property (nonatomic, strong) NSString * _Nonnull email;
 @property (nonatomic, strong) NSString * _Nonnull username;
-@property (nonatomic, strong) PFFileObject *_Nullable image;
+@property (nonatomic, strong) PFFileObject * _Nullable image;
+@property (nonatomic, strong) NSString * _Nullable theme;
 @end

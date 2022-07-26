@@ -27,6 +27,7 @@
 		7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
+		7F8C5350288B9DB5007A18AA /* Themes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F8C534F288B9DB5007A18AA /* Themes.plist */; };
 		7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */; };
 		7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC22874A1A50080E4A9 /* SceneDelegate.m */; };
 		7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC72874A1A50080E4A9 /* Main.storyboard */; };
@@ -79,6 +80,7 @@
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7F841BFA28762FA700CBD922 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
+		7F8C534F288B9DB5007A18AA /* Themes.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Themes.plist; sourceTree = "<group>"; };
 		7FA7DEBB2874A1A50080E4A9 /* Enable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Enable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7DEBE2874A1A50080E4A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				7F6298F0287D1A7000A550F4 /* Utilities.m */,
 				7F6E9DAF28876D4C00EC4C27 /* Reachability.m */,
 				7F6E9DB128876D6400EC4C27 /* Reachability.h */,
+				7F8C534F288B9DB5007A18AA /* Themes.plist */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				7FA7DED82874A87A0080E4A9 /* Keys.plist in Resources */,
 				7FD3FF1D28886305005D857B /* InfoWindowView.xib in Resources */,
 				7F6298CE28779C2C00A550F4 /* 3xTransparentLogo.png in Resources */,
+				7F8C5350288B9DB5007A18AA /* Themes.plist in Resources */,
 				7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */,
 				7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */,
 				7F6298E0287C99CB00A550F4 /* ReviewTableViewCell.xib in Resources */,

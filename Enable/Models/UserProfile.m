@@ -13,6 +13,7 @@
     @dynamic email;
     @dynamic username;
     @dynamic image;
+    @dynamic theme;
     
 + (nonnull NSString *)parseClassName {
     return @"UserProfile";
