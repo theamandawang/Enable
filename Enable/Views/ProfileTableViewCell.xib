@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,42 +13,42 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ProfileCell" rowHeight="303" id="KGk-i7-Jjw" customClass="ProfileTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="516" height="303"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="516" height="303"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-3s-pxc" customClass="PFImageView">
+                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="sfk-3s-pxc" customClass="PFImageView">
                         <rect key="frame" x="30" y="11.5" width="100" height="97"/>
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="sfk-3s-pxc" secondAttribute="height" multiplier="1:1" id="Vdc-aK-yn5"/>
-                            <constraint firstAttribute="height" constant="100" id="ehc-yK-vcN"/>
+                            <constraint firstAttribute="height" constant="100" id="WzR-my-cDi"/>
                         </constraints>
                     </imageView>
                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="user name" textAlignment="natural" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="ug6-cR-pXC">
-                        <rect key="frame" x="30" y="140" width="95.5" height="40"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="40" id="yFV-d0-E5g"/>
-                        </constraints>
+                        <rect key="frame" x="30" y="140" width="95.5" height="34"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <action selector="didEdit:" destination="KGk-i7-Jjw" eventType="editingChanged" id="He1-G5-rcv"/>
+                        </connections>
                     </textField>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leU-nZ-pWB">
-                        <rect key="frame" x="414" y="30" width="72" height="31"/>
+                        <rect key="frame" x="414.5" y="30" width="71.5" height="40"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="9sZ-Q5-3mc"/>
-                            <constraint firstAttribute="width" secondItem="leU-nZ-pWB" secondAttribute="height" multiplier="72:31" id="WN0-q4-m7I"/>
-                            <constraint firstAttribute="height" constant="31" id="aPM-4C-eIn"/>
-                            <constraint firstAttribute="width" secondItem="leU-nZ-pWB" secondAttribute="height" multiplier="72:31" id="uVo-02-Vz9"/>
+                            <constraint firstAttribute="height" constant="40" id="aPM-4C-eIn"/>
                         </constraints>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="tinted" title="Update"/>
+                        <connections>
+                            <action selector="didTapUpdate:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="aFP-6D-kPG"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="ug6-cR-pXC" firstAttribute="top" secondItem="sfk-3s-pxc" secondAttribute="bottom" constant="30" id="9Wy-Al-Yk0"/>
                     <constraint firstItem="sfk-3s-pxc" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="V15-e3-M6w"/>
-                    <constraint firstAttribute="bottom" secondItem="ug6-cR-pXC" secondAttribute="bottom" constant="30" id="XNy-cv-fTI"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ug6-cR-pXC" secondAttribute="bottom" constant="30" id="XNy-cv-fTI"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ug6-cR-pXC" secondAttribute="trailing" constant="30" id="Xil-f2-4mh"/>
                     <constraint firstItem="leU-nZ-pWB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="YuW-YR-T9d"/>
                     <constraint firstItem="ug6-cR-pXC" firstAttribute="leading" secondItem="sfk-3s-pxc" secondAttribute="leading" id="eYY-Gv-LEg"/>

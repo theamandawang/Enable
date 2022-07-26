@@ -249,18 +249,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="coL-Q1-gvj" customClass="ProfileView">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qLq-lo-sUn">
                                 <rect key="frame" x="0.0" y="44" width="428" height="828"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hcF-lx-7Vv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="coL-Q1-gvj" firstAttribute="leading" secondItem="hcF-lx-7Vv" secondAttribute="leading" id="KvC-km-caL"/>
-                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="bottom" secondItem="coL-Q1-gvj" secondAttribute="bottom" id="XeH-aK-8G2"/>
-                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="trailing" secondItem="coL-Q1-gvj" secondAttribute="trailing" id="Z0Z-uB-2nr"/>
-                            <constraint firstItem="coL-Q1-gvj" firstAttribute="top" secondItem="hcF-lx-7Vv" secondAttribute="top" id="brb-IA-ROf"/>
+                            <constraint firstItem="qLq-lo-sUn" firstAttribute="top" secondItem="hcF-lx-7Vv" secondAttribute="top" id="Cs1-ef-ze6"/>
+                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="bottom" secondItem="qLq-lo-sUn" secondAttribute="bottom" id="PS4-pg-ajr"/>
+                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="trailing" secondItem="qLq-lo-sUn" secondAttribute="trailing" id="W3H-BG-RDp"/>
+                            <constraint firstItem="qLq-lo-sUn" firstAttribute="leading" secondItem="hcF-lx-7Vv" secondAttribute="leading" id="Z85-v2-eH7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lt6-67-KsW">
@@ -278,7 +278,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="logOutButton" destination="fVF-0I-Idh" id="tN0-1p-xtS"/>
-                        <outlet property="profileView" destination="coL-Q1-gvj" id="V3N-nl-7Bw"/>
+                        <outlet property="tableView" destination="qLq-lo-sUn" id="NfZ-bp-S21"/>
                         <segue destination="yog-pu-u9S" kind="show" identifier="profileToLogin" id="dDK-RE-xwx"/>
                         <segue destination="kIY-s4-3bw" kind="show" identifier="profileToReviews" id="Xei-Q3-xVF"/>
                     </connections>
@@ -518,7 +518,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="Xei-Q3-xVF"/>
         <segue reference="F4t-kF-nF8"/>
-        <segue reference="22x-Oq-g41"/>
+        <segue reference="dDK-RE-xwx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

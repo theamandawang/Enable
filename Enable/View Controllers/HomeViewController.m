@@ -63,8 +63,11 @@ GMSMarker *infoMarker;
     self.searchController.searchBar.placeholder = @"Search location...";
 }
 #pragma mark - Navigation
-
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([self.searchController isActive]){
+        [self.searchController dismissViewControllerAnimated:YES completion:^{
+        }];
+    }
     if([segue.identifier isEqualToString:@"review"]){
         ReviewByLocationViewController* vc = [segue destinationViewController];
         vc.delegate = self;

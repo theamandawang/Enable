@@ -52,14 +52,13 @@
         [self.titleTopToProfileBottom setActive: NO];
         [self.titleTopToImageBottom setActive: YES];
         [self.photosImageView setHidden: NO];
-        [self layoutIfNeeded];
+        [self.photosImageView setNeedsLayout];
         [self setCurrentImage:0];
     }
     else {
         [self.titleTopToImageBottom setActive: NO];
         [self.titleTopToProfileBottom setActive: YES];
         [self.photosImageView setHidden: YES];
-        [self layoutIfNeeded];
     }
     self.imageIndex = 0;
     self.titleLabel.text = review.title;
@@ -74,18 +73,13 @@
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
     }
     if(profile.image){
-        self.profileImageView.image = [UIImage systemImageNamed:@"profile.fill"];
-    } else {
         self.profileImageView.file = profile.image;
-    }
-    if(review.images.count > 0){
-        [self setCurrentImage:0];
+        [self.profileImageView loadInBackground];
     } else {
-        [self.titleTopToImageBottom setActive: NO];
-        [self.photosImageView setHidden: YES];
-        [self.titleLabel.topAnchor constraintEqualToAnchor:self.usernameLabel.bottomAnchor constant:20].active = YES;
-        [self layoutIfNeeded];
+        self.profileImageView.image = [UIImage systemImageNamed:@"person.fill"];
     }
+    [self layoutIfNeeded];
+
 }
 
 
@@ -146,7 +140,9 @@
 
 }
 - (IBAction)didTapUser:(id)sender {
-    [self.delegate toProfile:self.userProfile.objectId];
+    if(self.userProfile){
+        [self.delegate toProfile:self.userProfile.objectId];
+    }
 }
 
 # pragma mark - Private functions

@@ -8,12 +8,24 @@
 #import "ProfileViewController.h"
 #import "Utilities.h"
 #import "ReviewByLocationViewController.h"
-
-@interface ProfileViewController() <ResultsViewDelegate, ProfileViewDelegate>
+#import "Review.h"
+#import "ReviewTableViewCell.h"
+@interface ProfileViewController() <ResultsViewDelegate, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ProfileDelegate>
+@property (strong, nonatomic) UserProfile * userProfile;
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
+@property (strong, nonatomic) NSMutableArray<Review *> * reviews;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) ProfileTableViewCell *profileCell;
 @end
 
 @implementation ProfileViewController
+const int kNumberSections = 2;
+const int kProfileSection = 0;
+
+bool imageUpdated = false;
+bool userUpdated = false;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self startLoading];
@@ -22,8 +34,13 @@
     }
     [self getCurrentProfile:^{
         [self getUserProfile];
-        [self endLoading];
     }];
+    UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
+    UINib *nib2 = [UINib nibWithNibName:@"ProfileTableViewCell" bundle:nil];
+    [self.tableView registerNib:nib2 forCellReuseIdentifier:@"ProfileCell"];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
 }
 - (void) getUserProfile {
     if(self.userProfileID){
@@ -31,33 +48,25 @@
             if(error){
                 [self showAlert:@"Failed to get user" message:error.localizedDescription completion:nil];
             } else {
-                self.profileView.resultsDelegate = self;
-                self.profileView.profileDelegate = self;
-                self.profileView.userProfile = userProfile;
+                self.userProfile = userProfile;
                 [self getReviewsByUserProfile: userProfile];
-                [self.profileView reloadUserData];
 
             }
         }];
     } else {
-        self.profileView.resultsDelegate = self;
-        self.profileView.profileDelegate = self;
-        self.profileView.userProfile = self.currentProfile;
         [self getReviewsByUserProfile:self.currentProfile];
-        [self.profileView reloadUserData];
+        self.userProfile = self.currentProfile;
     }
-
 }
 
 - (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-        if(error){
+        if(error && (error.code != 0)){
             [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
         } else {
             self.currentProfile = profile;
-            self.profileView.currentProfile = profile;
-            completion();
         }
+        completion();
     }];
 }
 
@@ -66,10 +75,10 @@
         if(error){
             [self showAlert:@"Failed to get reviews by user" message:error.localizedDescription completion:nil];
         } else {
-            self.profileView.reviews = reviews;
-            [self.profileView reloadUserData];
-
+            self.reviews = reviews;
         }
+        [self endLoading];
+        [self.tableView reloadData];
     }];
 }
 
@@ -116,20 +125,158 @@
     [self performSegueWithIdentifier:@"profileToLogin" sender:nil];
 }
 
+# pragma mark - Table View
 
-#pragma mark - ProfileViewDelegate
-- (void) toReviewsByLocation:(id) locationID{
-    [self performSegueWithIdentifier:@"profileToReviews" sender:locationID];
-}
-- (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion{
-    [Utilities getUserProfileFromID:userProfileID withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-        completion(profile, error);
-    }];
-}
-- (void) isLikedbyUser: (UserProfile * _Nonnull) profile  review:(Review * _Nonnull) review completion: (void (^_Nonnull)(bool liked, NSError * _Nullable error))completion{
-    [Utilities isLikedbyUser:profile review:review completion:^(bool liked, NSError * _Nullable error) {
-        completion(liked, error);
-    }];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return kNumberSections;
 }
 
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+    if(indexPath.section == kProfileSection) {
+        ProfileTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
+        if(!self.userProfile.image) {
+            cell.userProfileImageView.image = [UIImage systemImageNamed:@"person.fill"];
+        } else {
+            cell.userProfileImageView.file = self.userProfile.image;
+            [cell.userProfileImageView loadInBackground];
+        }
+        if([self.currentProfile.objectId isEqualToString: self.userProfile.objectId]){
+            // show update button!
+            [cell.contentView setUserInteractionEnabled:YES];
+        } else {
+            // hide update button
+            [cell.contentView setUserInteractionEnabled:NO];
+        }
+        cell.userDisplayNameTextField.text = self.userProfile.username;
+        cell.delegate = self;
+        self.profileCell = cell;
+        return cell;
+    } else {
+        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+        cell.resultsView.delegate = self;
+        cell.resultsView.userProfile = self.userProfile;
+        [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
+            if(error){
+                [self showAlert:@"Failed to check likes" message:error.localizedDescription completion:nil];
+            } else {
+                cell.resultsView.liked = liked;
+                cell.resultsView.currentProfile = self.currentProfile;
+                [cell.resultsView.profileImageView setUserInteractionEnabled:NO];
+                [cell.resultsView.usernameLabel setUserInteractionEnabled:NO];
+                cell.resultsView.review = self.reviews[indexPath.row];
+                [cell.resultsView presentReview: self.reviews[indexPath.row] byUser: self.userProfile];
+            }
+        }];
+        return cell;
+    }
+}
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    switch(section){
+        case kProfileSection:
+            return 1;
+        default:
+            return self.reviews.count;
+    }
+}
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section != kProfileSection){
+        [self performSegueWithIdentifier:@"profileToReviews" sender:self.reviews[indexPath.row].locationID.objectId];
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    switch(section){
+        case kProfileSection:
+            return @"Profile";
+        default:
+            return @"Reviews";
+    }
+}
+
+#pragma mark - ImagePicker / Camera
+- (void)didTapPhoto {
+    UIAlertController *alert =
+        [UIAlertController
+                    alertControllerWithTitle:@"Upload Photo or Take Photo"
+                    message:@"Would you like to upload a photo from your photos library or take one with your camera?"
+                    preferredStyle:(UIAlertControllerStyleAlert)
+        ];
+    UIAlertAction *cancelAction = [UIAlertAction
+                                   actionWithTitle:@"Cancel"
+                                   style:UIAlertActionStyleCancel
+                                   handler:^(UIAlertAction * _Nonnull action) {
+                                        // handle cancel response here. Doing nothing will dismiss the view.
+                                    }];
+    [alert addAction:cancelAction];
+    UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Use Camera"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+        [self openCamera];
+                                                      }];
+    [alert addAction:cameraAction];
+    UIAlertAction *libraryAction = [UIAlertAction
+                                    actionWithTitle:@"Use Library"
+                                    style:UIAlertActionStyleDefault
+                                    handler:^(UIAlertAction * _Nonnull action) {
+                                        [self openLibrary];
+                                    }];
+    [alert addAction:libraryAction];
+    [self presentViewController:alert animated:YES completion:^{
+        // optional code for what happens after the alert controller has finished presenting
+    }];
+
+}
+- (void) openCamera {
+    if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [self showAlert:@"Camera unavailable" message:@"Use photo library instead" completion:^{
+            [self openLibrary];
+        }];
+        return;
+    }
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+- (void) openLibrary {
+    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    imagePickerVC.delegate = self;
+    imagePickerVC.allowsEditing = YES;
+    imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+
+    [self presentViewController:imagePickerVC animated:YES completion:nil];
+}
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
+
+    // Get the image captured by the UIImagePickerController
+    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
+    UIImage *editedImage = info[UIImagePickerControllerEditedImage];
+    self.profileCell.userProfileImageView.image = editedImage;
+    imageUpdated = true;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void) didEdit {
+    userUpdated = true;
+}
+
+- (void) didTapUpdate {
+    // update profile
+    UIImage * img = imageUpdated ? self.profileCell.userProfileImageView.image : nil;
+    NSString * user = userUpdated ? self.profileCell.userDisplayNameTextField.text : nil;
+    if(imageUpdated || userUpdated){
+        [self startLoading];
+        [Utilities updateUserProfile:self.userProfile withUser:user withImage:img withCompletion:^(NSError * _Nullable error) {
+            if(error){
+                [self showAlert:@"Failed update profile" message:error.localizedDescription completion:nil];
+            } else {
+                imageUpdated = false;
+                userUpdated = false;
+            }
+            [self getReviewsByUserProfile:self.userProfile];
+        }];
+    }
+}
 @end
