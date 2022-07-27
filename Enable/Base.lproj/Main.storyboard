@@ -64,26 +64,26 @@
             </objects>
             <point key="canvasLocation" x="-461" y="45"/>
         </scene>
-        <!--View Controller-->
+        <!--Color View Controller-->
         <scene sceneID="AUD-4C-sN4">
             <objects>
-                <viewController id="yBB-iw-IJY" sceneMemberID="viewController">
+                <viewController id="yBB-iw-IJY" customClass="ColorViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rhw-ce-kcm">
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="color palette" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F3X-X0-eaV">
-                                <rect key="frame" x="20" y="112" width="96" height="70"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wkv-Or-3YO">
+                                <rect key="frame" x="0.0" y="225" width="428" height="162"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wPt-hn-MF1"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="1yH-d9-YTi"/>
+                    <connections>
+                        <outlet property="themePicker" destination="Wkv-Or-3YO" id="6eD-kN-0iP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geL-4L-Zaw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -156,7 +156,7 @@
                                                     <constraint firstAttribute="height" constant="40" id="c0Q-A9-Mvs"/>
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="tinted" title="Sign Up">
+                                                <buttonConfiguration key="configuration" style="plain" title="Sign Up">
                                                     <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
                                                 </buttonConfiguration>
                                                 <connections>
@@ -169,7 +169,7 @@
                                                     <constraint firstAttribute="height" constant="40" id="S0m-Js-ZhU"/>
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="tinted" title="Login">
+                                                <buttonConfiguration key="configuration" style="plain" title="Login">
                                                     <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
                                                 </buttonConfiguration>
                                                 <connections>
@@ -407,10 +407,13 @@
                                         </connections>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sb9-tz-kyI">
-                                        <rect key="frame" x="20" y="519" width="388" height="47"/>
+                                        <rect key="frame" x="20" y="519" width="388" height="48.666666666666629"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Submit"/>
+                                        <buttonConfiguration key="configuration" style="tinted" title="Submit">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="29"/>
+                                        </buttonConfiguration>
                                         <connections>
                                             <action selector="didTapSubmit:" destination="FpU-Et-TaW" eventType="touchUpInside" id="GeV-uC-IS4"/>
                                         </connections>

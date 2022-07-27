@@ -8,7 +8,6 @@
 #import "ReviewByLocationViewController.h"
 #import "Review.h"
 #import "UserProfile.h"
-#import "Utilities.h"
 #import "ComposeViewController.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"

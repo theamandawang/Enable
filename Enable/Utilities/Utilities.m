@@ -137,6 +137,22 @@ bool allResultsFound = false;
     }];
 }
 
+
++ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withTheme : (NSString * _Nonnull) theme withCompletion: (void (^_Nullable) (NSError * _Nullable error)) completion {
+    userProfile.theme = theme;
+    [userProfile saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+            if(error){
+                completion(error);
+            } else if (!succeeded){
+                NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Unable to update cloud with theme"}];
+                completion(customError);
+            } else {
+                NSLog(@"Success");
+                completion(nil);
+            }
+    }];
+}
+
 #pragma mark Review
 
 + (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review, NSError * _Nullable error))completion {

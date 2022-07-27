@@ -9,7 +9,6 @@
 #import "MapView.h"
 #import "Location.h"
 #import "ProfileViewController.h"
-#import "Utilities.h"
 #import "InfoWindowView.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet MapView *mapView;

@@ -6,7 +6,6 @@
 //
 
 #import "LoginViewController.h"
-#import "Utilities.h"
 #import "UserProfile.h"
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
@@ -14,10 +13,11 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @end
-
+//TODO: remove hardcoding
 @implementation LoginViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:self.themes[@"Parchment"][@"Secondary"]]];
     [self.view setBackgroundColor:[UIColor colorNamed:self.themes[@"Parchment"][@"Background"]]];
     [self.contentView setBackgroundColor:[UIColor colorNamed:self.themes[@"Parchment"][@"Background"]]];
 }
@@ -25,6 +25,7 @@
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 
 // TODO: consider allowing iCloud Keychain for future development.
+// TODO: query for theme and set the global theme when logged in.
 - (void)navigateBack {
     [self endLoading];
     [self.navigationController popViewControllerAnimated:NO];

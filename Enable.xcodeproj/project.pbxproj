@@ -43,6 +43,7 @@
 		7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */; };
 		7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */; };
 		7FD3FF2A288B0172005D857B /* EnableBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF29288B0172005D857B /* EnableBaseViewController.m */; };
+		7FEC56342891ADDE004BE2BF /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEC56332891ADDE004BE2BF /* ColorViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +106,8 @@
 		7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7FD3FF28288B0172005D857B /* EnableBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnableBaseViewController.h; sourceTree = "<group>"; };
 		7FD3FF29288B0172005D857B /* EnableBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnableBaseViewController.m; sourceTree = "<group>"; };
+		7FEC56322891ADDE004BE2BF /* ColorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorViewController.h; sourceTree = "<group>"; };
+		7FEC56332891ADDE004BE2BF /* ColorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +247,8 @@
 				7F6298D72877D3EB00A550F4 /* ComposeViewController.m */,
 				7FD3FF28288B0172005D857B /* EnableBaseViewController.h */,
 				7FD3FF29288B0172005D857B /* EnableBaseViewController.m */,
+				7FEC56322891ADDE004BE2BF /* ColorViewController.h */,
+				7FEC56332891ADDE004BE2BF /* ColorViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -420,6 +425,7 @@
 				7F6298DF287C99CB00A550F4 /* ReviewTableViewCell.m in Sources */,
 				7F6298DB2878A01700A550F4 /* SummaryReviewTableViewCell.m in Sources */,
 				7F6298C028776BB600A550F4 /* Review.m in Sources */,
+				7FEC56342891ADDE004BE2BF /* ColorViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
