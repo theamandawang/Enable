@@ -12,10 +12,10 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
