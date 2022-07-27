@@ -10,6 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EnableBaseViewController : UIViewController
+@property (strong, nonatomic) NSDictionary * themes;
 - (void) showAlert: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nullable)(void))completion;
 - (void) startLoading;
 - (void) endLoading;

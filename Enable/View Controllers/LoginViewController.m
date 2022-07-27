@@ -12,11 +12,14 @@
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passTextField;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 @end
 
 @implementation LoginViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor colorNamed:self.themes[@"Parchment"][@"Background"]]];
+    [self.contentView setBackgroundColor:[UIColor colorNamed:self.themes[@"Parchment"][@"Background"]]];
 }
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
@@ -24,7 +27,6 @@
 // TODO: consider allowing iCloud Keychain for future development.
 - (void)navigateBack {
     [self endLoading];
-
     [self.navigationController popViewControllerAnimated:NO];
 }
 - (IBAction)didTapSignUp:(id)sender {

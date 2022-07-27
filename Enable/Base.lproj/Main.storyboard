@@ -227,6 +227,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="zGw-Xi-M5i"/>
                     <connections>
+                        <outlet property="contentView" destination="01d-EJ-hou" id="I9i-6u-gPs"/>
                         <outlet property="emailTextField" destination="SDZ-wh-0Yw" id="IbQ-Oo-XvT"/>
                         <outlet property="passTextField" destination="4Fl-xU-FSM" id="vSz-5X-edw"/>
                         <outlet property="scrollView" destination="unU-5X-OGi" id="Z8j-8l-fXt"/>

@@ -2,21 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>Themes</key>
-	<dict>
-        <key>Parchment</key>
-        <dict>
-            <key>Background</key>
-            <string>Parchment Background</string>
-            <key>Accent</key>
-            <string>Parchment Accent</string>
-            <key>Label</key>
-            <string>Parchment Label</string>
-            <key>Star</key>
-            <string>Parchment Star</string>
-            <key>Like</key>
-            <string>Parchment Like</string>
-        </dict>
+    <key>Parchment</key>
+    <dict>
+        <key>Background</key>
+        <string>Parchment Background</string>
+        <key>Accent</key>
+        <string>Parchment Accent</string>
+        <key>Label</key>
+        <string>Parchment Label</string>
+        <key>Star</key>
+        <string>Parchment Star</string>
+        <key>Like</key>
+        <string>Parchment Like</string>
     </dict>
 </dict>
 </plist>
