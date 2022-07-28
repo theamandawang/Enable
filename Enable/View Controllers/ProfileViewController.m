@@ -43,11 +43,6 @@ bool userUpdated = false;
     self.tableView.delegate = self;
     [self setupTheme];
 }
-- (void) setupTheme {
-    [super setupTheme];
-    [self.tableView.tableHeaderView setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
-    [self.tableView.tableHeaderView setBackgroundColor:[UIColor systemRedColor]];
-}
 - (void) getUserProfile {
     if(self.userProfileID){
         [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
@@ -199,6 +194,14 @@ bool userUpdated = false;
             return @"Reviews";
     }
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
+{
+    view.tintColor = [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]];
+    view.alpha = 0.8;
+}
+
+
 
 #pragma mark - ImagePicker / Camera
 - (void)didTapPhoto {

@@ -58,9 +58,6 @@ GMSMarker *infoMarker;
     
     [subView addSubview:self.searchController.searchBar];
     [self.searchController.searchBar sizeToFit];
-
-    self.searchController.searchBar.text = @"";
-    self.searchController.searchBar.placeholder = @"Search location...";
 }
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -175,14 +172,6 @@ didFailAutocompleteWithError:(NSError *)error {
     self.infoWindowView.placeNameLabel.text = marker.title;
     return self.infoWindowView;
 }
-
--(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
-    [self startLoading];
-}
-- (void)didUpdateAutocompletePredictionsForResultsController:
-    (GMSAutocompleteResultsViewController *)resultsController {
-    [self endLoading];
-}
 - (IBAction)didTapProfile:(id)sender {
     if([PFUser currentUser]){
         [self performSegueWithIdentifier:@"signedIn" sender:nil];
@@ -215,12 +204,21 @@ didFailAutocompleteWithError:(NSError *)error {
 
 - (void) setupTheme {
     [super setupTheme];
+    
+    // search bar
     [self.searchController.searchBar setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
     [self.searchController.searchBar setBarTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
     [self.searchController.searchBar setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
-    [self.searchController.searchBar.searchTextField setTextColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
-    [self.searchController.searchBar.searchTextField setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
-    [self.searchController.searchBar.searchTextField setTokenBackgroundColor:[UIColor systemRedColor]];
+    self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]}];
+    [self.searchController.searchBar.searchTextField.leftView setTintColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
+    [self.searchController.searchBar.searchTextField.rightView setTintColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
+    
+    // results view
+    [self.resultsViewController setTableCellBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.resultsViewController setTableCellSeparatorColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.resultsViewController setPrimaryTextColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
+    [self.resultsViewController setPrimaryTextHighlightColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
+    [self.resultsViewController setSecondaryTextColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
 }
 
 

@@ -76,11 +76,6 @@
                             </label>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wkv-Or-3YO">
                                 <rect key="frame" x="0.0" y="272" width="428" height="216"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="textColor">
-                                        <color key="value" systemColor="labelColor"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="wPt-hn-MF1"/>
