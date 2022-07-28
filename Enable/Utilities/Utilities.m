@@ -116,6 +116,27 @@ bool allResultsFound = false;
     }];
 }
 
++ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withUser: (NSString * _Nullable) username withImage: (UIImage * _Nullable) image withCompletion: (void (^_Nonnull)(NSError  * _Nullable  error))completion {
+    if(image){
+        userProfile.image = [Utilities getPFFileFromImage:image];
+    }
+    if(username) {
+        userProfile.username = username;
+    }
+    [userProfile saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+        if(error){
+            completion(error);
+        } else if (!succeeded) {
+            NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not update profile"}];
+            completion(customError);
+        }
+        else if (succeeded){
+            NSLog(@"success saving");
+            completion(nil);
+        }
+    }];
+}
+
 #pragma mark Review
 
 + (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review, NSError * _Nullable error))completion {
@@ -171,6 +192,18 @@ bool allResultsFound = false;
 
 
 #pragma mark Location
+
++ (void) getLocationFromID: (id _Nonnull) locationID withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
+    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    [query getObjectInBackgroundWithId:locationID block:^(PFObject * _Nullable dbLocation, NSError * _Nullable error) {
+        if(!error){
+            completion((Location *)dbLocation, nil);
+        } else {
+            NSLog(@"Fail getLocationFromID %@", error.localizedDescription);
+            completion(nil, error);
+        }
+    }];
+}
 
 + (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
     PFQuery * query = [PFQuery queryWithClassName:@"Location"];

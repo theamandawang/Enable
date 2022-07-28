@@ -6,13 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ProfileView.h"
 #import "UserProfile.h"
 #import "EnableBaseViewController.h"
+#import "ResultsView.h"
+#import "ProfileTableViewCell.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ProfileViewController : EnableBaseViewController
-@property (weak, nonatomic) IBOutlet ProfileView *profileView;
+@interface ProfileViewController : EnableBaseViewController <ResultsViewDelegate, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ProfileDelegate>
 @property (strong, nonatomic) id userProfileID;
 @property (strong, nonatomic) UserProfile * currentProfile;
 @end

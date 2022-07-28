@@ -7,22 +7,19 @@
 
 #import "ResultsView.h"
 #import "UserProfile.h"
-#import "Parse/PFImageView.h"
 #import "Utilities.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
 @property (weak, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
 @property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
 @property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
-
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property int imageIndex;
 @end
@@ -55,26 +52,34 @@
         [self.titleTopToProfileBottom setActive: NO];
         [self.titleTopToImageBottom setActive: YES];
         [self.photosImageView setHidden: NO];
-        [self layoutIfNeeded];
+        [self.photosImageView setNeedsLayout];
         [self setCurrentImage:0];
     }
     else {
         [self.titleTopToImageBottom setActive: NO];
         [self.titleTopToProfileBottom setActive: YES];
         [self.photosImageView setHidden: YES];
-        [self layoutIfNeeded];
     }
     self.imageIndex = 0;
     self.titleLabel.text = review.title;
     self.detailsLabel.text = review.reviewText;
     self.starRatingView.value = review.rating;
     self.usernameLabel.text = profile.username;
+    self.userProfile = profile;
     self.likeCountLabel.text = [NSString stringWithFormat: @"%d", review.likes];
     if(self.liked){
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
     } else {
         self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
     }
+    if(profile.image){
+        self.profileImageView.file = profile.image;
+        [self.profileImageView loadInBackground];
+    } else {
+        self.profileImageView.image = [UIImage systemImageNamed:@"person.fill"];
+    }
+    [self layoutIfNeeded];
+
 }
 
 
@@ -133,6 +138,11 @@
         [self.delegate addLikeFromUserProfile:self.currentProfile review:self.review];
     }
 
+}
+- (IBAction)didTapUser:(id)sender {
+    if(self.userProfile){
+        [self.delegate toProfile:self.userProfile.objectId];
+    }
 }
 
 # pragma mark - Private functions

@@ -27,8 +27,6 @@
 		7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
-		7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F841BFE2876322B00CBD922 /* ProfileView.xib */; };
-		7F841C022876323D00CBD922 /* ProfileView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841C012876323D00CBD922 /* ProfileView.m */; };
 		7FA7DEC02874A1A50080E4A9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */; };
 		7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC22874A1A50080E4A9 /* SceneDelegate.m */; };
 		7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7DEC72874A1A50080E4A9 /* Main.storyboard */; };
@@ -41,6 +39,8 @@
 		7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEE12874AEB90080E4A9 /* MapView.m */; };
 		7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1A288862F5005D857B /* InfoWindowView.m */; };
 		7FD3FF1D28886305005D857B /* InfoWindowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1C28886305005D857B /* InfoWindowView.xib */; };
+		7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */; };
+		7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */; };
 		7FD3FF2A288B0172005D857B /* EnableBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF29288B0172005D857B /* EnableBaseViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -79,9 +79,6 @@
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		7F841BFA28762FA700CBD922 /* ProfileViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
-		7F841BFE2876322B00CBD922 /* ProfileView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
-		7F841C002876323D00CBD922 /* ProfileView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileView.h; sourceTree = "<group>"; };
-		7F841C012876323D00CBD922 /* ProfileView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileView.m; sourceTree = "<group>"; };
 		7FA7DEBB2874A1A50080E4A9 /* Enable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Enable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7FA7DEBE2874A1A50080E4A9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7FA7DEBF2874A1A50080E4A9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -101,6 +98,9 @@
 		7FD3FF19288862F5005D857B /* InfoWindowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoWindowView.h; sourceTree = "<group>"; };
 		7FD3FF1A288862F5005D857B /* InfoWindowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoWindowView.m; sourceTree = "<group>"; };
 		7FD3FF1C28886305005D857B /* InfoWindowView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoWindowView.xib; sourceTree = "<group>"; };
+		7FD3FF23288A10A6005D857B /* ProfileTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewCell.h; sourceTree = "<group>"; };
+		7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileTableViewCell.m; sourceTree = "<group>"; };
+		7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7FD3FF28288B0172005D857B /* EnableBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnableBaseViewController.h; sourceTree = "<group>"; };
 		7FD3FF29288B0172005D857B /* EnableBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnableBaseViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -208,9 +208,6 @@
 				7FA7DEDB2874AE0F0080E4A9 /* MapView.xib */,
 				7FA7DEE02874AEB90080E4A9 /* MapView.h */,
 				7FA7DEE12874AEB90080E4A9 /* MapView.m */,
-				7F841BFE2876322B00CBD922 /* ProfileView.xib */,
-				7F841C002876323D00CBD922 /* ProfileView.h */,
-				7F841C012876323D00CBD922 /* ProfileView.m */,
 				7F6298D92878A01700A550F4 /* SummaryReviewTableViewCell.h */,
 				7F6298DA2878A01700A550F4 /* SummaryReviewTableViewCell.m */,
 				7F6298DE287C99CB00A550F4 /* ReviewTableViewCell.xib */,
@@ -222,6 +219,9 @@
 				7FD3FF1C28886305005D857B /* InfoWindowView.xib */,
 				7FD3FF19288862F5005D857B /* InfoWindowView.h */,
 				7FD3FF1A288862F5005D857B /* InfoWindowView.m */,
+				7FD3FF23288A10A6005D857B /* ProfileTableViewCell.h */,
+				7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */,
+				7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -317,8 +317,8 @@
 				7F6298CF28779C2C00A550F4 /* 2xSolidLogo.png in Resources */,
 				7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */,
 				7FA7DECE2874A1A50080E4A9 /* LaunchScreen.storyboard in Resources */,
+				7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */,
 				7FA7DECB2874A1A50080E4A9 /* Assets.xcassets in Resources */,
-				7F841BFF2876322B00CBD922 /* ProfileView.xib in Resources */,
 				7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */,
 				7F6298D128779C2C00A550F4 /* 3xSolidLogo.png in Resources */,
 				7FA7DED82874A87A0080E4A9 /* Keys.plist in Resources */,
@@ -406,9 +406,9 @@
 				7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */,
 				7F6298E3287C9AAD00A550F4 /* ResultsView.m in Sources */,
 				7F6298C328776DBD00A550F4 /* Location.m in Sources */,
+				7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */,
 				7FA7DEC32874A1A50080E4A9 /* SceneDelegate.m in Sources */,
 				7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */,
-				7F841C022876323D00CBD922 /* ProfileView.m in Sources */,
 				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
 				7F6298D82877D3EB00A550F4 /* ComposeViewController.m in Sources */,
@@ -492,7 +492,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -545,7 +545,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;

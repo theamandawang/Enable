@@ -110,11 +110,11 @@
             <objects>
                 <viewController id="yog-pu-u9S" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AQZ-n8-TfS">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unU-5X-OGi">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="01d-EJ-hou">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="730"/>
@@ -246,21 +246,21 @@
             <objects>
                 <viewController id="u3U-tT-4kE" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ibS-Jd-IXq">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="coL-Q1-gvj" customClass="ProfileView">
-                                <rect key="frame" x="0.0" y="88" width="428" height="804"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qLq-lo-sUn">
+                                <rect key="frame" x="0.0" y="44" width="428" height="828"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hcF-lx-7Vv"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="coL-Q1-gvj" firstAttribute="leading" secondItem="hcF-lx-7Vv" secondAttribute="leading" id="KvC-km-caL"/>
-                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="bottom" secondItem="coL-Q1-gvj" secondAttribute="bottom" id="XeH-aK-8G2"/>
-                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="trailing" secondItem="coL-Q1-gvj" secondAttribute="trailing" id="Z0Z-uB-2nr"/>
-                            <constraint firstItem="coL-Q1-gvj" firstAttribute="top" secondItem="hcF-lx-7Vv" secondAttribute="top" id="brb-IA-ROf"/>
+                            <constraint firstItem="qLq-lo-sUn" firstAttribute="top" secondItem="hcF-lx-7Vv" secondAttribute="top" id="Cs1-ef-ze6"/>
+                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="bottom" secondItem="qLq-lo-sUn" secondAttribute="bottom" id="PS4-pg-ajr"/>
+                            <constraint firstItem="hcF-lx-7Vv" firstAttribute="trailing" secondItem="qLq-lo-sUn" secondAttribute="trailing" id="W3H-BG-RDp"/>
+                            <constraint firstItem="qLq-lo-sUn" firstAttribute="leading" secondItem="hcF-lx-7Vv" secondAttribute="leading" id="Z85-v2-eH7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lt6-67-KsW">
@@ -278,23 +278,25 @@
                     </navigationItem>
                     <connections>
                         <outlet property="logOutButton" destination="fVF-0I-Idh" id="tN0-1p-xtS"/>
-                        <outlet property="profileView" destination="coL-Q1-gvj" id="V3N-nl-7Bw"/>
+                        <outlet property="tableView" destination="qLq-lo-sUn" id="NfZ-bp-S21"/>
+                        <segue destination="yog-pu-u9S" kind="show" identifier="profileToLogin" id="dDK-RE-xwx"/>
+                        <segue destination="kIY-s4-3bw" kind="show" identifier="profileToReviews" id="Xei-Q3-xVF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mXv-o0-HCc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="537" y="422"/>
+            <point key="canvasLocation" x="719" y="464"/>
         </scene>
         <!--Reviews-->
         <scene sceneID="MJ1-pY-JbC">
             <objects>
                 <viewController id="kIY-s4-3bw" customClass="ReviewByLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mze-7L-6zE">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="l4v-00-W9T">
-                                <rect key="frame" x="0.0" y="88" width="428" height="804"/>
+                                <rect key="frame" x="0.0" y="44" width="428" height="828"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SummaryCell" rowHeight="272" id="BTg-vm-Tj7" customClass="SummaryReviewTableViewCell">
@@ -304,7 +306,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="428" height="272"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Z9-vS-l9S">
+                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Z9-vS-l9S">
                                                     <rect key="frame" x="40" y="31" width="348" height="170"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <nil key="textColor"/>
@@ -373,6 +375,7 @@
                         <outlet property="tableView" destination="l4v-00-W9T" id="Gfl-I2-d7f"/>
                         <segue destination="FpU-Et-TaW" kind="show" identifier="compose" id="H8M-Gw-tqM"/>
                         <segue destination="yog-pu-u9S" kind="show" identifier="reviewToLogin" id="22x-Oq-g41"/>
+                        <segue destination="u3U-tT-4kE" kind="show" identifier="reviewToProfile" id="F4t-kF-nF8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Jp-b6-Thd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -384,11 +387,11 @@
             <objects>
                 <viewController id="FpU-Et-TaW" customClass="ComposeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jg2-nz-EGd">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="892"/>
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="249.33333333333334"/>
@@ -513,7 +516,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="22x-Oq-g41"/>
+        <segue reference="Xei-Q3-xVF"/>
+        <segue reference="F4t-kF-nF8"/>
+        <segue reference="dDK-RE-xwx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

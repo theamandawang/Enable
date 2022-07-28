@@ -24,6 +24,7 @@
 #pragma mark UserProfile
 + (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion;
 + (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion;
++ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withUser: (NSString * _Nullable) username withImage: (UIImage * _Nullable) image withCompletion: (void (^_Nonnull)(NSError  * _Nullable  error))completion;
 
 
 #pragma mark Review
@@ -33,6 +34,7 @@
 
 
 #pragma mark Location
++ (void) getLocationFromID: (id _Nonnull ) locationID withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion;
 + (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion;
 + (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSError * _Nullable error))completion;
 #pragma mark Posting
