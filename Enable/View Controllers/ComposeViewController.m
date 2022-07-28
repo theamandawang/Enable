@@ -113,18 +113,15 @@ UITapGestureRecognizer *scrollViewTapGesture;
                     message:@"Would you like to upload a photo from your photos library or take one with your camera?"
                     preferredStyle:(UIAlertControllerStyleAlert)
         ];
-    UIAlertAction *cancelAction = [UIAlertAction
-                                   actionWithTitle:@"Cancel"
-                                   style:UIAlertActionStyleCancel
-                                   handler:^(UIAlertAction * _Nonnull action) {
-                                        // handle cancel response here. Doing nothing will dismiss the view.
-                                    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel"
+                                                 style:UIAlertActionStyleCancel
+                                                 handler:nil];
     [alert addAction:cancelAction];
     UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"Use Camera"
-                                                        style:UIAlertActionStyleDefault
-                                                      handler:^(UIAlertAction * _Nonnull action) {
-        [self openCamera];
-                                                      }];
+                                                 style:UIAlertActionStyleDefault
+                                                 handler:^(UIAlertAction * _Nonnull action) {
+                                                    [self openCamera];
+                                                 }];
     [alert addAction:cameraAction];
     UIAlertAction *libraryAction = [UIAlertAction
                                     actionWithTitle:@"Use Library"
@@ -133,9 +130,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
                                         [self openLibrary];
                                     }];
     [alert addAction:libraryAction];
-    [self presentViewController:alert animated:YES completion:^{
-        // optional code for what happens after the alert controller has finished presenting
-    }];
+    [self presentViewController:alert animated:YES completion:nil];
 
 }
 - (void) openCamera {
