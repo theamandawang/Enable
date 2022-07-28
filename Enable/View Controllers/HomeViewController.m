@@ -216,6 +216,11 @@ didFailAutocompleteWithError:(NSError *)error {
 - (void) setupTheme {
     [super setupTheme];
     [self.searchController.searchBar setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.searchController.searchBar setBarTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.searchController.searchBar setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
+    [self.searchController.searchBar.searchTextField setTextColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
+    [self.searchController.searchBar.searchTextField setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
+    [self.searchController.searchBar.searchTextField setTokenBackgroundColor:[UIColor systemRedColor]];
 }
 
 

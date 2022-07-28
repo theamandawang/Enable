@@ -41,6 +41,12 @@ bool userUpdated = false;
     [self.tableView registerNib:nib2 forCellReuseIdentifier:@"ProfileCell"];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    [self setupTheme];
+}
+- (void) setupTheme {
+    [super setupTheme];
+    [self.tableView.tableHeaderView setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.tableView.tableHeaderView setBackgroundColor:[UIColor systemRedColor]];
 }
 - (void) getUserProfile {
     if(self.userProfileID){
@@ -141,10 +147,10 @@ bool userUpdated = false;
             [cell.userProfileImageView loadInBackground];
         }
         if([self.currentProfile.objectId isEqualToString: self.userProfile.objectId]){
-            // show update button!
+            [cell.updateButton setHidden:NO];
             [cell.contentView setUserInteractionEnabled:YES];
         } else {
-            // hide update button
+            [cell.updateButton setHidden:YES];
             [cell.contentView setUserInteractionEnabled:NO];
         }
         cell.userDisplayNameTextField.text = self.userProfile.username;

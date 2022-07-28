@@ -18,13 +18,17 @@ NSArray<NSString *> * themes;
     themes = @[@"Default", @"Parchment", @"Sunrise", @"Twilight"];
     self.themePicker.dataSource = self;
     self.themePicker.delegate = self;
-    NSString * myTheme = [[NSUserDefaults standardUserDefaults]
-                          stringForKey:@"theme"];
+    NSString * myTheme = [ThemeTracker sharedTheme].theme;
     int row = myTheme ? [themes indexOfObject: myTheme] : 0;
     [self.themePicker selectRow:row inComponent:0 animated:YES];
+    [self setupTheme];
 
 }
-
+- (void) setupTheme {
+    [super setupTheme];
+    [self.themePicker setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.themePicker setValue:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]] forKey:@"textColor"];
+}
 #pragma mark - PickerView
 - (NSInteger)numberOfComponentsInPickerView:(nonnull UIPickerView *)pickerView {
     return 1;

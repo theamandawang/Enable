@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ProfileTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet PFImageView *userProfileImageView;
 @property (weak, nonatomic) IBOutlet UITextField *userDisplayNameTextField;
+@property (weak, nonatomic) IBOutlet UIButton *updateButton;
 @property (weak, nonatomic) id<ProfileDelegate> delegate;
 @end
 

@@ -46,8 +46,6 @@
 - (void) setupTheme {
     [super setupTheme];
     [self.contentView setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
-//    [self.emailTextField setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
-//    [self.passTextField setBackgroundColor: [UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
 }
 
 #pragma mark - IBAction

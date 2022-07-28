@@ -58,6 +58,7 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="updateButton" destination="leU-nZ-pWB" id="GWP-69-MDu"/>
                 <outlet property="userDisplayNameTextField" destination="ug6-cR-pXC" id="BkA-aW-vgX"/>
                 <outlet property="userProfileImageView" destination="sfk-3s-pxc" id="s81-gj-CPD"/>
             </connections>

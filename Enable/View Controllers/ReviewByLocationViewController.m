@@ -40,6 +40,7 @@ const int kReviewsSection = 2;
     [self getCurrentUserProfile];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
+    [self setupTheme];
     [self queryForLocationData];
 }
 - (void) viewWillAppear:(BOOL)animated {

@@ -7,7 +7,7 @@
 
 #import "ResultsView.h"
 #import "UserProfile.h"
-#import "Utilities.h"
+#import "ThemeTracker.h"
 #import "HCSStarRatingView/HCSStarRatingView.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
@@ -43,7 +43,7 @@
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupStarRatingView];
-
+    [self setupTheme];
     return self;
 }
 
@@ -81,7 +81,12 @@
     [self layoutIfNeeded];
 
 }
-
+- (void) setupTheme {
+    [self.contentView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.starRatingView setTintColor: [UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.likeImageView setTintColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Like"]]];
+}
 
 - (void) setCurrentImage: (int) i {
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.review.images[i] valueForKey:@"url"]]];

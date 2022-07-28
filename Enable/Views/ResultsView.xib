@@ -60,7 +60,6 @@
                 </label>
                 <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.up.heart" catalog="system" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="woy-kx-gfW">
                     <rect key="frame" x="240" y="808.5" width="45" height="42.5"/>
-                    <color key="tintColor" systemColor="systemRedColor"/>
                     <gestureRecognizers/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="jh2-Au-CRA"/>
@@ -146,9 +145,6 @@
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

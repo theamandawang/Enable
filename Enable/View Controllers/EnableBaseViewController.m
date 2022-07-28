@@ -104,7 +104,6 @@
 #pragma mark - Theme
 - (void) setupTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [[UIView appearance] setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
     [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
