@@ -41,7 +41,16 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self registerForKeyboardNotifications];
     
     [self setupStarRatingView];
+    [self setupTheme];
 
+}
+
+- (void) setupTheme{
+    [super setupTheme];
+    [self.starRatingView setTintColor: [UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.reviewTextView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.photosImageView setTintColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Accent"]]];
 }
 
 #pragma mark - Querying

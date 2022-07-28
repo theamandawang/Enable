@@ -4,8 +4,18 @@
 <dict>
 	<key>Default</key>
 	<dict>
+		<key>Secondary</key>
+		<string>Default Secondary</string>
 		<key>Background</key>
-		<string>systemBackgroundColor</string>
+		<string>Default Background</string>
+		<key>Accent</key>
+		<string>Default Accent</string>
+		<key>Label</key>
+		<string>Default Label</string>
+		<key>Star</key>
+		<string>Default Star</string>
+		<key>Like</key>
+		<string>Default Like</string>
 	</dict>
 	<key>Parchment</key>
 	<dict>

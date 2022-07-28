@@ -40,22 +40,23 @@
 }
 
 - (void) getTheme {
-    self.theme = @"Parchment";//[[NSUserDefaults standardUserDefaults] stringForKey:@"theme"];
-    self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
-
+    self.theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"theme"];
+    self.colorSet = self.theme ? [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme] :
+    [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
     [self sendNotification];
-    if([PFUser currentUser]){
-        [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-            if(error){
-                // TODO: how to handle error?
-            } else if (profile) {
-                self.theme = profile.theme;
-                self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
-                [self sendNotification];
-
-            }
-        }];
-    }
+    //TODO: how to handle this in background ?
+//    if([PFUser currentUser]){
+//        [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
+//            if(error){
+//                // TODO: how to handle error?
+//            } else if (profile) {
+//                self.theme = profile.theme;
+//                self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
+//                [self sendNotification];
+//
+//            }
+//        }];
+//    }
 }
 - (void) sendNotification {
     

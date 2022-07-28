@@ -119,11 +119,11 @@
             <objects>
                 <viewController id="yog-pu-u9S" customClass="LoginViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="AQZ-n8-TfS">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unU-5X-OGi">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="01d-EJ-hou">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="730"/>
@@ -163,7 +163,7 @@
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Sign Up">
-                                                    <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
+                                                    <fontDescription key="titleFontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
                                                 </buttonConfiguration>
                                                 <connections>
                                                     <action selector="didTapSignUp:" destination="yog-pu-u9S" eventType="touchUpInside" id="7Sh-qH-bsb"/>
@@ -174,7 +174,9 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="S0m-Js-ZhU"/>
                                                 </constraints>
-                                                <state key="normal" title="Button"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Login"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Login">
                                                     <fontDescription key="titleFontDescription" type="system" pointSize="18"/>
                                                 </buttonConfiguration>
@@ -253,11 +255,11 @@
             <objects>
                 <viewController id="u3U-tT-4kE" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ibS-Jd-IXq">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qLq-lo-sUn">
-                                <rect key="frame" x="0.0" y="88" width="428" height="755"/>
+                                <rect key="frame" x="0.0" y="44" width="428" height="828"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
                         </subviews>
@@ -299,11 +301,11 @@
             <objects>
                 <viewController id="kIY-s4-3bw" customClass="ReviewByLocationViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mze-7L-6zE">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="l4v-00-W9T">
-                                <rect key="frame" x="0.0" y="88" width="428" height="755"/>
+                                <rect key="frame" x="0.0" y="44" width="428" height="828"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SummaryCell" rowHeight="272" id="BTg-vm-Tj7" customClass="SummaryReviewTableViewCell">
@@ -394,11 +396,11 @@
             <objects>
                 <viewController id="FpU-Et-TaW" customClass="ComposeViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jg2-nz-EGd">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
-                                <rect key="frame" x="0.0" y="0.0" width="428" height="843"/>
+                                <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="249.33333333333334"/>
@@ -509,26 +511,11 @@
             </objects>
             <point key="canvasLocation" x="2862.6168224299063" y="44.708423326133911"/>
         </scene>
-        <!--Loading View Controller-->
-        <scene sceneID="7nA-Ax-bXW">
-            <objects>
-                <viewController storyboardIdentifier="LoadingViewController" modalPresentationStyle="overCurrentContext" id="3hP-1u-lPD" customClass="LoadingViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="2QB-mg-8Un">
-                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="7TE-m2-jqi"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kLt-Gv-I5O" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2814" y="967"/>
-        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ba7-8A-UQA"/>
+        <segue reference="Xei-Q3-xVF"/>
         <segue reference="F4t-kF-nF8"/>
-        <segue reference="22x-Oq-g41"/>
+        <segue reference="dDK-RE-xwx"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>
