@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.themes = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]];
+    [self setupTheme];
     [self setupActivityIndicator];
     [self testInternetConnection];
 }
@@ -82,6 +82,7 @@
 
 - (void)setupActivityIndicator {
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
+    [self.activityView setColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]];
     self.activityView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.activityView setHidesWhenStopped:YES];
     [self.view addSubview:self.activityView];
@@ -96,6 +97,24 @@
     for (UIView* view in self.view.subviews) {
         [view setHidden:hidden];
     }
+}
+
+#pragma mark - Notification
+
+#pragma mark - Theme
+- (void) setupTheme {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [[UIView appearance] setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
+    [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
+    [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [[UILabel appearance] setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [[UIButton appearance] setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [[UITextField appearance] setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [[UITextField appearance] setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [[UITableView appearance] setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [[UITableViewCell appearance] setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
 }
 
 @end

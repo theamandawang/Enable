@@ -30,6 +30,7 @@ GMSMarker *infoMarker;
     [self setUpSearch];
     [self.mapView.mapView setBounds:self.mapView.bounds];
     self.customMarkers = [[NSMutableArray alloc] init];
+    [self setupTheme];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -211,5 +212,11 @@ didFailAutocompleteWithError:(NSError *)error {
     [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
     [self updateLocationMarkersWithProjection:self.mapView.mapView.projection radius:self.radiusMiles];
 }
+
+- (void) setupTheme {
+    [super setupTheme];
+    [self.searchController.searchBar setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+}
+
 
 @end

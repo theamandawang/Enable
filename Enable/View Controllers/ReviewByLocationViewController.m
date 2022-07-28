@@ -91,9 +91,9 @@ const int kReviewsSection = 2;
         } else {
             self.reviews = reviews;
             [self.tableView reloadData];
+            [self finishLoading];
         }
     }];
-    [self finishLoading];
 }
 - (void) queryForLocationData {
     [self startLoading];

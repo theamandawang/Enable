@@ -7,14 +7,15 @@
 
 #import <UIKit/UIKit.h>
 #import "Utilities.h"
+#import "ThemeTracker.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EnableBaseViewController : UIViewController
-@property (strong, nonatomic) NSDictionary * themes;
 - (void) showAlert: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nullable)(void))completion;
 - (void) startLoading;
 - (void) endLoading;
 - (void) testInternetConnection;
+- (void) setupTheme;
 
 @end
 
