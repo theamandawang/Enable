@@ -33,6 +33,9 @@
 }
 
 - (BOOL)isEmail:(NSString *)email{
+    // taken from user 93sauu
+    // https://stackoverflow.com/questions/42664046/regex-for-email-validation-in-objective-c
+    
     NSString *emailRegEx =
      @"(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"
      @"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"
