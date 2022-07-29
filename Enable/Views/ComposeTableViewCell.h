@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ComposeTableViewCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UITextField *composeTextField;
 @end
 
 NS_ASSUME_NONNULL_END

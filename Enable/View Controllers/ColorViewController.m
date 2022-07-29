@@ -22,20 +22,10 @@ NSArray<NSString *> * themes;
     NSString * myTheme = [ThemeTracker sharedTheme].theme;
     int row = myTheme ? [themes indexOfObject: myTheme] : 0;
     [self.themePicker selectRow:row inComponent:0 animated:YES];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
-    
     [self setupTheme];
 
 }
-- (void) setupTheme {
-    [super setupTheme];
-    [self.titleLabel setTextColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]];
-    [self.themePicker setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
-    [self.themePicker reloadComponent:0];
-}
+
 #pragma mark - PickerView
 - (NSInteger)numberOfComponentsInPickerView:(nonnull UIPickerView *)pickerView {
     return 1;
@@ -52,5 +42,13 @@ NSArray<NSString *> * themes;
     [[ThemeTracker sharedTheme] updateTheme:themes[row]];
 }
 
+#pragma mark - Setup
+
+- (void) setupTheme {
+    [self setupMainTheme];
+    [self.titleLabel setTextColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]];
+    [self.themePicker setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.themePicker reloadComponent:0];
+}
 
 @end

@@ -6,7 +6,6 @@
 //
 
 #import "ProfileTableViewCell.h"
-#import "ThemeTracker.h"
 @interface ProfileTableViewCell ()
 @property (strong, nonatomic) UITapGestureRecognizer * tapGestureRecognizer;
 @property (strong, nonatomic) UITapGestureRecognizer * photoTapGestureRecognizer;
@@ -20,22 +19,9 @@
     self.tapGestureRecognizer.cancelsTouchesInView = NO;
     self.photoTapGestureRecognizer.cancelsTouchesInView = NO;
     [self.userProfileImageView addGestureRecognizer:self.photoTapGestureRecognizer];
-    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
-    [self setupTheme];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
-    
+    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];    
 }
-
-- (void) setupTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.userProfileImageView setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.userDisplayNameTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.userDisplayNameTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.updateButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-}
+#pragma mark - IBActions / User input
 - (void) didTapPhoto {
     [self.delegate didTapPhoto];
 }

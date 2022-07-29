@@ -21,14 +21,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupTheme];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
 }
+
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
-
-// TODO: consider allowing iCloud Keychain for future development.
 
 - (void)navigateBack {
     [[ThemeTracker sharedTheme] getTheme];
@@ -48,24 +44,6 @@
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", emailRegEx];
     return [predicate evaluateWithObject:email];
-}
-
-- (void) setupTheme {
-    [super setupTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.view setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    
-    [self.passTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.emailTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-
-    [self.passTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.emailTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    
-    [self.loginLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.emailLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.passLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-
 }
 
 #pragma mark - IBAction
@@ -106,4 +84,21 @@
     [self.view endEditing:YES];
 }
 
+#pragma mark - Setup
+- (void) setupTheme {
+    [self setupMainTheme];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.view setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    
+    [self.passTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.emailTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+
+    [self.passTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.emailTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    
+    [self.loginLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.emailLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.passLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+}
 @end

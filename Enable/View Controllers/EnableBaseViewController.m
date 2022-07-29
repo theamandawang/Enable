@@ -20,7 +20,17 @@
     [self setupActivityIndicator];
     [self testInternetConnection];
 }
-
+- (void) viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self setupTheme];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
 #pragma mark - Show Errors
 - (void) showAlert: (NSString *) title message: (NSString * _Nonnull) message  completion: (void (^ _Nullable)(void))completion{
     if (self.presentedViewController) {
@@ -77,6 +87,16 @@
     [self.internetReachable startNotifier];
 }
 
+#pragma mark - Theme
+- (void) setupMainTheme {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.activityView setColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
+    [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
+    [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+}
+
 #pragma mark - Private
 
 - (void)setupActivityIndicator {
@@ -96,15 +116,4 @@
         [view setHidden:hidden];
     }
 }
-
-#pragma mark - Theme
-- (void) setupTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.activityView setColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
-    [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
-    [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-}
-
 @end

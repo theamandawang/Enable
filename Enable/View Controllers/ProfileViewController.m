@@ -42,20 +42,9 @@ bool userUpdated = false;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self setupTheme];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
-    
 }
 
-- (void) setupTheme {
-    [super setupTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-
-}
+#pragma mark - Queries
 - (void) getUserProfile {
     if(self.userProfileID){
         [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
@@ -94,17 +83,6 @@ bool userUpdated = false;
         [self endLoading];
         [self.tableView reloadData];
     }];
-}
-
-- (IBAction)didTapLogout:(id)sender {
-    [Utilities logOutWithCompletion:^(NSError * _Nullable error){
-        if(error){
-            [self showAlert:@"Failed to log out" message:error.localizedDescription completion:nil];
-        } else {
-            [self.navigationController popToRootViewControllerAnimated:TRUE];
-
-        }
-    } ];
 }
 
 #pragma mark - Navigation
@@ -164,11 +142,13 @@ bool userUpdated = false;
         cell.userDisplayNameTextField.text = self.userProfile.username;
         cell.delegate = self;
         self.profileCell = cell;
+        [self setupProfileCellTheme:cell];
         return cell;
     } else {
         ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
         cell.resultsView.delegate = self;
         cell.resultsView.userProfile = self.userProfile;
+        [self setupResultsViewTheme: cell.resultsView];
         [Utilities isLikedbyUser:self.currentProfile review:self.reviews[indexPath.row] completion:^(bool liked, NSError * _Nullable error) {
             if(error){
                 [self showAlert:@"Failed to check likes" message:error.localizedDescription completion:nil];
@@ -216,9 +196,19 @@ bool userUpdated = false;
     view.alpha = 0.8;
 }
 
+#pragma mark - IBAction
+- (IBAction)didTapLogout:(id)sender {
+    [Utilities logOutWithCompletion:^(NSError * _Nullable error){
+        if(error){
+            [self showAlert:@"Failed to log out" message:error.localizedDescription completion:nil];
+        } else {
+            [self.navigationController popToRootViewControllerAnimated:TRUE];
 
+        }
+    } ];
+}
 
-#pragma mark - ImagePicker / Camera
+#pragma mark - ProfileDelegate
 - (void)didTapPhoto {
     UIAlertController *alert =
         [UIAlertController
@@ -295,5 +285,36 @@ bool userUpdated = false;
             [self getReviewsByUserProfile:self.userProfile];
         }];
     }
+}
+
+#pragma mark - Setup
+- (void) setupTheme {
+    [self setupMainTheme];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
+    [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.tableView reloadData];
+}
+
+- (void) setupProfileCellTheme : (ProfileTableViewCell *) cell {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [cell.userProfileImageView setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [cell.userDisplayNameTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [cell.userDisplayNameTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [cell.updateButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+}
+
+- (void) setupResultsViewTheme : (ResultsView * ) view {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [view.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [view.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+
+    [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
 }
 @end

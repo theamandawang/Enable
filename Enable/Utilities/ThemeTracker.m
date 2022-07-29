@@ -20,8 +20,7 @@
 
 - (void) updateTheme: (NSString * _Nonnull) theme {
     self.theme = theme;
-    [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"theme"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self saveToDefaults: theme];
     self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
     [self sendNotification];
     if([PFUser currentUser]){
@@ -37,7 +36,6 @@
             }
         }];
     }
-    
 }
 
 - (void) getTheme {
@@ -53,14 +51,19 @@
                 if(!profile.theme) profile.theme = @"Default";
                 self.theme = profile.theme;
                 self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
-                [[NSUserDefaults standardUserDefaults] setObject:self.theme forKey:@"theme"];
-                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self saveToDefaults: profile.theme];
                 [self sendNotification];
 
             }
         }];
     }
 }
+
+- (void) saveToDefaults: (NSString * _Nonnull) theme {
+    [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"theme"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void) sendNotification {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"Theme" object:nil];
 }

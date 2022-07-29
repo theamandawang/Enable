@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) endLoading;
 - (void) testInternetConnection;
 - (void) setupTheme;
+- (void) setupMainTheme;
 
 @end
 

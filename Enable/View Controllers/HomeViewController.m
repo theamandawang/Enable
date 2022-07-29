@@ -31,32 +31,6 @@ GMSMarker *infoMarker;
     [self.mapView.mapView setBounds:self.mapView.bounds];
     self.customMarkers = [[NSMutableArray alloc] init];
     [self setupTheme];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
-}
-
-- (void) setUpSearch {
-    self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
-    self.searchController = [[UISearchController alloc]
-                                initWithSearchResultsController:self.resultsViewController
-                            ];
-    self.resultsViewController.delegate = self;
-    self.searchController.searchResultsUpdater = self.resultsViewController;
-    [self.searchController setHidesNavigationBarDuringPresentation:NO];
-    
-    UIView *subView = [[UIView alloc] initWithFrame:CGRectZero];
-    subView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:subView];
-    [subView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0].active = YES;
-    [subView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:0].active = YES;
-    [subView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:0].active = YES;
-    [subView.heightAnchor constraintEqualToConstant:50].active = YES;
-    [subView.bottomAnchor constraintEqualToAnchor:self.mapView.topAnchor constant:0].active = YES;
-    
-    [subView addSubview:self.searchController.searchBar];
-    [self.searchController.searchBar sizeToFit];
 }
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -201,8 +175,32 @@ didFailAutocompleteWithError:(NSError *)error {
     [self updateLocationMarkersWithProjection:self.mapView.mapView.projection radius:self.radiusMiles];
 }
 
+#pragma mark - Setup
+- (void) setUpSearch {
+    self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
+    self.searchController = [[UISearchController alloc]
+                                initWithSearchResultsController:self.resultsViewController
+                            ];
+    self.resultsViewController.delegate = self;
+    self.searchController.searchResultsUpdater = self.resultsViewController;
+    [self.searchController setHidesNavigationBarDuringPresentation:NO];
+    
+    UIView *subView = [[UIView alloc] initWithFrame:CGRectZero];
+    subView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:subView];
+    [subView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0].active = YES;
+    [subView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:0].active = YES;
+    [subView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:0].active = YES;
+    [subView.heightAnchor constraintEqualToConstant:50].active = YES;
+    [subView.bottomAnchor constraintEqualToAnchor:self.mapView.topAnchor constant:0].active = YES;
+    
+    [subView addSubview:self.searchController.searchBar];
+    [self.searchController.searchBar sizeToFit];
+}
+
 - (void) setupTheme {
-    [super setupTheme];
+    [self setupMainTheme];
+    NSLog(@"%@", [ThemeTracker sharedTheme].theme);
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     // search bar
     [self.searchController.searchBar.searchTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];

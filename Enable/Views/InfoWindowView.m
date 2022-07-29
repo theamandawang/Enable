@@ -34,7 +34,7 @@
     return self;
 }
 
-# pragma mark - Private functions
+# pragma mark - Setup
 - (void) setupTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];

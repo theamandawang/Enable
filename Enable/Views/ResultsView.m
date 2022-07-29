@@ -7,20 +7,12 @@
 
 #import "ResultsView.h"
 #import "UserProfile.h"
-#import "ThemeTracker.h"
-#import "HCSStarRatingView/HCSStarRatingView.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
-@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
-@property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
-@property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
-@property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property int imageIndex;
 @end
 @implementation ResultsView
@@ -43,13 +35,6 @@
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupStarRatingView];
-    [self setupTheme];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
-    
-    
     return self;
 }
 
@@ -86,18 +71,6 @@
     }
     [self layoutIfNeeded];
 
-}
-- (void) setupTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-
-    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
 }
 
 - (void) setCurrentImage: (int) i {
@@ -162,12 +135,11 @@
     }
 }
 
-# pragma mark - Private functions
+# pragma mark - StarRatingView setup
 
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
     [self setupStarRatingViewValues];
-    self.starRatingView.tintColor = [UIColor systemYellowColor];
     [self.starRatingView setUserInteractionEnabled:NO];
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.starRatingView];
