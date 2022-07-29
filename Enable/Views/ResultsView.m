@@ -44,6 +44,12 @@
     self.contentView.frame = self.bounds;
     [self setupStarRatingView];
     [self setupTheme];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
+    
+    
     return self;
 }
 

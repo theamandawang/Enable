@@ -41,11 +41,25 @@ const int kReviewsSection = 2;
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
     [self setupTheme];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
+    
     [self queryForLocationData];
+}
+- (void) setupTheme {
+    [super setupTheme];
+    [self.refreshControl setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
+    [self.tableView setBackgroundColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [[UITableViewCell appearance] setBackgroundColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.tableView reloadData];
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self testInternetConnection];
+    [self setupTheme];
+
     [self queryForLocationData];
 
 }

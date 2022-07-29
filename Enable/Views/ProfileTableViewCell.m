@@ -6,6 +6,7 @@
 //
 
 #import "ProfileTableViewCell.h"
+#import "ThemeTracker.h"
 @interface ProfileTableViewCell ()
 @property (strong, nonatomic) UITapGestureRecognizer * tapGestureRecognizer;
 @property (strong, nonatomic) UITapGestureRecognizer * photoTapGestureRecognizer;
@@ -21,6 +22,15 @@
     self.photoTapGestureRecognizer.cancelsTouchesInView = NO;
     [self.userProfileImageView addGestureRecognizer:self.photoTapGestureRecognizer];
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
+    
+}
+
+- (void) setupTheme {
+    [self.contentView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
 }
 - (void) didTapPhoto {
     [self.delegate didTapPhoto];

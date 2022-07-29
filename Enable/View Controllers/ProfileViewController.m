@@ -42,6 +42,18 @@ bool userUpdated = false;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     [self setupTheme];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
+    
+}
+
+- (void) setupTheme {
+    [super setupTheme];
+    [[UITableViewCell appearance] setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.tableView setBackgroundColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    [self.tableView reloadData];
 }
 - (void) getUserProfile {
     if(self.userProfileID){

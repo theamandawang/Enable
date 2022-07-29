@@ -92,6 +92,7 @@
                     <navigationItem key="navigationItem" id="1yH-d9-YTi"/>
                     <connections>
                         <outlet property="themePicker" destination="Wkv-Or-3YO" id="6eD-kN-0iP"/>
+                        <outlet property="titleLabel" destination="gKp-6m-hwa" id="yMn-J5-z0Y"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="geL-4L-Zaw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

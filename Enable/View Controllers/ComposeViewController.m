@@ -42,6 +42,10 @@ UITapGestureRecognizer *scrollViewTapGesture;
     
     [self setupStarRatingView];
     [self setupTheme];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
 
 }
 

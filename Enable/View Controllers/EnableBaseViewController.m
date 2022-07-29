@@ -81,7 +81,6 @@
 
 - (void)setupActivityIndicator {
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleLarge];
-    [self.activityView setColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]];
     self.activityView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.activityView setHidesWhenStopped:YES];
     [self.view addSubview:self.activityView];
@@ -103,6 +102,8 @@
 #pragma mark - Theme
 - (void) setupTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.activityView setColor:[UIColor colorNamed: colorSet[@"Label"]]];
+
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
     [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];

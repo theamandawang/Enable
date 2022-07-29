@@ -8,6 +8,7 @@
 #import "ColorViewController.h"
 @interface ColorViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UIPickerView *themePicker;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end
 
@@ -21,12 +22,24 @@ NSArray<NSString *> * themes;
     NSString * myTheme = [ThemeTracker sharedTheme].theme;
     int row = myTheme ? [themes indexOfObject: myTheme] : 0;
     [self.themePicker selectRow:row inComponent:0 animated:YES];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
+    
+    
+    
+    
     [self setupTheme];
 
 }
 - (void) setupTheme {
     [super setupTheme];
+    [self.titleLabel setTextColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]];
     [self.themePicker setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
+    [self.themePicker reloadComponent:0];
+    [self.view layoutIfNeeded];
 }
 #pragma mark - PickerView
 - (NSInteger)numberOfComponentsInPickerView:(nonnull UIPickerView *)pickerView {
@@ -41,24 +54,7 @@ NSArray<NSString *> * themes;
 }
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     NSString *selectedTheme = themes[row];
-    [[NSUserDefaults standardUserDefaults] setObject:selectedTheme forKey:@"theme"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    if([PFUser currentUser]){
-        [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-            if(error){
-                [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
-            } else if(profile) {
-                [Utilities updateUserProfile:profile withTheme:themes[row] withCompletion:^(NSError * _Nullable updateError) {
-                    if(updateError){
-                        [self showAlert:@"Failed to update theme on cloud" message:updateError.localizedDescription completion:nil];
-                    }
-                }];
-            }
-            
-        }];
-    }
-    NSLog(@"%@", themes[row]);
+    [[ThemeTracker sharedTheme] updateTheme:themes[row]];
 }
 
 

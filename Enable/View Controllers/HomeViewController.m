@@ -31,11 +31,10 @@ GMSMarker *infoMarker;
     [self.mapView.mapView setBounds:self.mapView.bounds];
     self.customMarkers = [[NSMutableArray alloc] init];
     [self setupTheme];
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+            selector:@selector(setupTheme)
+            name:@"Theme" object:nil];
 }
 
 - (void) setUpSearch {
@@ -220,6 +219,5 @@ didFailAutocompleteWithError:(NSError *)error {
     [self.resultsViewController setPrimaryTextHighlightColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Accent"]]];
     [self.resultsViewController setSecondaryTextColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
 }
-
 
 @end

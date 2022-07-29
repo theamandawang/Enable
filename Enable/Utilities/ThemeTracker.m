@@ -20,6 +20,8 @@
 
 - (void) updateTheme: (NSString * _Nonnull) theme {
     self.theme = theme;
+    [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"theme"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
     [self sendNotification];
     if([PFUser currentUser]){
@@ -33,7 +35,6 @@
                     }
                 }];
             }
-           
         }];
     }
     
@@ -41,25 +42,27 @@
 
 - (void) getTheme {
     self.theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"theme"];
-    self.colorSet = self.theme ? [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme] :
-    [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
+    if(!self.theme) self.theme = @"Default";
+    self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
     [self sendNotification];
-    //TODO: how to handle this in background ?
-//    if([PFUser currentUser]){
-//        [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-//            if(error){
-//                // TODO: how to handle error?
-//            } else if (profile) {
-//                self.theme = profile.theme;
-//                self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
-//                [self sendNotification];
-//
-//            }
-//        }];
-//    }
+    if([PFUser currentUser]){
+        [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
+            if(error){
+                // TODO: how to handle error?
+            } else if (profile) {
+                if(!profile.theme) profile.theme = @"Default";
+                self.theme = profile.theme;
+                self.colorSet = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
+                [[NSUserDefaults standardUserDefaults] setObject:self.theme forKey:@"theme"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+                [self sendNotification];
+
+            }
+        }];
+    }
 }
 - (void) sendNotification {
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"Theme" object:nil];
 }
 
 @end
