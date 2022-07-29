@@ -127,7 +127,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="01d-EJ-hou">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="730"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="729.33333333333337"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login/Signup" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5qw-ab-vBi">
                                                 <rect key="frame" x="142.66666666666669" y="60" width="142.66666666666669" height="30"/>
@@ -146,19 +146,19 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" textContentType="email"/>
                                             </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0kA-rM-bSu">
-                                                <rect key="frame" x="177" y="340" width="74" height="21"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0kA-rM-bSu">
+                                                <rect key="frame" x="177" y="340" width="74" height="28"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4Fl-xU-FSM">
-                                                <rect key="frame" x="60" y="376" width="308" height="34"/>
+                                                <rect key="frame" x="60" y="375.33333333333331" width="308" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" textContentType="password"/>
                                             </textField>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A0e-jp-kNr">
-                                                <rect key="frame" x="59.999999999999993" y="490" width="87.333333333333314" height="40"/>
+                                                <rect key="frame" x="59.999999999999993" y="489.33333333333331" width="87.333333333333314" height="39.999999999999943"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="c0Q-A9-Mvs"/>
                                                 </constraints>
@@ -171,7 +171,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vz0-vS-vWY">
-                                                <rect key="frame" x="300" y="490" width="68" height="40"/>
+                                                <rect key="frame" x="300" y="489.33333333333331" width="68" height="39.999999999999943"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="40" id="S0m-Js-ZhU"/>
                                                 </constraints>
@@ -237,7 +237,10 @@
                     <navigationItem key="navigationItem" id="zGw-Xi-M5i"/>
                     <connections>
                         <outlet property="contentView" destination="01d-EJ-hou" id="I9i-6u-gPs"/>
+                        <outlet property="emailLabel" destination="EGj-xf-hdg" id="6od-aT-GUc"/>
                         <outlet property="emailTextField" destination="SDZ-wh-0Yw" id="IbQ-Oo-XvT"/>
+                        <outlet property="loginLabel" destination="5qw-ab-vBi" id="6G6-Oo-jiM"/>
+                        <outlet property="passLabel" destination="0kA-rM-bSu" id="Tey-cF-TcC"/>
                         <outlet property="passTextField" destination="4Fl-xU-FSM" id="vSz-5X-edw"/>
                         <outlet property="scrollView" destination="unU-5X-OGi" id="Z8j-8l-fXt"/>
                     </connections>
@@ -249,7 +252,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-461" y="769"/>
+            <point key="canvasLocation" x="-461.21495327102804" y="768.46652267818581"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="vXd-oe-3ZG">
@@ -347,7 +350,7 @@
                                             <outlet property="locationRatingLabel" destination="izF-TI-CYD" id="yoa-VQ-RF2"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ComposeCell" rowHeight="129" id="RVZ-OL-19d">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ComposeCell" rowHeight="129" id="RVZ-OL-19d" customClass="ComposeTableViewCell">
                                         <rect key="frame" x="0.0" y="316.66666603088379" width="428" height="129"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RVZ-OL-19d" id="EL0-NY-yT9">
@@ -367,6 +370,9 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="qWo-vF-PeO" secondAttribute="bottom" constant="30" id="seG-LE-zCX"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="composeTextField" destination="qWo-vF-PeO" id="GkX-V4-Gkw"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -490,6 +496,7 @@
                         <outlet property="photosImageView" destination="1xt-2p-uUA" id="Ojy-TI-RV1"/>
                         <outlet property="reviewTextView" destination="pcX-PS-yfb" id="GR6-lH-qEw"/>
                         <outlet property="scrollView" destination="KUv-1Z-Ass" id="5gj-4u-vBW"/>
+                        <outlet property="submitButton" destination="Sb9-tz-kyI" id="59a-d5-Oby"/>
                         <outlet property="titleTextField" destination="saa-b4-r0p" id="SFA-h8-hYo"/>
                     </connections>
                 </viewController>
@@ -516,7 +523,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="Xei-Q3-xVF"/>
         <segue reference="F4t-kF-nF8"/>
-        <segue reference="dDK-RE-xwx"/>
+        <segue reference="22x-Oq-g41"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

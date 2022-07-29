@@ -2,6 +2,36 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>Twilight</key>
+	<dict>
+		<key>Secondary</key>
+		<string>Twilight Secondary</string>
+		<key>Background</key>
+		<string>Twilight Background</string>
+		<key>Accent</key>
+		<string>Twilight Accent</string>
+		<key>Label</key>
+		<string>Twilight Label</string>
+		<key>Star</key>
+		<string>Twilight Star</string>
+		<key>Like</key>
+		<string>Twilight Like</string>
+	</dict>
+	<key>Sunrise</key>
+	<dict>
+		<key>Secondary</key>
+		<string>Sunrise Secondary</string>
+		<key>Background</key>
+		<string>Sunrise Background</string>
+		<key>Accent</key>
+		<string>Sunrise Accent</string>
+		<key>Label</key>
+		<string>Sunrise Label</string>
+		<key>Star</key>
+		<string>Sunrise Star</string>
+		<key>Like</key>
+		<string>Sunrise Like</string>
+	</dict>
 	<key>Default</key>
 	<dict>
 		<key>Secondary</key>

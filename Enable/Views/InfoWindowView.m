@@ -36,9 +36,11 @@
 
 # pragma mark - Private functions
 - (void) setupTheme {
-    [self.contentView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.starRatingView setTintColor: [UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.placeNameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
 }
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];

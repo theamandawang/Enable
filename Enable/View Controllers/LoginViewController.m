@@ -12,6 +12,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *passTextField;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UILabel *loginLabel;
+@property (weak, nonatomic) IBOutlet UILabel *emailLabel;
+@property (weak, nonatomic) IBOutlet UILabel *passLabel;
+
 @end
 @implementation LoginViewController
 - (void)viewDidLoad {
@@ -48,7 +52,20 @@
 
 - (void) setupTheme {
     [super setupTheme];
-    [self.contentView setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.view setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    
+    [self.passTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.emailTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+
+    [self.passTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.emailTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    
+    [self.loginLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.emailLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.passLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+
 }
 
 #pragma mark - IBAction

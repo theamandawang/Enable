@@ -24,6 +24,7 @@
 		7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6298E4287C9AC000A550F4 /* ResultsView.xib */; };
 		7F6298F1287D1A7000A550F4 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298F0287D1A7000A550F4 /* Utilities.m */; };
 		7F6738662891FEF000EEAC26 /* ThemeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738652891FEF000EEAC26 /* ThemeTracker.m */; };
+		7F67386C2894542B00EEAC26 /* ComposeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F67386B2894542A00EEAC26 /* ComposeTableViewCell.m */; };
 		7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E9DAF28876D4C00EC4C27 /* Reachability.m */; };
 		7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
@@ -77,6 +78,8 @@
 		7F6298F0287D1A7000A550F4 /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utilities.m; sourceTree = "<group>"; };
 		7F6738642891FEF000EEAC26 /* ThemeTracker.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThemeTracker.h; sourceTree = "<group>"; };
 		7F6738652891FEF000EEAC26 /* ThemeTracker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThemeTracker.m; sourceTree = "<group>"; };
+		7F67386A2894542A00EEAC26 /* ComposeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComposeTableViewCell.h; sourceTree = "<group>"; };
+		7F67386B2894542A00EEAC26 /* ComposeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComposeTableViewCell.m; sourceTree = "<group>"; };
 		7F6E9DAF28876D4C00EC4C27 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		7F6E9DB128876D6400EC4C27 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -233,6 +236,8 @@
 				7FD3FF23288A10A6005D857B /* ProfileTableViewCell.h */,
 				7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */,
 				7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */,
+				7F67386A2894542A00EEAC26 /* ComposeTableViewCell.h */,
+				7F67386B2894542A00EEAC26 /* ComposeTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -427,6 +432,7 @@
 				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
 				7F6298D82877D3EB00A550F4 /* ComposeViewController.m in Sources */,
+				7F67386C2894542B00EEAC26 /* ComposeTableViewCell.m in Sources */,
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
 				7F6298DF287C99CB00A550F4 /* ReviewTableViewCell.m in Sources */,
 				7F6298DB2878A01700A550F4 /* SummaryReviewTableViewCell.m in Sources */,

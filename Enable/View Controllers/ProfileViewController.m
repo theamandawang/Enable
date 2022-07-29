@@ -51,9 +51,10 @@ bool userUpdated = false;
 
 - (void) setupTheme {
     [super setupTheme];
-    [[UITableViewCell appearance] setBackgroundColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.tableView setBackgroundColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.tableView reloadData];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
+    [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+
 }
 - (void) getUserProfile {
     if(self.userProfileID){
@@ -209,6 +210,8 @@ bool userUpdated = false;
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
+    UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
+    [header.textLabel setTextColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
     view.tintColor = [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]];
     view.alpha = 0.8;
 }

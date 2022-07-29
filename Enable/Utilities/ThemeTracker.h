@@ -12,9 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) NSString * theme;
 @property (strong, nonatomic) NSDictionary * colorSet;
 + (instancetype)sharedTheme;
-//send notification here
 - (void) updateTheme: (NSString * _Nonnull) theme;
-//send notification here
 - (void) getTheme;
 @end
 

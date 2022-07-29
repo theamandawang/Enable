@@ -97,23 +97,14 @@
     }
 }
 
-#pragma mark - Notification
-
 #pragma mark - Theme
 - (void) setupTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     [self.activityView setColor:[UIColor colorNamed: colorSet[@"Label"]]];
-
     [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
     [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
     [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [[UILabel appearance] setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [[UIButton appearance] setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [[UITextField appearance] setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [[UITextField appearance] setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [[UITableView appearance] setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [[UITableViewCell appearance] setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
 }
 
 @end

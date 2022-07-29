@@ -15,14 +15,13 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     self.photoTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapPhoto)];
     self.tapGestureRecognizer.cancelsTouchesInView = NO;
     self.photoTapGestureRecognizer.cancelsTouchesInView = NO;
     [self.userProfileImageView addGestureRecognizer:self.photoTapGestureRecognizer];
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
-    
+    [self setupTheme];
     [[NSNotificationCenter defaultCenter] addObserver:self
             selector:@selector(setupTheme)
             name:@"Theme" object:nil];
@@ -30,15 +29,18 @@
 }
 
 - (void) setupTheme {
-    [self.contentView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.userProfileImageView setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.userDisplayNameTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.userDisplayNameTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.updateButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
 }
 - (void) didTapPhoto {
     [self.delegate didTapPhoto];
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (void) hideKeyboard {

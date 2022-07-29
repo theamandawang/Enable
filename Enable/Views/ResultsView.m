@@ -88,10 +88,16 @@
 
 }
 - (void) setupTheme {
-    [self.contentView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.starRatingView setTintColor: [UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.likeImageView setTintColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Like"]]];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+
+    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
 }
 
 - (void) setCurrentImage: (int) i {

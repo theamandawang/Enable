@@ -50,10 +50,10 @@ const int kReviewsSection = 2;
 }
 - (void) setupTheme {
     [super setupTheme];
-    [self.refreshControl setTintColor:[UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
-    [self.tableView setBackgroundColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [[UITableViewCell appearance] setBackgroundColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.tableView reloadData];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
+    [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
 }
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

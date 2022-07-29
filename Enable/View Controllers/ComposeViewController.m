@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIStepper *imageStepper;
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ScrollViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @end
 
 @implementation ComposeViewController
@@ -39,7 +40,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
     [self registerForKeyboardNotifications];
-    
+    [self setupTextView];
     [self setupStarRatingView];
     [self setupTheme];
     
@@ -48,13 +49,34 @@ UITapGestureRecognizer *scrollViewTapGesture;
             name:@"Theme" object:nil];
 
 }
-
+- (void) setupTextView {
+    self.reviewTextView.layer.cornerRadius = 5;
+    self.reviewTextView.layer.masksToBounds = YES;
+}
 - (void) setupTheme{
     [super setupTheme];
-    [self.starRatingView setTintColor: [UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Background"]]];
-    [self.reviewTextView setBackgroundColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Secondary"]]];
-    [self.photosImageView setTintColor:[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Accent"]]];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    
+    //this line changes the stepper
+//    [[UIButton appearance] setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    
+    //this line doesn't change the tint as expected
+    [self.imageStepper setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+
+    //this sets the color behind the actual stepper
+    [self.imageStepper setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    
+    [self.submitButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.titleTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.reviewTextView setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.titleTextField setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+
+    [self.reviewTextView setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.reviewTextView setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
+    [self.photosImageView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
 }
 
 #pragma mark - Querying
