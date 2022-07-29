@@ -200,17 +200,22 @@ didFailAutocompleteWithError:(NSError *)error {
 
 - (void) setupTheme {
     [self setupMainTheme];
-    NSLog(@"%@", [ThemeTracker sharedTheme].theme);
+    [self setupSearchBarTheme];
+    [self setupResultsTheme];
+
+}
+
+- (void) setupSearchBarTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    // search bar
     [self.searchController.searchBar.searchTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
     [self.searchController.searchBar setBarTintColor:[UIColor colorNamed: colorSet[@"Background"]]];
     [self.searchController.searchBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}];
     [self.searchController.searchBar.searchTextField.leftView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
     [self.searchController.searchBar.searchTextField.rightView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
-    
-    // results view
+}
+- (void) setupResultsTheme {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     [self.resultsViewController setTableCellBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
     [self.resultsViewController setTableCellSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
     [self.resultsViewController setPrimaryTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
