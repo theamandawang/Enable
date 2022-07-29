@@ -10,9 +10,9 @@
 @interface EnableBaseViewController ()
 @property (strong, nonatomic) UIActivityIndicatorView * activityView;
 @property (strong, nonatomic) Reachability *internetReachable;
-
 @end
 
+//TODO: change color of status bar based on theme
 @implementation EnableBaseViewController
 
 - (void)viewDidLoad {
@@ -96,7 +96,9 @@
     [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
     [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
 }
-
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleDarkContent;
+}
 #pragma mark - Private
 
 - (void)setupActivityIndicator {
