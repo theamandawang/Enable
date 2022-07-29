@@ -16,7 +16,8 @@
 NSArray<NSString *> * themes;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    themes = @[@"Default", @"Parchment", @"Sunrise", @"Twilight"];
+    NSDictionary * themesDictionary = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]];
+    themes = [[themesDictionary allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     self.themePicker.dataSource = self;
     self.themePicker.delegate = self;
     NSString * myTheme = [ThemeTracker sharedTheme].theme;
