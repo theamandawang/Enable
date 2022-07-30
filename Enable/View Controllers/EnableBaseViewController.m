@@ -95,9 +95,7 @@
     [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
     [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-}
-- (UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleDarkContent;
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 #pragma mark - Private
 

@@ -99,10 +99,10 @@
             </objects>
             <point key="canvasLocation" x="536.91588785046724" y="-378.40172786177106"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Main Navigation View Controller-->
         <scene sceneID="ljU-7a-5Ha">
             <objects>
-                <navigationController storyboardIdentifier="mainNav" id="XoB-cP-dEz" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="mainNav" id="XoB-cP-dEz" customClass="MainNavigationViewController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="87W-J1-Zac">
                         <rect key="frame" x="0.0" y="44" width="428" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>

@@ -26,6 +26,7 @@
 		7F6738662891FEF000EEAC26 /* ThemeTracker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738652891FEF000EEAC26 /* ThemeTracker.m */; };
 		7F67386C2894542B00EEAC26 /* ComposeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F67386B2894542A00EEAC26 /* ComposeTableViewCell.m */; };
 		7F67386E28948B2D00EEAC26 /* InfoWindowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F67386D28948B2D00EEAC26 /* InfoWindowView.xib */; };
+		7F6738712894ABBE00EEAC26 /* MainNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738702894ABBE00EEAC26 /* MainNavigationViewController.m */; };
 		7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E9DAF28876D4C00EC4C27 /* Reachability.m */; };
 		7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
@@ -81,6 +82,8 @@
 		7F67386A2894542A00EEAC26 /* ComposeTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComposeTableViewCell.h; sourceTree = "<group>"; };
 		7F67386B2894542A00EEAC26 /* ComposeTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ComposeTableViewCell.m; sourceTree = "<group>"; };
 		7F67386D28948B2D00EEAC26 /* InfoWindowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InfoWindowView.xib; sourceTree = "<group>"; };
+		7F67386F2894ABBE00EEAC26 /* MainNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainNavigationViewController.h; sourceTree = "<group>"; };
+		7F6738702894ABBE00EEAC26 /* MainNavigationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainNavigationViewController.m; sourceTree = "<group>"; };
 		7F6E9DAF28876D4C00EC4C27 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		7F6E9DB128876D6400EC4C27 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -259,6 +262,8 @@
 				7F6298D72877D3EB00A550F4 /* ComposeViewController.m */,
 				7FD3FF28288B0172005D857B /* EnableBaseViewController.h */,
 				7FD3FF29288B0172005D857B /* EnableBaseViewController.m */,
+				7F67386F2894ABBE00EEAC26 /* MainNavigationViewController.h */,
+				7F6738702894ABBE00EEAC26 /* MainNavigationViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -420,6 +425,7 @@
 				7F6298D52877A4BC00A550F4 /* ReviewByLocationViewController.m in Sources */,
 				7F6298F1287D1A7000A550F4 /* Utilities.m in Sources */,
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
+				7F6738712894ABBE00EEAC26 /* MainNavigationViewController.m in Sources */,
 				7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */,
 				7F6738662891FEF000EEAC26 /* ThemeTracker.m in Sources */,
 				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,

@@ -16,6 +16,8 @@
 		<string>Default Star</string>
 		<key>Like</key>
 		<string>Default Like</string>
+		<key>StatusBar</key>
+		<string>Default</string>
 	</dict>
 	<key>Parchment</key>
 	<dict>
@@ -31,6 +33,8 @@
 		<string>Parchment Star</string>
 		<key>Like</key>
 		<string>Parchment Like</string>
+		<key>StatusBar</key>
+		<string>Dark</string>
 	</dict>
 	<key>Sunrise</key>
 	<dict>
@@ -46,6 +50,8 @@
 		<string>Sunrise Star</string>
 		<key>Like</key>
 		<string>Sunrise Like</string>
+		<key>StatusBar</key>
+		<string>Dark</string>
 	</dict>
 	<key>Twilight</key>
 	<dict>
@@ -61,6 +67,8 @@
 		<string>Twilight Star</string>
 		<key>Like</key>
 		<string>Twilight Like</string>
+		<key>StatusBar</key>
+		<string>Light</string>
 	</dict>
 </dict>
 </plist>
