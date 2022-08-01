@@ -6,12 +6,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <PhotosUI/PhotosUI.h>
 #import "Location.h"
 #import "UserProfile.h"
 #import "EnableBaseViewController.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ComposeViewController : EnableBaseViewController <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface ComposeViewController : EnableBaseViewController <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate>
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) NSString * POI_idStr;
 @end

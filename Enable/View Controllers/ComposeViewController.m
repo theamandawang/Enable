@@ -10,13 +10,14 @@
 #import "Parse/PFImageView.h"
 #import "Utilities.h"
 #import "Review.h"
-@interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIButton *addImageButton;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
-@property (weak, nonatomic) IBOutlet UIStepper *imageStepper;
+
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ScrollViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
@@ -32,9 +33,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.images = [[NSMutableArray alloc] init];
-
     scrollViewTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
@@ -148,21 +147,19 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 - (void) openLibrary {
-    UIImagePickerController *imagePickerVC = [UIImagePickerController new];
+    PHPickerConfiguration * config = [[PHPickerConfiguration alloc] init];
+    config.selectionLimit = 3;
+    config.filter = [PHPickerFilter imagesFilter];
+    PHPickerViewController * imagePickerVC = [[PHPickerViewController alloc] initWithConfiguration:config];
+    
     imagePickerVC.delegate = self;
-    imagePickerVC.allowsEditing = YES;
-    imagePickerVC.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.photosImageView.image = editedImage;
-    if(imageIndex == self.images.count && imageIndex != 2){
-        [self.images addObject: editedImage];
-    } else {
-        self.images[imageIndex] = editedImage;
-    }
+    imageIndex = 0;
+    self.images = [[NSMutableArray alloc] initWithArray:@[editedImage]];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -234,7 +231,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)setupStarRatingViewConstraints {
     // Y
-    [self.starRatingView.topAnchor constraintEqualToAnchor:self.imageStepper.bottomAnchor constant:30].active = YES;
+    [self.starRatingView.topAnchor constraintEqualToAnchor:self.addImageButton.bottomAnchor constant:30].active = YES;
     [self.starRatingView.heightAnchor constraintEqualToConstant:80].active = YES;
     [self.titleTextField.topAnchor constraintEqualToAnchor:self.starRatingView.bottomAnchor constant:30].active = YES;
     // X
@@ -243,22 +240,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 #pragma mark - Image Uploading
-
-- (IBAction)didChangeImageNumber:(id)sender {
-    NSLog(@"%f", self.imageStepper.value);
-    if(self.images.count == 0 && self.imageStepper.value == 1){
-        self.imageStepper.value = 0;
-        [self didTapPhoto:nil];
-        return;
-    }
-    if(imageIndex < self.imageStepper.value){
-        [self didTapPhoto:nil];
-        imageIndex = self.imageStepper.value;
-    } else {
-        [self.images removeObjectAtIndex:imageIndex];
-        [self didSwipeRight:nil];
-    }
-}
 
 - (IBAction)didSwipeLeft:(id)sender {
     // takes care of unsigned vs. signed arithmetic
@@ -293,12 +274,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 - (void) setupTheme{
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    
-    //this line doesn't change the tint as expected
-    [self.imageStepper setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-
-    //this sets the color behind the actual stepper
-    [self.imageStepper setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.addImageButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     
     [self.submitButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
     [self.titleTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
@@ -311,6 +287,32 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
     [self.starRatingView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.photosImageView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
+}
+
+- (void)picker:(nonnull PHPickerViewController *)picker didFinishPicking:(nonnull NSArray<PHPickerResult *> *)results {
+    int count = 0;
+    if(self.images.count >= 3){
+        [self.images removeAllObjects];
+    }
+    for (PHPickerResult * res in results){
+        if([res.itemProvider canLoadObjectOfClass:[UIImage class]]){
+            [res.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading>  _Nullable object, NSError * _Nullable error) {
+                if(object){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(count == 0) {
+                            self.photosImageView.image = (UIImage*)object;
+                        }
+                        if(self.images.count < 3){
+                            [self.images addObject: (UIImage*)object];
+                        }
+                    });
+                }
+            }];
+        }
+        count ++;
+
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
