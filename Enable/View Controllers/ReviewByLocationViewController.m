@@ -12,6 +12,7 @@
 #import "ComposeTableViewCell.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
+#import "ShimmerView.h"
 #import "ProfileViewController.h"
 #import <GooglePlaces/GooglePlaces.h>
 
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
 @property (strong, nonatomic) id userProfileID;
+@property (strong, nonatomic) ShimmerView * shimmerLoad;
 @end
 
 @implementation ReviewByLocationViewController
@@ -37,6 +39,7 @@ const int kReviewsSection = 2;
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.reviews = [[NSMutableArray alloc] init];
     UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
+    [self setupShimmerView];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
     [self getCurrentUserProfile];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
@@ -96,12 +99,20 @@ const int kReviewsSection = 2;
         } else {
             self.reviews = reviews;
             [self.tableView reloadData];
-            [self finishLoading];
+//            [self finishLoading];
         }
     }];
 }
 - (void) queryForLocationData {
-    [self startLoading];
+////    [self startLoading];
+//    for (UIView* view in self.view.subviews) {
+//        if([view isKindOfClass:[ShimmerView class]]){
+//            [view setHidden:NO];
+//        }
+//        [view setHidden:YES];
+//    }
+    
+    [self.shimmerLoad setHidden:NO];
     if(self.locationID){
         [Utilities getLocationFromID:self.locationID withCompletion:^(Location * _Nullable location, NSError * _Nullable error) {
             if(error){
@@ -131,7 +142,7 @@ const int kReviewsSection = 2;
                             self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
                             [self.tableView reloadData];
                         }
-                        [self finishLoading];
+//                        [self finishLoading];
 
                     }];
                 }
@@ -242,6 +253,11 @@ const int kReviewsSection = 2;
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.shimmerLoad.contentView setBackgroundColor: [UIColor systemBlueColor]];
+    [self.shimmerLoad.profilePlaceholder setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.shimmerLoad.myLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    
+    
     [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
@@ -274,6 +290,17 @@ const int kReviewsSection = 2;
     [cell.composeTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
 
+}
+
+- (void) setupShimmerView {
+    self.shimmerLoad = [[ShimmerView alloc] init];
+    self.shimmerLoad.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.shimmerLoad];
+    [self.shimmerLoad setHidden:YES];
+    [self.shimmerLoad.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
+    [self.shimmerLoad.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    [self.shimmerLoad.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [self.shimmerLoad.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
 }
 
 @end
