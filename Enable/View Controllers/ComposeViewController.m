@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIStepper *imageStepper;
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ScrollViewBottomConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *submitButton;
 @end
 
 @implementation ComposeViewController
@@ -39,9 +40,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
     [self registerForKeyboardNotifications];
-    
+    [self setupTextView];
     [self setupStarRatingView];
-
+    [self setupTheme];
 }
 
 #pragma mark - Querying
@@ -155,9 +156,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-
-    // Get the image captured by the UIImagePickerController
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.photosImageView.image = editedImage;
     if(imageIndex == self.images.count && imageIndex != 2){
@@ -165,7 +163,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     } else {
         self.images[imageIndex] = editedImage;
     }
-    // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -221,7 +218,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
     self.starRatingView.backgroundColor = [UIColor systemBackgroundColor];
-    self.starRatingView.tintColor = [UIColor systemYellowColor];
     [self.scrollView addSubview:self.starRatingView];
     
     [self setupStarRatingViewValues];
@@ -245,7 +241,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.starRatingView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = YES;
     [self.starRatingView.widthAnchor constraintEqualToConstant:250].active = YES;
 }
-
 
 #pragma mark - Image Uploading
 
@@ -288,6 +283,34 @@ UITapGestureRecognizer *scrollViewTapGesture;
             }
             completion:nil
     ];
+}
+
+#pragma mark - Setup
+- (void) setupTextView {
+    self.reviewTextView.layer.cornerRadius = 5;
+    self.reviewTextView.layer.masksToBounds = YES;
+}
+- (void) setupTheme{
+    [self setupMainTheme];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    
+    //this line doesn't change the tint as expected
+    [self.imageStepper setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+
+    //this sets the color behind the actual stepper
+    [self.imageStepper setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    
+    [self.submitButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.titleTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.reviewTextView setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.titleTextField setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+
+    [self.reviewTextView setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.reviewTextView setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
+    [self.photosImageView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
 }
 
 @end

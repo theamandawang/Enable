@@ -25,7 +25,7 @@
 + (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion;
 + (void) getUserProfileFromID: (id _Nonnull) userProfileID withCompletion: (void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion;
 + (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withUser: (NSString * _Nullable) username withImage: (UIImage * _Nullable) image withCompletion: (void (^_Nonnull)(NSError  * _Nullable  error))completion;
-
++ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withTheme : (NSString * _Nonnull) theme withCompletion: (void (^_Nullable) (NSError * _Nullable error)) completion;
 
 #pragma mark Review
 + (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review, NSError * _Nullable error))completion;

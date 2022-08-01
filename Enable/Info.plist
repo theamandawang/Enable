@@ -9,6 +9,8 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access photos library to get pictures</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Location needed to show user nearby areas</string>
 	<key>NSCameraUsageDescription</key>

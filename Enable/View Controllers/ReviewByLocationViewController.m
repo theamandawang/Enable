@@ -8,8 +8,8 @@
 #import "ReviewByLocationViewController.h"
 #import "Review.h"
 #import "UserProfile.h"
-#import "Utilities.h"
 #import "ComposeViewController.h"
+#import "ComposeTableViewCell.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
 #import "ProfileViewController.h"
@@ -41,11 +41,15 @@ const int kReviewsSection = 2;
     [self getCurrentUserProfile];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
+    [self setupTheme];
+    
     [self queryForLocationData];
 }
+
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self testInternetConnection];
+    [self setupTheme];
     [self queryForLocationData];
 
 }
@@ -92,9 +96,9 @@ const int kReviewsSection = 2;
         } else {
             self.reviews = reviews;
             [self.tableView reloadData];
+            [self finishLoading];
         }
     }];
-    [self finishLoading];
 }
 - (void) queryForLocationData {
     [self startLoading];
@@ -174,14 +178,17 @@ const int kReviewsSection = 2;
         } else {
             summaryCell.locationRatingLabel.text = @"No reviews yet!";
         }
+        [self setupSummaryCellTheme:summaryCell];
         return summaryCell;
     } else if (indexPath.section == kComposeSection) {
-        UITableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier:@"ComposeCell"];
+        ComposeTableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier:@"ComposeCell"];
+        [self setupComposeCellTheme : composeCell];
         return composeCell;
     }
     else {
         ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
         cell.resultsView.delegate = self;
+        [self setupResultsViewTheme:cell.resultsView];
         [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
             if(error){
                 [self showAlert:@"Failed to get user" message:error.localizedDescription completion:nil];
@@ -229,6 +236,44 @@ const int kReviewsSection = 2;
 - (void) finishLoading {
     [self endLoading];
     [self.refreshControl endRefreshing];
+}
+
+#pragma mark - Setup
+- (void) setupTheme {
+    [self setupMainTheme];
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
+    [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.tableView reloadData];
+}
+- (void) setupResultsViewTheme : (ResultsView * ) view {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [view.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [view.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+
+    [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
+}
+- (void) setupSummaryCellTheme : (SummaryReviewTableViewCell *) cell {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [cell.locationNameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [cell.locationRatingLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+}
+
+
+- (void) setupComposeCellTheme : (ComposeTableViewCell *) cell {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [cell.composeTextField setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    [cell.composeTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+
 }
 
 @end

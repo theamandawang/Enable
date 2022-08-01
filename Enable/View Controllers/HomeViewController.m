@@ -9,7 +9,6 @@
 #import "MapView.h"
 #import "Location.h"
 #import "ProfileViewController.h"
-#import "Utilities.h"
 #import "InfoWindowView.h"
 @interface HomeViewController () <GMSMapViewDelegate, GMSAutocompleteResultsViewControllerDelegate, ReviewByLocationViewControllerDelegate, ViewErrorHandle>
 @property (weak, nonatomic) IBOutlet MapView *mapView;
@@ -31,36 +30,7 @@ GMSMarker *infoMarker;
     [self setUpSearch];
     [self.mapView.mapView setBounds:self.mapView.bounds];
     self.customMarkers = [[NSMutableArray alloc] init];
-}
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self viewDidLoad];
-}
-
-- (void) setUpSearch {
-    self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
-    self.searchController = [[UISearchController alloc]
-                                initWithSearchResultsController:self.resultsViewController
-                            ];
-    self.resultsViewController.delegate = self;
-    self.searchController.searchResultsUpdater = self.resultsViewController;
-    [self.searchController setHidesNavigationBarDuringPresentation:NO];
-    
-    UIView *subView = [[UIView alloc] initWithFrame:CGRectZero];
-    subView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:subView];
-    [subView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0].active = YES;
-    [subView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:0].active = YES;
-    [subView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:0].active = YES;
-    [subView.heightAnchor constraintEqualToConstant:50].active = YES;
-    [subView.bottomAnchor constraintEqualToAnchor:self.mapView.topAnchor constant:0].active = YES;
-    
-    [subView addSubview:self.searchController.searchBar];
-    [self.searchController.searchBar sizeToFit];
-
-    self.searchController.searchBar.text = @"";
-    self.searchController.searchBar.placeholder = @"Search location...";
+    [self setupTheme];
 }
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -175,14 +145,6 @@ didFailAutocompleteWithError:(NSError *)error {
     self.infoWindowView.placeNameLabel.text = marker.title;
     return self.infoWindowView;
 }
-
--(void) didRequestAutocompletePredictionsForResultsController:(GMSAutocompleteResultsViewController *)resultsController{
-    [self startLoading];
-}
-- (void)didUpdateAutocompletePredictionsForResultsController:
-    (GMSAutocompleteResultsViewController *)resultsController {
-    [self endLoading];
-}
 - (IBAction)didTapProfile:(id)sender {
     if([PFUser currentUser]){
         [self performSegueWithIdentifier:@"signedIn" sender:nil];
@@ -211,6 +173,54 @@ didFailAutocompleteWithError:(NSError *)error {
     }
     [self.mapView.mapView setCamera:[GMSCameraPosition cameraWithLatitude:latitude longitude:longitude zoom:14]];
     [self updateLocationMarkersWithProjection:self.mapView.mapView.projection radius:self.radiusMiles];
+}
+
+#pragma mark - Setup
+- (void) setUpSearch {
+    self.resultsViewController = [[GMSAutocompleteResultsViewController alloc] init];
+    self.searchController = [[UISearchController alloc]
+                                initWithSearchResultsController:self.resultsViewController
+                            ];
+    self.resultsViewController.delegate = self;
+    self.searchController.searchResultsUpdater = self.resultsViewController;
+    [self.searchController setHidesNavigationBarDuringPresentation:NO];
+    
+    UIView *subView = [[UIView alloc] initWithFrame:CGRectZero];
+    subView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:subView];
+    [subView.topAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.topAnchor constant:0].active = YES;
+    [subView.trailingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.trailingAnchor constant:0].active = YES;
+    [subView.leadingAnchor constraintEqualToAnchor:self.view.safeAreaLayoutGuide.leadingAnchor constant:0].active = YES;
+    [subView.heightAnchor constraintEqualToConstant:50].active = YES;
+    [subView.bottomAnchor constraintEqualToAnchor:self.mapView.topAnchor constant:0].active = YES;
+    
+    [subView addSubview:self.searchController.searchBar];
+    [self.searchController.searchBar sizeToFit];
+}
+
+- (void) setupTheme {
+    [self setupMainTheme];
+    [self setupSearchBarTheme];
+    [self setupResultsTheme];
+
+}
+
+- (void) setupSearchBarTheme {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.searchController.searchBar.searchTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.searchController.searchBar setBarTintColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.searchController.searchBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}];
+    [self.searchController.searchBar.searchTextField.leftView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.searchController.searchBar.searchTextField.rightView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
+}
+- (void) setupResultsTheme {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.resultsViewController setTableCellBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.resultsViewController setTableCellSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.resultsViewController setPrimaryTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.resultsViewController setPrimaryTextHighlightColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.resultsViewController setSecondaryTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
 }
 
 @end

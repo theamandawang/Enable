@@ -14,21 +14,19 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    // Initialization code
     self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     self.photoTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapPhoto)];
     self.tapGestureRecognizer.cancelsTouchesInView = NO;
     self.photoTapGestureRecognizer.cancelsTouchesInView = NO;
     [self.userProfileImageView addGestureRecognizer:self.photoTapGestureRecognizer];
-    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];
+    [self.contentView addGestureRecognizer:self.tapGestureRecognizer];    
 }
+#pragma mark - IBActions / User input
 - (void) didTapPhoto {
     [self.delegate didTapPhoto];
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 - (void) hideKeyboard {

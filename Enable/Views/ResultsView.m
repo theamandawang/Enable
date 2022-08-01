@@ -7,20 +7,12 @@
 
 #import "ResultsView.h"
 #import "UserProfile.h"
-#import "Utilities.h"
-#import "HCSStarRatingView/HCSStarRatingView.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
 @interface ResultsView ()
-@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
-@property (weak, nonatomic) IBOutlet UIImageView *likeImageView;
-@property (weak, nonatomic) IBOutlet UILabel *likeCountLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
-@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
-@property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property int imageIndex;
 @end
 @implementation ResultsView
@@ -43,7 +35,6 @@
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupStarRatingView];
-
     return self;
 }
 
@@ -81,7 +72,6 @@
     [self layoutIfNeeded];
 
 }
-
 
 - (void) setCurrentImage: (int) i {
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.review.images[i] valueForKey:@"url"]]];
@@ -145,12 +135,11 @@
     }
 }
 
-# pragma mark - Private functions
+# pragma mark - StarRatingView setup
 
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
     [self setupStarRatingViewValues];
-    self.starRatingView.tintColor = [UIColor systemYellowColor];
     [self.starRatingView setUserInteractionEnabled:NO];
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.starRatingView];

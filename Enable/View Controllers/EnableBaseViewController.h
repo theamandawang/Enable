@@ -6,7 +6,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Utilities.h"
+#import "ThemeTracker.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EnableBaseViewController : UIViewController
@@ -14,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) startLoading;
 - (void) endLoading;
 - (void) testInternetConnection;
+- (void) setupTheme;
+- (void) setupMainTheme;
 
 @end
 

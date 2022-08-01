@@ -5,6 +5,7 @@
 //  Created by Amanda Wang on 7/20/22.
 //
 #import "InfoWindowView.h"
+#import "ThemeTracker.h"
 @interface InfoWindowView ()
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
@@ -29,16 +30,21 @@
     self.contentView.frame = self.bounds;
     [self setupPlaceNameLabel];
     [self setupStarRatingView];
-
+    [self setupTheme];
     return self;
 }
 
-# pragma mark - Private functions
-
+# pragma mark - Setup
+- (void) setupTheme {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.placeNameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
+    [self.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+}
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
     [self setupStarRatingViewValues];
-    self.starRatingView.tintColor = [UIColor systemYellowColor];
     [self.starRatingView setUserInteractionEnabled:NO];
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.contentView addSubview:self.starRatingView];

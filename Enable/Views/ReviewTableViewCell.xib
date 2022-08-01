@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -18,14 +19,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Pb-kJ-olO" customClass="ResultsView">
-                        <rect key="frame" x="20" y="0.0" width="498" height="268"/>
+                        <rect key="frame" x="0.0" y="0.0" width="538" height="268"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="2Pb-kJ-olO" secondAttribute="trailing" constant="20" symbolic="YES" id="0Ku-DH-MNZ"/>
                     <constraint firstAttribute="bottom" secondItem="2Pb-kJ-olO" secondAttribute="bottom" id="9Uf-Mp-tQe"/>
-                    <constraint firstItem="2Pb-kJ-olO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" symbolic="YES" id="IDT-n1-Vdd"/>
+                    <constraint firstItem="2Pb-kJ-olO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="CPa-K2-6IT"/>
+                    <constraint firstAttribute="trailing" secondItem="2Pb-kJ-olO" secondAttribute="trailing" id="I1c-xb-3oX"/>
                     <constraint firstItem="2Pb-kJ-olO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="iPJ-f7-I0a"/>
                 </constraints>
             </tableViewCellContentView>
