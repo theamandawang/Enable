@@ -406,7 +406,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
@@ -421,8 +421,8 @@
                                             <outletCollection property="gestureRecognizers" destination="Q0u-2v-eLT" appends="YES" id="ZYI-kO-zZ7"/>
                                         </connections>
                                     </imageView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sb9-tz-kyI">
-                                        <rect key="frame" x="20" y="519" width="388" height="48.666666666666629"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sb9-tz-kyI">
+                                        <rect key="frame" x="20" y="508" width="388" height="48.666666666666742"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Submit"/>
@@ -433,44 +433,41 @@
                                             <action selector="didTapSubmit:" destination="FpU-Et-TaW" eventType="touchUpInside" id="GeV-uC-IS4"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title / Summary" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="saa-b4-r0p">
-                                        <rect key="frame" x="20" y="342" width="388" height="34"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title / Summary" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="saa-b4-r0p">
+                                        <rect key="frame" x="20" y="331" width="388" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcX-PS-yfb">
-                                        <rect key="frame" x="20" y="426" width="388" height="33"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcX-PS-yfb">
+                                        <rect key="frame" x="20" y="415" width="388" height="33"/>
                                         <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
-                                    <stepper opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="gMQ-5M-YL3">
-                                        <rect key="frame" x="164" y="270" width="100" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="dIQ-Te-gVF"/>
-                                            <constraint firstAttribute="width" constant="100" id="l1T-Z3-nyT"/>
-                                        </constraints>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wg3-rP-wpJ">
+                                        <rect key="frame" x="163.66666666666666" y="260" width="100.99999999999997" height="31"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="tinted" title="Add Images"/>
                                         <connections>
-                                            <action selector="didChangeImageNumber:" destination="FpU-Et-TaW" eventType="valueChanged" id="NXf-ub-LMn"/>
+                                            <action selector="didTapPhoto:" destination="FpU-Et-TaW" eventType="touchUpInside" id="JLa-PT-Vii"/>
                                         </connections>
-                                    </stepper>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="fwD-rI-MDO" firstAttribute="bottom" secondItem="Sb9-tz-kyI" secondAttribute="bottom" constant="10" id="8jB-yC-bAd"/>
                                     <constraint firstItem="e68-Ez-NoA" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" constant="20" id="Fpj-Ow-YuE"/>
                                     <constraint firstItem="Sb9-tz-kyI" firstAttribute="leading" secondItem="pcX-PS-yfb" secondAttribute="leading" id="L8K-jQ-wgW"/>
+                                    <constraint firstItem="Wg3-rP-wpJ" firstAttribute="top" secondItem="1xt-2p-uUA" secondAttribute="bottom" constant="10" id="LAR-hn-jhe"/>
                                     <constraint firstItem="Sb9-tz-kyI" firstAttribute="top" secondItem="pcX-PS-yfb" secondAttribute="bottom" constant="60" id="OAv-IB-3Aq"/>
                                     <constraint firstItem="pcX-PS-yfb" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" id="Ojm-rl-wir"/>
-                                    <constraint firstItem="gMQ-5M-YL3" firstAttribute="centerX" secondItem="1xt-2p-uUA" secondAttribute="centerX" id="Ovp-eo-wTI"/>
                                     <constraint firstItem="1xt-2p-uUA" firstAttribute="leading" secondItem="fwD-rI-MDO" secondAttribute="leading" id="WW4-De-dmY"/>
                                     <constraint firstItem="Sb9-tz-kyI" firstAttribute="trailing" secondItem="pcX-PS-yfb" secondAttribute="trailing" id="Z2u-iB-nRY"/>
                                     <constraint firstItem="pcX-PS-yfb" firstAttribute="top" secondItem="saa-b4-r0p" secondAttribute="bottom" constant="50" id="c8q-Ua-rFs"/>
+                                    <constraint firstItem="Wg3-rP-wpJ" firstAttribute="centerX" secondItem="1xt-2p-uUA" secondAttribute="centerX" id="elq-K7-Dj4"/>
                                     <constraint firstItem="pcX-PS-yfb" firstAttribute="leading" secondItem="saa-b4-r0p" secondAttribute="leading" id="nOT-ON-Wcj"/>
-                                    <constraint firstItem="saa-b4-r0p" firstAttribute="top" secondItem="gMQ-5M-YL3" secondAttribute="bottom" priority="250" constant="40" id="sKU-t9-wid"/>
                                     <constraint firstItem="saa-b4-r0p" firstAttribute="leading" secondItem="e68-Ez-NoA" secondAttribute="leading" constant="20" id="suh-4L-VF0"/>
                                     <constraint firstItem="fwD-rI-MDO" firstAttribute="trailing" secondItem="1xt-2p-uUA" secondAttribute="trailing" id="uW0-Ah-CT9"/>
-                                    <constraint firstItem="gMQ-5M-YL3" firstAttribute="top" secondItem="1xt-2p-uUA" secondAttribute="bottom" constant="20" id="uZl-Kc-cEY"/>
                                     <constraint firstItem="1xt-2p-uUA" firstAttribute="top" secondItem="fwD-rI-MDO" secondAttribute="top" id="zye-va-zLS"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="fwD-rI-MDO"/>
@@ -492,7 +489,7 @@
                     <navigationItem key="navigationItem" id="Y83-xc-AWj"/>
                     <connections>
                         <outlet property="ScrollViewBottomConstraint" destination="jFb-zV-RKe" id="0T0-7d-ATw"/>
-                        <outlet property="imageStepper" destination="gMQ-5M-YL3" id="Up3-Ma-Inz"/>
+                        <outlet property="addImageButton" destination="Wg3-rP-wpJ" id="2Gs-WT-Jau"/>
                         <outlet property="photosImageView" destination="1xt-2p-uUA" id="Ojy-TI-RV1"/>
                         <outlet property="reviewTextView" destination="pcX-PS-yfb" id="GR6-lH-qEw"/>
                         <outlet property="scrollView" destination="KUv-1Z-Ass" id="5gj-4u-vBW"/>
