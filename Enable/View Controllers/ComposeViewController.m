@@ -27,7 +27,7 @@
 //TODO: add tableview for dropdown.
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
-
+const int kMaxNumberOfImages = 3;
 int imageIndex = 0;
 UITapGestureRecognizer *scrollViewTapGesture;
 
@@ -148,7 +148,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 - (void) openLibrary {
     PHPickerConfiguration * config = [[PHPickerConfiguration alloc] init];
-    config.selectionLimit = 3;
+    config.selectionLimit = kMaxNumberOfImages;
     config.filter = [PHPickerFilter imagesFilter];
     PHPickerViewController * imagePickerVC = [[PHPickerViewController alloc] initWithConfiguration:config];
     
@@ -291,9 +291,8 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void)picker:(nonnull PHPickerViewController *)picker didFinishPicking:(nonnull NSArray<PHPickerResult *> *)results {
     int count = 0;
-    if(self.images.count >= 3){
-        [self.images removeAllObjects];
-    }
+    imageIndex = 0;
+    [self.images removeAllObjects];
     for (PHPickerResult * res in results){
         if([res.itemProvider canLoadObjectOfClass:[UIImage class]]){
             [res.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading>  _Nullable object, NSError * _Nullable error) {
@@ -302,7 +301,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
                         if(count == 0) {
                             self.photosImageView.image = (UIImage*)object;
                         }
-                        if(self.images.count < 3){
+                        if(self.images.count < kMaxNumberOfImages){
                             [self.images addObject: (UIImage*)object];
                         }
                     });
