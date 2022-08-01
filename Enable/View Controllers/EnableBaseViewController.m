@@ -12,7 +12,6 @@
 @property (strong, nonatomic) Reachability *internetReachable;
 @end
 
-//TODO: change color of status bar based on theme
 @implementation EnableBaseViewController
 
 - (void)viewDidLoad {

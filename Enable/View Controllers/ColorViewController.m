@@ -39,7 +39,6 @@ NSArray<NSString *> * themes;
     return [[NSAttributedString alloc] initWithString:themes[row] attributes:[NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
 }
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    NSString *selectedTheme = themes[row];
     [[ThemeTracker sharedTheme] updateTheme:themes[row]];
 }
 

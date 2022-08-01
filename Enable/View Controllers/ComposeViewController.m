@@ -156,9 +156,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-
-    // Get the image captured by the UIImagePickerController
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.photosImageView.image = editedImage;
     if(imageIndex == self.images.count && imageIndex != 2){
@@ -166,7 +163,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     } else {
         self.images[imageIndex] = editedImage;
     }
-    // Dismiss UIImagePickerController to go back to your original view controller
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
