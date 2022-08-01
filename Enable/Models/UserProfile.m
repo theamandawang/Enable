@@ -14,6 +14,7 @@
     @dynamic username;
     @dynamic image;
     @dynamic theme;
+    @dynamic customTheme;
     
 + (nonnull NSString *)parseClassName {
     return @"UserProfile";

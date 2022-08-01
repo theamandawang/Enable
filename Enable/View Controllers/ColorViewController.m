@@ -9,6 +9,7 @@
 @interface ColorViewController () <UIPickerViewDelegate, UIPickerViewDataSource>
 @property (weak, nonatomic) IBOutlet UIPickerView *themePicker;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) UIColorWell * colorWell;
 
 @end
 
@@ -20,13 +21,22 @@ NSArray<NSString *> * themes;
     themes = [[themesDictionary allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     self.themePicker.dataSource = self;
     self.themePicker.delegate = self;
+    self.colorWell = [[UIColorWell alloc]initWithFrame:CGRectZero];
+    self.colorWell.center = self.view.center;
+    self.colorWell.title=@"Select Color";
+    self.colorWell.supportsAlpha = NO;
+    [self.colorWell addTarget:self action:@selector(didSelectColor) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.colorWell];
     NSString * myTheme = [ThemeTracker sharedTheme].theme;
     int row = myTheme ? [themes indexOfObject: myTheme] : 0;
     [self.themePicker selectRow:row inComponent:0 animated:YES];
     [self setupTheme];
 
 }
-
+#pragma mark = ColorWell
+- (void) didSelectColor {
+    NSLog(@"%@", self.colorWell.selectedColor);
+}
 #pragma mark - PickerView
 - (NSInteger)numberOfComponentsInPickerView:(nonnull UIPickerView *)pickerView {
     return 1;

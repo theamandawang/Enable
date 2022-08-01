@@ -13,4 +13,5 @@
 @property (nonatomic, strong) NSString * _Nonnull username;
 @property (nonatomic, strong) PFFileObject * _Nullable image;
 @property (nonatomic, strong) NSString * _Nullable theme;
+@property (nonatomic, strong) NSMutableDictionary * _Nullable customTheme;
 @end
