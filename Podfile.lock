@@ -28,6 +28,7 @@ PODS:
     - Bolts/Tasks (= 1.9.1)
   - Parse/UI (1.19.3):
     - Parse/Core
+  - Shimmer (1.0.2)
 
 DEPENDENCIES:
   - AFNetworking (~> 4.0)
@@ -36,6 +37,7 @@ DEPENDENCIES:
   - HCSStarRatingView (~> 1.5)
   - Parse
   - Parse/UI
+  - Shimmer
 
 SPEC REPOS:
   trunk:
@@ -45,6 +47,7 @@ SPEC REPOS:
     - GooglePlaces
     - HCSStarRatingView
     - Parse
+    - Shimmer
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
@@ -53,7 +56,8 @@ SPEC CHECKSUMS:
   GooglePlaces: 8dba710bed6160a2e4b85e84aaafdbcc0b4010d8
   HCSStarRatingView: 1d18f79654735514cd6f00e6d90e38cb6320dc31
   Parse: 0abb63a0ff6fa34a3f64b81d595a294e2ece143a
+  Shimmer: c5374be1c2b0c9e292fb05b339a513cf291cac86
 
-PODFILE CHECKSUM: b16cc297e0429fdff018a18c3a6d8be83a451d9b
+PODFILE CHECKSUM: 37d52761ad24b6cbe5800b1e31deaa8d4d2f6ca7
 
 COCOAPODS: 1.11.3

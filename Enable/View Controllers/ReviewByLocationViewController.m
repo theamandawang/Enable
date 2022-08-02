@@ -12,6 +12,7 @@
 #import "ComposeTableViewCell.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
+#import "ReviewShimmerView.h"
 #import "ProfileViewController.h"
 #import <GooglePlaces/GooglePlaces.h>
 
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
 @property (strong, nonatomic) id userProfileID;
+@property (strong, nonatomic) ReviewShimmerView * shimmerLoadView;
 @end
 
 @implementation ReviewByLocationViewController
@@ -37,13 +39,12 @@ const int kReviewsSection = 2;
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.reviews = [[NSMutableArray alloc] init];
     UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
+    [self setupShimmerView];
     [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
     [self getCurrentUserProfile];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
     [self setupTheme];
-    
-    [self queryForLocationData];
 }
 
 - (void) viewWillAppear:(BOOL)animated {
@@ -59,6 +60,19 @@ const int kReviewsSection = 2;
         // recenters camera to the current location
         [self.delegate setGMSCameraCoordinatesWithLatitude:self.location.coordinates.latitude longitude:self.location.coordinates.longitude];
     }
+}
+
+#pragma mark - Override
+
+- (void) startLoading {
+    [self.shimmerLoadView setHidden:NO];
+    [self.tableView setHidden:YES];
+}
+
+- (void) endLoading {
+    [self.tableView setHidden:NO];
+    [self.shimmerLoadView setHidden:YES];
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - ResultsViewDelegate
@@ -96,7 +110,7 @@ const int kReviewsSection = 2;
         } else {
             self.reviews = reviews;
             [self.tableView reloadData];
-            [self finishLoading];
+            [self endLoading];
         }
     }];
 }
@@ -114,7 +128,7 @@ const int kReviewsSection = 2;
         [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
             if(locationError && (locationError.code != kNoMatchErrorCode)){
                 [self showAlert:@"Failed to get location" message:locationError.localizedDescription completion:nil];
-                [self finishLoading];
+                [self endLoading];
             } else {
                 if(location){
                     [self getReviewsFromLocation : location];
@@ -131,7 +145,7 @@ const int kReviewsSection = 2;
                             self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
                             [self.tableView reloadData];
                         }
-                        [self finishLoading];
+                        [self endLoading];
 
                     }];
                 }
@@ -232,20 +246,16 @@ const int kReviewsSection = 2;
 }
 
 
-#pragma mark - Private functions
-- (void) finishLoading {
-    [self endLoading];
-    [self.refreshControl endRefreshing];
-}
-
 #pragma mark - Setup
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    
+    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
+
     [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.tableView reloadData];
 }
 - (void) setupResultsViewTheme : (ResultsView * ) view {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
@@ -274,6 +284,19 @@ const int kReviewsSection = 2;
     [cell.composeTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
 
+}
+
+- (void) setupShimmerView {
+    self.shimmerLoadView = [[ReviewShimmerView alloc] init];
+    self.shimmerLoadView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.shimmerLoadView];
+    [self.shimmerLoadView setHidden:YES];
+    [self.shimmerLoadView.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
+    [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    
+    [self.shimmerLoadView setup];
 }
 
 @end

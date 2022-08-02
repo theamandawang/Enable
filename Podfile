@@ -15,5 +15,6 @@ target 'Enable' do
   pod 'HCSStarRatingView', '~> 1.5'
   
   pod 'AFNetworking', '~> 4.0'
+  pod 'Shimmer'
 
 end
