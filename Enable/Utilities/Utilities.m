@@ -24,6 +24,7 @@ const int kCustomizedErrorCode = 0;
 const int kQueryLimit = 3;
 const int kMaxRadius = 50;
 const int kMinRadius = 1;
+const int kReviewQueryLimit = 20;
 bool allResultsFound = false;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSError  * _Nullable  error))completion{
@@ -175,7 +176,7 @@ bool allResultsFound = false;
 + (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     //TODO: infinite scroll
-    query.limit = 20;
+    query.limit = kReviewQueryLimit;
     [query whereKey:@"locationID" equalTo:location];
     [query addDescendingOrder:@"likes"];
     [query addDescendingOrder:@"createdAt"];
@@ -192,7 +193,7 @@ bool allResultsFound = false;
 + (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName:@"Review"];
     //TODO: infinite scroll
-    query.limit = 20;
+    query.limit = kReviewQueryLimit;
     [query whereKey:@"userProfileID" equalTo:profile];
     [query addDescendingOrder:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
