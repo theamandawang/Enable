@@ -16,6 +16,7 @@
 @property (strong, nonatomic) UIColorWell * starColorWell;
 @property (strong, nonatomic) UIColorWell * likeColorWell;
 @property (weak, nonatomic) IBOutlet UIView *scrollContentView;
+@property (weak, nonatomic) IBOutlet UIView *customizeContentView;
 @property (weak, nonatomic) IBOutlet UILabel *backgroundColorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *secondaryColorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *accentColorLabel;
@@ -38,6 +39,11 @@ NSArray<NSString *> * themes;
     NSString * myTheme = [ThemeTracker sharedTheme].theme;
     int row = myTheme ? [themes indexOfObject: myTheme] : 0;
     [self.themePicker selectRow:row inComponent:0 animated:YES];
+    if([themes[row] isEqualToString: @"Custom"]){
+        [self.customizeContentView setHidden:NO];
+    } else {
+        [self.customizeContentView setHidden:YES];
+    }
     [self setupTheme];
 
 }
@@ -68,7 +74,7 @@ NSArray<NSString *> * themes;
 - (void) setupColorWell : (UIColorWell *) well withLabel: (UILabel * ) label withTitle: (NSString *) title {
     well.title = title;
     well.supportsAlpha = NO;
-    [self.view addSubview:well];
+    [self.customizeContentView addSubview:well];
     well.translatesAutoresizingMaskIntoConstraints = NO;
     [well.centerYAnchor constraintEqualToAnchor:label.centerYAnchor].active = YES;
     [well.leadingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-100].active = YES;
@@ -88,7 +94,12 @@ NSArray<NSString *> * themes;
     return [[NSAttributedString alloc] initWithString:themes[row] attributes:[NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: [ThemeTracker sharedTheme].colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
 }
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    [[ThemeTracker sharedTheme] updateTheme:themes[row]];
+    if([themes[row] isEqualToString: @"Custom"]){
+        [self.customizeContentView setHidden:NO];
+    } else {
+        [[ThemeTracker sharedTheme] updateTheme:themes[row]];
+        [self.customizeContentView setHidden:YES];
+    }
 }
 
 #pragma mark - Setup
@@ -97,6 +108,7 @@ NSArray<NSString *> * themes;
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     [self.scrollContentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.customizeContentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
     [self.customizeButton setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
     [self.titleLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.backgroundColorLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
@@ -105,13 +117,13 @@ NSArray<NSString *> * themes;
     [self.likeColorLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.starColorLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.labelColorLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    
     [self.themePicker setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
     [self.themePicker reloadComponent:0];
 }
 - (IBAction)didTapCustomize:(id)sender {
     [self checkColors];
 }
+
 
 - (void) checkColors {
     if(self.backgroundColorWell.selectedColor && self.secondaryColorWell.selectedColor
