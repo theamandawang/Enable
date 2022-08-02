@@ -2,21 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlechromes</string>
 		<string>comgooglemaps</string>
 	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access photos library to get pictures</string>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<true/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Location needed to show user nearby areas</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera needed so user can take pictures</string>
-	<key></key>
-	<string></string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -36,5 +28,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<true/>
 </dict>
 </plist>
