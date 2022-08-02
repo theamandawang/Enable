@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		41558699EC86FC28050BA611 /* Pods_Enable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A11B032ED5684F2B46225F4 /* Pods_Enable.framework */; };
+		7F250C012898E51000DEB487 /* BaseShimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F250C002898E51000DEB487 /* BaseShimmerView.m */; };
+		7F250C042899827E00DEB487 /* ProfileShimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F250C032899827E00DEB487 /* ProfileShimmerView.m */; };
+		7F250C062899828B00DEB487 /* ProfileShimmerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F250C052899828B00DEB487 /* ProfileShimmerView.xib */; };
 		7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BB2877663B00A550F4 /* UserProfile.m */; };
 		7F6298C028776BB600A550F4 /* Review.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298BF28776BB600A550F4 /* Review.m */; };
 		7F6298C328776DBD00A550F4 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6298C228776DBD00A550F4 /* Location.m */; };
@@ -29,8 +32,8 @@
 		7F6738712894ABBE00EEAC26 /* MainNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6738702894ABBE00EEAC26 /* MainNavigationViewController.m */; };
 		7F6E9DB028876D4C00EC4C27 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F6E9DAF28876D4C00EC4C27 /* Reachability.m */; };
 		7F6E9DB328876D9E00EC4C27 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */; };
-		7F73F9A3289875550069D5B5 /* ShimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F73F9A2289875550069D5B5 /* ShimmerView.m */; };
-		7F73F9A5289875640069D5B5 /* ShimmerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F73F9A4289875640069D5B5 /* ShimmerView.xib */; };
+		7F73F9A3289875550069D5B5 /* ReviewShimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F73F9A2289875550069D5B5 /* ReviewShimmerView.m */; };
+		7F73F9A5289875640069D5B5 /* ReviewShimmerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F73F9A4289875640069D5B5 /* ReviewShimmerView.xib */; };
 		7F841BF82876011600CBD922 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BF72876011600CBD922 /* LoginViewController.m */; };
 		7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F841BFA28762FA700CBD922 /* ProfileViewController.m */; };
 		7F8C5350288B9DB5007A18AA /* Themes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7F8C534F288B9DB5007A18AA /* Themes.plist */; };
@@ -55,6 +58,11 @@
 		41F93252FB7EFAA887D947DF /* Pods-Enable.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.release.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.release.xcconfig"; sourceTree = "<group>"; };
 		6A11B032ED5684F2B46225F4 /* Pods_Enable.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Enable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		79AB9D4698423F7E04353FE7 /* Pods-Enable.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Enable.debug.xcconfig"; path = "Target Support Files/Pods-Enable/Pods-Enable.debug.xcconfig"; sourceTree = "<group>"; };
+		7F250BFF2898E51000DEB487 /* BaseShimmerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseShimmerView.h; sourceTree = "<group>"; };
+		7F250C002898E51000DEB487 /* BaseShimmerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseShimmerView.m; sourceTree = "<group>"; };
+		7F250C022899827E00DEB487 /* ProfileShimmerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileShimmerView.h; sourceTree = "<group>"; };
+		7F250C032899827E00DEB487 /* ProfileShimmerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProfileShimmerView.m; sourceTree = "<group>"; };
+		7F250C052899828B00DEB487 /* ProfileShimmerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileShimmerView.xib; sourceTree = "<group>"; };
 		7F6298BB2877663B00A550F4 /* UserProfile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UserProfile.m; sourceTree = "<group>"; };
 		7F6298BD2877664900A550F4 /* UserProfile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UserProfile.h; sourceTree = "<group>"; };
 		7F6298BE28776BA800A550F4 /* Review.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Review.h; sourceTree = "<group>"; };
@@ -89,9 +97,9 @@
 		7F6E9DAF28876D4C00EC4C27 /* Reachability.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		7F6E9DB128876D6400EC4C27 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		7F6E9DB228876D9E00EC4C27 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		7F73F9A1289875550069D5B5 /* ShimmerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShimmerView.h; sourceTree = "<group>"; };
-		7F73F9A2289875550069D5B5 /* ShimmerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShimmerView.m; sourceTree = "<group>"; };
-		7F73F9A4289875640069D5B5 /* ShimmerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShimmerView.xib; sourceTree = "<group>"; };
+		7F73F9A1289875550069D5B5 /* ReviewShimmerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReviewShimmerView.h; sourceTree = "<group>"; };
+		7F73F9A2289875550069D5B5 /* ReviewShimmerView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReviewShimmerView.m; sourceTree = "<group>"; };
+		7F73F9A4289875640069D5B5 /* ReviewShimmerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewShimmerView.xib; sourceTree = "<group>"; };
 		7F841BF62876011600CBD922 /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		7F841BF72876011600CBD922 /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		7F841BF928762FA700CBD922 /* ProfileViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -246,9 +254,14 @@
 				7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */,
 				7F67386A2894542A00EEAC26 /* ComposeTableViewCell.h */,
 				7F67386B2894542A00EEAC26 /* ComposeTableViewCell.m */,
-				7F73F9A1289875550069D5B5 /* ShimmerView.h */,
-				7F73F9A2289875550069D5B5 /* ShimmerView.m */,
-				7F73F9A4289875640069D5B5 /* ShimmerView.xib */,
+				7F250BFF2898E51000DEB487 /* BaseShimmerView.h */,
+				7F250C002898E51000DEB487 /* BaseShimmerView.m */,
+				7F73F9A1289875550069D5B5 /* ReviewShimmerView.h */,
+				7F73F9A2289875550069D5B5 /* ReviewShimmerView.m */,
+				7F73F9A4289875640069D5B5 /* ReviewShimmerView.xib */,
+				7F250C022899827E00DEB487 /* ProfileShimmerView.h */,
+				7F250C032899827E00DEB487 /* ProfileShimmerView.m */,
+				7F250C052899828B00DEB487 /* ProfileShimmerView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -349,6 +362,7 @@
 				7F6298D228779C2C00A550F4 /* 2xTransparentLogo.png in Resources */,
 				7FA7DECE2874A1A50080E4A9 /* LaunchScreen.storyboard in Resources */,
 				7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */,
+				7F250C062899828B00DEB487 /* ProfileShimmerView.xib in Resources */,
 				7F67386E28948B2D00EEAC26 /* InfoWindowView.xib in Resources */,
 				7FA7DECB2874A1A50080E4A9 /* Assets.xcassets in Resources */,
 				7F6298E5287C9AC000A550F4 /* ResultsView.xib in Resources */,
@@ -359,7 +373,7 @@
 				7FA7DEC92874A1A50080E4A9 /* Main.storyboard in Resources */,
 				7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */,
 				7F6298E0287C99CB00A550F4 /* ReviewTableViewCell.xib in Resources */,
-				7F73F9A5289875640069D5B5 /* ShimmerView.xib in Resources */,
+				7F73F9A5289875640069D5B5 /* ReviewShimmerView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,7 +450,7 @@
 				7FA7DED12874A1A50080E4A9 /* main.m in Sources */,
 				7F6738712894ABBE00EEAC26 /* MainNavigationViewController.m in Sources */,
 				7F6298BC2877663B00A550F4 /* UserProfile.m in Sources */,
-				7F73F9A3289875550069D5B5 /* ShimmerView.m in Sources */,
+				7F73F9A3289875550069D5B5 /* ReviewShimmerView.m in Sources */,
 				7F6738662891FEF000EEAC26 /* ThemeTracker.m in Sources */,
 				7F841BF82876011600CBD922 /* LoginViewController.m in Sources */,
 				7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */,
@@ -452,6 +466,8 @@
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
 				7F6298DF287C99CB00A550F4 /* ReviewTableViewCell.m in Sources */,
 				7F6298DB2878A01700A550F4 /* SummaryReviewTableViewCell.m in Sources */,
+				7F250C012898E51000DEB487 /* BaseShimmerView.m in Sources */,
+				7F250C042899827E00DEB487 /* ProfileShimmerView.m in Sources */,
 				7F6298C028776BB600A550F4 /* Review.m in Sources */,
 				7FEC56342891ADDE004BE2BF /* ColorViewController.m in Sources */,
 			);
@@ -599,7 +615,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MM63NJ63VM;
+				DEVELOPMENT_TEAM = 9K9T7NS3GJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Enable/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needed so user can take pictures";
@@ -616,7 +632,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = MetaU.Enable.Quentin;
+				PRODUCT_BUNDLE_IDENTIFIER = MetaU.Enable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -632,7 +648,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = MM63NJ63VM;
+				DEVELOPMENT_TEAM = 9K9T7NS3GJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Enable/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Camera needed so user can take pictures";
@@ -649,7 +665,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = MetaU.Enable.Quentin;
+				PRODUCT_BUNDLE_IDENTIFIER = MetaU.Enable;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

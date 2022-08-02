@@ -12,7 +12,7 @@
 #import "ComposeTableViewCell.h"
 #import "SummaryReviewTableViewCell.h"
 #import "ReviewTableViewCell.h"
-#import "ShimmerView.h"
+#import "ReviewShimmerView.h"
 #import "ProfileViewController.h"
 #import <GooglePlaces/GooglePlaces.h>
 
@@ -23,7 +23,7 @@
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) UserProfile * _Nullable currentProfile;
 @property (strong, nonatomic) id userProfileID;
-@property (strong, nonatomic) ShimmerView * shimmerLoadView;
+@property (strong, nonatomic) ReviewShimmerView * shimmerLoadView;
 @end
 
 @implementation ReviewByLocationViewController
@@ -62,10 +62,17 @@ const int kReviewsSection = 2;
     }
 }
 
+#pragma mark - Override
+
 - (void) startLoading {
-    [self.view setUserInteractionEnabled:NO];
     [self.shimmerLoadView setHidden:NO];
-    [self.view bringSubviewToFront:self.shimmerLoadView];
+    [self.tableView setHidden:YES];
+}
+
+- (void) endLoading {
+    [self.tableView setHidden:NO];
+    [self.shimmerLoadView setHidden:YES];
+    [self.refreshControl endRefreshing];
 }
 
 #pragma mark - ResultsViewDelegate
@@ -103,55 +110,48 @@ const int kReviewsSection = 2;
         } else {
             self.reviews = reviews;
             [self.tableView reloadData];
-            [self finishLoading];
+            [self endLoading];
         }
     }];
 }
 - (void) queryForLocationData {
     [self startLoading];
-//    for (UIView* view in self.view.subviews) {
-//        if([view isKindOfClass:[ShimmerView class]]){
-//            [view setHidden:NO];
-//        }
-//        [view setHidden:YES];
-//    }
-    
-//    if(self.locationID){
-//        [Utilities getLocationFromID:self.locationID withCompletion:^(Location * _Nullable location, NSError * _Nullable error) {
-//            if(error){
-//                [self showAlert:@"Failed to get location" message:error.localizedDescription completion:nil];
-//            } else if (location){
-//                [self getReviewsFromLocation : location];
-//            }
-//        }];
-//    } else {
-//        [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
-//            if(locationError && (locationError.code != kNoMatchErrorCode)){
-//                [self showAlert:@"Failed to get location" message:locationError.localizedDescription completion:nil];
-//                [self finishLoading];
-//            } else {
-//                if(location){
-//                    [self getReviewsFromLocation : location];
-//                } else {
-//                    GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
-//                    [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
-//                        if(error){
-//                            [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
-//                        } else {
-//                            self.location = [[Location alloc] initWithClassName:@"Location"];
-//                            self.location.POI_idStr = self.POI_idStr;
-//                            self.location.address = [place formattedAddress];
-//                            self.location.name = [place name];
-//                            self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
-//                            [self.tableView reloadData];
-//                        }
-//                        [self finishLoading];
-//
-//                    }];
-//                }
-//            }
-//        }];
-//    }
+    if(self.locationID){
+        [Utilities getLocationFromID:self.locationID withCompletion:^(Location * _Nullable location, NSError * _Nullable error) {
+            if(error){
+                [self showAlert:@"Failed to get location" message:error.localizedDescription completion:nil];
+            } else if (location){
+                [self getReviewsFromLocation : location];
+            }
+        }];
+    } else {
+        [Utilities getLocationFromPOI_idStr:self.POI_idStr withCompletion:^(Location * _Nullable location, NSError * _Nullable locationError) {
+            if(locationError && (locationError.code != kNoMatchErrorCode)){
+                [self showAlert:@"Failed to get location" message:locationError.localizedDescription completion:nil];
+                [self endLoading];
+            } else {
+                if(location){
+                    [self getReviewsFromLocation : location];
+                } else {
+                    GMSPlaceField fields = (GMSPlaceFieldName | GMSPlaceFieldFormattedAddress | GMSPlaceFieldName | GMSPlaceFieldCoordinate);
+                    [Utilities getPlaceDataFromPOI_idStr:self.POI_idStr withFields:fields withCompletion:^(GMSPlace * _Nullable place, NSError * _Nullable error) {
+                        if(error){
+                            [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
+                        } else {
+                            self.location = [[Location alloc] initWithClassName:@"Location"];
+                            self.location.POI_idStr = self.POI_idStr;
+                            self.location.address = [place formattedAddress];
+                            self.location.name = [place name];
+                            self.location.coordinates = [PFGeoPoint geoPointWithLatitude: [place coordinate].latitude longitude:[place coordinate].longitude];
+                            [self.tableView reloadData];
+                        }
+                        [self endLoading];
+
+                    }];
+                }
+            }
+        }];
+    }
 }
 - (void) getCurrentUserProfile {
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
@@ -246,17 +246,13 @@ const int kReviewsSection = 2;
 }
 
 
-#pragma mark - Private functions
-- (void) finishLoading {
-//    [self endLoading];
-//    [self.refreshControl endRefreshing];
-}
-
 #pragma mark - Setup
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     
+    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
+
     [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
@@ -292,7 +288,7 @@ const int kReviewsSection = 2;
 }
 
 - (void) setupShimmerView {
-    self.shimmerLoadView = [[ShimmerView alloc] init];
+    self.shimmerLoadView = [[ReviewShimmerView alloc] init];
     self.shimmerLoadView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.shimmerLoadView];
     [self.shimmerLoadView setHidden:YES];
@@ -302,7 +298,6 @@ const int kReviewsSection = 2;
     [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
     
     [self.shimmerLoadView setup];
-//    [self.shimmerLoadView set:UIColor.blueColor and:UIColor.purpleColor];
 }
 
 @end

@@ -10,12 +10,13 @@
 #import "ReviewByLocationViewController.h"
 #import "Review.h"
 #import "ReviewTableViewCell.h"
+#import "ProfileShimmerView.h"
 @interface ProfileViewController() <ResultsViewDelegate, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, ProfileDelegate>
 @property (strong, nonatomic) UserProfile * userProfile;
 @property (weak, nonatomic) IBOutlet UIButton *logOutButton;
 @property (strong, nonatomic) NSMutableArray<Review *> * reviews;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-
+@property (strong, nonatomic) ProfileShimmerView * shimmerLoadView;
 @property (strong, nonatomic) ProfileTableViewCell *profileCell;
 @end
 
@@ -28,7 +29,7 @@ bool userUpdated = false;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self startLoading];
+
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
@@ -41,11 +42,25 @@ bool userUpdated = false;
     [self.tableView registerNib:nib2 forCellReuseIdentifier:@"ProfileCell"];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    [self setupShimmerView];
     [self setupTheme];
+
+}
+
+#pragma mark - Override
+- (void) startLoading {
+    [self.shimmerLoadView setHidden: NO];
+    [self.tableView setHidden: YES];
+}
+
+- (void) endLoading {
+    [self.shimmerLoadView setHidden:YES];
+    [self.tableView setHidden:NO];
 }
 
 #pragma mark - Queries
 - (void) getUserProfile {
+    [self startLoading];
     if(self.userProfileID){
         [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
             if(error){
@@ -63,6 +78,7 @@ bool userUpdated = false;
 }
 
 - (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
+    [self startLoading];
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
         if(error && (error.code != 0)){
             [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
@@ -291,9 +307,10 @@ bool userUpdated = false;
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
     [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.tableView reloadData];
+//    [self.tableView reloadData];
 }
 
 - (void) setupProfileCellTheme : (ProfileTableViewCell *) cell {
@@ -316,5 +333,18 @@ bool userUpdated = false;
     [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
     [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
     [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
+}
+
+- (void) setupShimmerView {
+    self.shimmerLoadView = [[ProfileShimmerView alloc] init];
+    self.shimmerLoadView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.shimmerLoadView];
+    [self.shimmerLoadView setHidden:YES];
+    [self.shimmerLoadView.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
+    [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    
+    [self.shimmerLoadView setup];
 }
 @end
