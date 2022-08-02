@@ -10,6 +10,7 @@
 #import "Parse/PFImageView.h"
 #import "Utilities.h"
 #import "Review.h"
+#import "ReviewShimmerView.h"
 @interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
@@ -17,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
+@property (strong, nonatomic) ReviewShimmerView * shimmerLoadView;
+
 
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ScrollViewBottomConstraint;
@@ -41,8 +44,21 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self registerForKeyboardNotifications];
     [self setupTextView];
     [self setupStarRatingView];
+    [self setupShimmerView];
     [self setupTheme];
 }
+
+#pragma mark - Override
+- (void) startLoading {
+    [self.scrollView setHidden:YES];
+    [self.shimmerLoadView setHidden:NO];
+}
+
+- (void) endLoading {
+    [self.shimmerLoadView setHidden:YES];
+    [self.scrollView setHidden:NO];
+}
+
 
 #pragma mark - Querying
 -(void) getLocationDataWithCompletion: (void (^_Nonnull)(void)) completion {
@@ -70,7 +86,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 - (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images didPost: (void (^_Nonnull)(NSError * error))didPost{
     // I have created an option so that if there is no location provided then I will have it request
-    // location on its own, but the default is still probably going to rely on the location already provided.
+    // location on its own, but the default is still  going to rely on the location already provided.
     if(!self.location){
         [self getLocationDataWithCompletion:^{
             [Utilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSError * _Nullable locationError) {
@@ -163,6 +179,35 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)picker:(nonnull PHPickerViewController *)picker didFinishPicking:(nonnull NSArray<PHPickerResult *> *)results {
+    int count = 0;
+    if(results.count == 0){
+        [self dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    imageIndex = 0;
+    [self.images removeAllObjects];
+    for (PHPickerResult * res in results){
+        if([res.itemProvider canLoadObjectOfClass:[UIImage class]]){
+            [res.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading>  _Nullable object, NSError * _Nullable error) {
+                if(object){
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        if(count == 0) {
+                            self.photosImageView.image = (UIImage*)object;
+                        }
+                        if(self.images.count < kMaxNumberOfImages){
+                            [self.images addObject: (UIImage*)object];
+                        }
+                    });
+                }
+            }];
+        }
+        count ++;
+
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark - Keyboard
 - (void)registerForKeyboardNotifications
 {
@@ -197,7 +242,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
 
 // push scroll view up so that keyboard doesn't block anything
 - (void)moveScrollView: (CGFloat)constant {
-//    [self.scrollView setBackgroundColor:UIColor.greenColor];
     self.ScrollViewBottomConstraint.constant = -constant;
     [UIView animateWithDuration:0.1 animations:^{
         [self.view layoutIfNeeded];
@@ -287,31 +331,20 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
     [self.starRatingView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.photosImageView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
+    
+    [self.shimmerLoadView setBG:[UIColor colorNamed:colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
 }
 
-- (void)picker:(nonnull PHPickerViewController *)picker didFinishPicking:(nonnull NSArray<PHPickerResult *> *)results {
-    int count = 0;
-    imageIndex = 0;
-    [self.images removeAllObjects];
-    for (PHPickerResult * res in results){
-        if([res.itemProvider canLoadObjectOfClass:[UIImage class]]){
-            [res.itemProvider loadObjectOfClass:[UIImage class] completionHandler:^(__kindof id<NSItemProviderReading>  _Nullable object, NSError * _Nullable error) {
-                if(object){
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if(count == 0) {
-                            self.photosImageView.image = (UIImage*)object;
-                        }
-                        if(self.images.count < kMaxNumberOfImages){
-                            [self.images addObject: (UIImage*)object];
-                        }
-                    });
-                }
-            }];
-        }
-        count ++;
-
-    }
-    [self dismissViewControllerAnimated:YES completion:nil];
+- (void) setupShimmerView {
+    self.shimmerLoadView = [[ReviewShimmerView alloc] init];
+    self.shimmerLoadView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.shimmerLoadView];
+    [self.shimmerLoadView setHidden:YES];
+    [self.shimmerLoadView.topAnchor constraintEqualToAnchor:self.view.topAnchor].active = YES;
+    [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
+    [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
+    [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
+    [self.shimmerLoadView setup];
 }
 
 @end
