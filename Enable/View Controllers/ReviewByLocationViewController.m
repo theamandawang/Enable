@@ -256,7 +256,6 @@ const int kReviewsSection = 2;
     [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
     [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.tableView reloadData];
 }
 - (void) setupResultsViewTheme : (ResultsView * ) view {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;

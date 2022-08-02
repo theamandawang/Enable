@@ -274,7 +274,6 @@ bool userUpdated = false;
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info {
-    UIImage *originalImage = info[UIImagePickerControllerOriginalImage];
     UIImage *editedImage = info[UIImagePickerControllerEditedImage];
     self.profileCell.userProfileImageView.image = editedImage;
     imageUpdated = true;
@@ -310,7 +309,6 @@ bool userUpdated = false;
     [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
     [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
     [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-//    [self.tableView reloadData];
 }
 
 - (void) setupProfileCellTheme : (ProfileTableViewCell *) cell {
