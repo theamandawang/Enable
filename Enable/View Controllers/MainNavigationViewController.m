@@ -20,7 +20,7 @@
 - (UIStatusBarStyle)preferredStatusBarStyle{
     NSString * status;
     if([[ThemeTracker sharedTheme].theme isEqualToString:@"Custom"]){
-        status = @"Dark";
+        status = [ThemeTracker sharedTheme].colorSet[@"StatusBar"];
     } else {
         status = [ThemeTracker sharedTheme].plist[@"StatusBar"];
     }

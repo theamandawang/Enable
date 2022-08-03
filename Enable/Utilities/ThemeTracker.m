@@ -17,17 +17,13 @@
     });
     return globalTheme;
 }
-
+//TODO: update user for custom theme
 - (void) updateTheme: (NSString * _Nonnull) theme withColorDict: (NSMutableDictionary * _Nullable) dict {
     self.theme = theme;
     [self saveToDefaults: theme dict:dict];
     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
     if(dict) {
-        NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Custom"];
-        for(NSString * str in temp){
-            if([str isEqualToString:@"StatusBar"]) continue;
-            customDict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
-        }
+        [self unarchiveColor:customDict];
     }
     [self setupColorSetWithColorDict:customDict];
     [self sendNotification];
@@ -48,15 +44,9 @@
 
 - (void) getTheme {
     self.theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"theme"];
-    // unarchive dictionary from core data :')
-    NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Custom"];
     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
-    for(NSString * str in temp){
-        if([str isEqualToString:@"StatusBar"]) continue;
-        customDict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
-    }
+    [self unarchiveColor: customDict];
     if(!self.theme) self.theme = @"Default";
-
     [self setupColorSetWithColorDict:customDict];
     [self sendNotification];
     if([PFUser currentUser]){
@@ -77,18 +67,29 @@
     }
 }
 
-- (void) saveToDefaults: (NSString * _Nonnull) theme dict: (NSMutableDictionary * _Nullable) dict {
+- (void) unarchiveColor: (NSMutableDictionary *) dict{
+    NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Custom"];
+    for(NSString * str in temp){
+        if([str isEqualToString:@"StatusBar"]){
+            dict[str] = temp[str];
+            continue;
+        }
+        dict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
+    }
+}
+
+- (void) saveToDefaults: (NSString * _Nonnull) theme dict: (NSDictionary * _Nullable) dict {
     [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"theme"];
     if([theme isEqualToString:@"Custom"]){
-//        for(NSString * str in dict){
-        dict[@"Background"] = [NSKeyedArchiver archivedDataWithRootObject:dict[@"Background"] requiringSecureCoding:NO error:nil];
-        dict[@"Secondary"] = [NSKeyedArchiver archivedDataWithRootObject:dict[@"Secondary"] requiringSecureCoding:NO error:nil];
-        dict[@"Label"] = [NSKeyedArchiver archivedDataWithRootObject:dict[@"Label"] requiringSecureCoding:NO error:nil];
-        dict[@"Accent"] = [NSKeyedArchiver archivedDataWithRootObject:dict[@"Accent"] requiringSecureCoding:NO error:nil];
-        dict[@"Like"] = [NSKeyedArchiver archivedDataWithRootObject:dict[@"Like"] requiringSecureCoding:NO error:nil];
-        dict[@"Star"] = [NSKeyedArchiver archivedDataWithRootObject:dict[@"Star"] requiringSecureCoding:NO error:nil];
-//        }
-        [[NSUserDefaults standardUserDefaults] setObject: dict forKey:@"Custom"];
+        NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
+        for(NSString * str in dict){
+            if([str isEqualToString:@"StatusBar"]){
+                customDict[str] = dict[str];
+            } else {
+                customDict[str] = [NSKeyedArchiver archivedDataWithRootObject:dict[str] requiringSecureCoding:NO error:nil];
+            }
+        }
+        [[NSUserDefaults standardUserDefaults] setObject: customDict forKey:@"Custom"];
 
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -99,17 +100,13 @@
 }
 
 - (void) setupColorSetWithColorDict: (NSDictionary * _Nullable) dict {
-    //TODO: handle custom
     self.plist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
-
+    self.colorSet = [[NSMutableDictionary alloc] init];
     if([self.theme isEqualToString:@"Custom"]){
-        self.colorSet = [[NSMutableDictionary alloc] init];
         for (NSString * str in dict){
             self.colorSet[str] = dict[str];
         }
     } else {
-        self.colorSet = [[NSMutableDictionary alloc] init];
-
         for (NSString * str in self.plist){
             self.colorSet[str] = [UIColor colorNamed:self.plist[str]];
         }

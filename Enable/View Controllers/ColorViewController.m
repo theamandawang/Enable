@@ -134,10 +134,10 @@ NSArray<NSString *> * themes;
 }
 - (IBAction)didTapCustomize:(id)sender {
     if([self checkColors]){
-        NSMutableDictionary * dict = [[NSMutableDictionary alloc] initWithDictionary: @{@"Background" : self.backgroundColorWell.selectedColor, @"Secondary" : self.secondaryColorWell.selectedColor,
+        //TODO: calculate statusBar color based on background color
+        NSDictionary * dict = @{@"Background" : self.backgroundColorWell.selectedColor, @"Secondary" : self.secondaryColorWell.selectedColor,
                                 @"Label" : self.labelColorWell.selectedColor, @"Accent" : self.accentColorWell.selectedColor,
-                                @"Like" : self.likeColorWell.selectedColor, @"Star" : self.starColorWell.selectedColor, @"StatusBar" : @"Dark"
-        }];
+                                @"Like" : self.likeColorWell.selectedColor, @"Star" : self.starColorWell.selectedColor, @"StatusBar" : @"Dark"};
         [[ThemeTracker sharedTheme] updateTheme:@"Custom" withColorDict:dict];
     }
 }
@@ -149,10 +149,9 @@ NSArray<NSString *> * themes;
        && self.accentColorWell.selectedColor
        && self.likeColorWell.selectedColor
        && self.starColorWell.selectedColor){
-        NSLog(@"%@", self.labelColorWell.selectedColor);
+        //TODO: check how close colors are!
         return true;
     } else {
-        //TODO: check how close colors are!
         [self showAlert:@"Selections invalid" message:@"Not all fields are filled in" completion:nil];
         return false;
     }
