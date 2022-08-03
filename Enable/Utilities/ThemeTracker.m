@@ -17,7 +17,6 @@
     });
     return globalTheme;
 }
-//TODO: update user for custom theme
 - (void) updateTheme: (NSString * _Nonnull) theme withColorDict: (NSMutableDictionary * _Nullable) dict {
     self.theme = theme;
     [self saveToDefaults: theme dict:dict];
@@ -32,7 +31,7 @@
             if(error){
                 // TODO: how to handle error?
             } else if (profile){
-                [Utilities updateUserProfile:profile withTheme:theme withCompletion:^(NSError * _Nullable updateError) {
+                [Utilities updateUserProfile:profile withTheme:theme withCustom: dict withCompletion:^(NSError * _Nullable updateError) {
                     if(updateError){
                         // TODO: how to handle error?
                     }
@@ -57,9 +56,27 @@
                 if(!profile.theme) profile.theme = @"Default";
                 
                 self.theme = profile.theme;
-                [self setupColorSetWithColorDict:profile.customTheme];
-               
-                [self saveToDefaults: profile.theme dict:profile.customTheme];
+                
+                if(profile.customTheme){
+                    NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
+                    for(NSString * str in profile.customTheme){
+                        if([str isEqualToString:@"StatusBar"]){
+                        customDict[str] = profile.customTheme[str];
+                            continue;
+                        }
+                        unsigned int color = 0;
+                        [[NSScanner scannerWithString:profile.customTheme[str]] scanHexInt:&color];
+                        float r = (color & 0xFF0000) >> 16;
+                        float g = (color & 0x00FF00) >> 8;
+                        float b = color & 0x0000FF;
+                        customDict[str] = [UIColor colorWithRed:r/255 green:g/255 blue:b/255 alpha:1.0];
+                    }
+                    [self setupColorSetWithColorDict:customDict];
+                    [self saveToDefaults: profile.theme dict:customDict];
+
+                } else {
+                    [self setupColorSetWithColorDict:profile.customTheme];
+                }
                 [self sendNotification];
 
             }
@@ -72,9 +89,9 @@
     for(NSString * str in temp){
         if([str isEqualToString:@"StatusBar"]){
             dict[str] = temp[str];
-            continue;
+        } else {
+            dict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
         }
-        dict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
     }
 }
 

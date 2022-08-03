@@ -138,8 +138,22 @@ bool allResultsFound = false;
 }
 
 
-+ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withTheme : (NSString * _Nonnull) theme withCompletion: (void (^_Nullable) (NSError * _Nullable error)) completion {
++ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withTheme : (NSString * _Nonnull) theme withCustom: (NSDictionary<NSString *, UIColor *> * _Nullable) customDict withCompletion: (void (^_Nullable) (NSError * _Nullable error)) completion {
     userProfile.theme = theme;
+    NSMutableDictionary * hexCustomDict = [[NSMutableDictionary alloc] init];
+    for(NSString * str in customDict){
+        if([str isEqualToString:@"StatusBar"]) {
+            hexCustomDict[str] = customDict[str];
+            continue;
+        }
+        const CGFloat *components = CGColorGetComponents(customDict[str].CGColor);
+        CGFloat r = components[0];
+        CGFloat g = components[1];
+        CGFloat b = components[2];
+        NSString *hexString=[NSString stringWithFormat:@"%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255)];
+        hexCustomDict[str] = hexString;
+    }
+    userProfile.customTheme = hexCustomDict;
     [userProfile saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if(error){
                 completion(error);

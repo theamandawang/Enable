@@ -134,23 +134,47 @@ NSArray<NSString *> * themes;
 }
 - (IBAction)didTapCustomize:(id)sender {
     if([self checkColors]){
-        //TODO: calculate statusBar color based on background color
         NSDictionary * dict = @{@"Background" : self.backgroundColorWell.selectedColor, @"Secondary" : self.secondaryColorWell.selectedColor,
                                 @"Label" : self.labelColorWell.selectedColor, @"Accent" : self.accentColorWell.selectedColor,
-                                @"Like" : self.likeColorWell.selectedColor, @"Star" : self.starColorWell.selectedColor, @"StatusBar" : @"Dark"};
+                                @"Like" : self.likeColorWell.selectedColor, @"Star" : self.starColorWell.selectedColor, @"StatusBar" : [self calculateStatusBar]};
         [[ThemeTracker sharedTheme] updateTheme:@"Custom" withColorDict:dict];
     }
 }
+- (NSString *) calculateStatusBar {
+    
+    // taken from https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
+    NSString * retVal = @"Dark";
+    const CGFloat * components = CGColorGetComponents(self.backgroundColorWell.selectedColor.CGColor);
+    float contrastVal = ((components[0] * 255 * 299) + (components[1] * 255 * 587) + (components[2] * 255 * 114)) / 1000;
+    if(contrastVal < 125) {
+        retVal = @"Light";
+    }
+    return retVal;
+}
 
-
+- (bool) calculateDifferenceColor: (CGColorRef) c1 and: (CGColorRef) c2 {
+    const CGFloat * c1Components = CGColorGetComponents(c1);
+    const CGFloat * c2Components = CGColorGetComponents(c2);
+    float contrast = (fabs(c1Components[0] - c2Components[0]) + fabs(c1Components[1] - c2Components[1]) + fabs(c1Components[2] - c2Components[2])) * 255;
+    return contrast > 250;
+    
+}
 - (bool) checkColors {
     if(self.backgroundColorWell.selectedColor && self.secondaryColorWell.selectedColor
        && self.labelColorWell.selectedColor
        && self.accentColorWell.selectedColor
        && self.likeColorWell.selectedColor
        && self.starColorWell.selectedColor){
-        //TODO: check how close colors are!
-        return true;
+        
+        if([self calculateDifferenceColor:self.backgroundColorWell.selectedColor.CGColor and:self.accentColorWell.selectedColor.CGColor] &&
+        [self calculateDifferenceColor:self.secondaryColorWell.selectedColor.CGColor and:self.accentColorWell.selectedColor.CGColor] &&
+        [self calculateDifferenceColor:self.backgroundColorWell.selectedColor.CGColor and:self.labelColorWell.selectedColor.CGColor] &&
+           [self calculateDifferenceColor:self.secondaryColorWell.selectedColor.CGColor and:self.labelColorWell.selectedColor.CGColor]){
+            return true;
+        } else {
+            [self showAlert:@"Selections invalid" message:@"Make sure label and accent colors have enough contrast from background and secondary" completion:nil];
+            return false;
+        }
     } else {
         [self showAlert:@"Selections invalid" message:@"Not all fields are filled in" completion:nil];
         return false;
