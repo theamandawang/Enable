@@ -89,11 +89,11 @@
 #pragma mark - Theme
 - (void) setupMainTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.activityView setColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
-    [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
-    [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    [self.activityView setColor: colorSet[@"Label"]];
+    [self.navigationController.navigationBar setBarTintColor: colorSet[@"Secondary"]];
+    [self.navigationController.navigationBar setTintColor: colorSet[@"Accent"]];
+    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[colorSet[@"Label"]] forKeys:@[NSForegroundColorAttributeName]]];
+    [self.view setBackgroundColor:colorSet[@"Background"]];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 #pragma mark - Private

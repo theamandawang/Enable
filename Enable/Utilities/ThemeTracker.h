@@ -10,9 +10,10 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface ThemeTracker : NSObject
 @property (strong, nonatomic) NSString * theme;
-@property (strong, nonatomic) NSDictionary * colorSet;
+@property (strong, nonatomic) NSDictionary * plist;
+@property (strong, nonatomic) NSMutableDictionary * colorSet;
 + (instancetype)sharedTheme;
-- (void) updateTheme: (NSString * _Nonnull) theme;
+- (void) updateTheme: (NSString * _Nonnull) theme withColorDict: (NSDictionary * _Nullable) dict;
 - (void) getTheme;
 @end
 

@@ -72,7 +72,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="946"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gbb-tG-fE9">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="815.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="855.66666666666663"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a color theme!" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gKp-6m-hwa">
                                                 <rect key="frame" x="80" y="40" width="268" height="24"/>
@@ -90,7 +90,7 @@
                                                 </constraints>
                                             </pickerView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLw-Xm-kTj">
-                                                <rect key="frame" x="0.0" y="360" width="428" height="455.66666666666674"/>
+                                                <rect key="frame" x="0.0" y="360" width="428" height="495.66666666666674"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FIm-Fr-i89">
                                                         <rect key="frame" x="165.66666666666666" y="404.66666666666663" width="96.666666666666657" height="31"/>
@@ -146,7 +146,7 @@
                                                     <constraint firstItem="oW6-Iv-K8g" firstAttribute="top" secondItem="4R2-GX-8EO" secondAttribute="bottom" constant="40" id="G3P-rf-RER"/>
                                                     <constraint firstItem="a5a-Ag-k0W" firstAttribute="top" secondItem="x9t-v8-9zd" secondAttribute="bottom" constant="40" id="TtG-6E-7dt"/>
                                                     <constraint firstItem="q8x-4F-9kf" firstAttribute="leading" secondItem="iLw-Xm-kTj" secondAttribute="leading" constant="20" id="VAE-rz-egc"/>
-                                                    <constraint firstAttribute="bottom" secondItem="FIm-Fr-i89" secondAttribute="bottom" constant="20" id="WYN-ZA-Nzg"/>
+                                                    <constraint firstAttribute="bottom" secondItem="FIm-Fr-i89" secondAttribute="bottom" constant="60" id="WYN-ZA-Nzg"/>
                                                     <constraint firstItem="4R2-GX-8EO" firstAttribute="leading" secondItem="iLw-Xm-kTj" secondAttribute="leading" constant="20" id="aXz-4p-O6B"/>
                                                     <constraint firstItem="x9t-v8-9zd" firstAttribute="leading" secondItem="iLw-Xm-kTj" secondAttribute="leading" constant="20" id="hET-ys-xUn"/>
                                                     <constraint firstItem="lT8-Gt-RBS" firstAttribute="leading" secondItem="iLw-Xm-kTj" secondAttribute="leading" constant="20" id="hkt-u4-YkS"/>
@@ -520,6 +520,7 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="KUv-1Z-Ass">
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="872"/>
+
                                 <subviews>
                                     <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
                                         <rect key="frame" x="0.0" y="0.0" width="428" height="249.33333333333334"/>
@@ -630,9 +631,9 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Xei-Q3-xVF"/>
-        <segue reference="F4t-kF-nF8"/>
-        <segue reference="dDK-RE-xwx"/>
+        <segue reference="ba7-8A-UQA"/>
+        <segue reference="Kcs-er-NhH"/>
+        <segue reference="glC-rt-CzJ"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="paintpalette" catalog="system" width="128" height="105"/>

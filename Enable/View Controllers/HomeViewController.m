@@ -207,20 +207,20 @@ didFailAutocompleteWithError:(NSError *)error {
 
 - (void) setupSearchBarTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.searchController.searchBar.searchTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.searchController.searchBar setBarTintColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.searchController.searchBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}];
-    [self.searchController.searchBar.searchTextField.leftView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.searchController.searchBar.searchTextField.rightView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.searchController.searchBar.searchTextField setBackgroundColor: colorSet[@"Secondary"]];
+    [self.searchController.searchBar setBarTintColor: colorSet[@"Background"]];
+    [self.searchController.searchBar setTintColor: colorSet[@"Accent"]];
+    self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: colorSet[@"Label"]}];
+    [self.searchController.searchBar.searchTextField.leftView setTintColor: colorSet[@"Accent"]];
+    [self.searchController.searchBar.searchTextField.rightView setTintColor: colorSet[@"Accent"]];
 }
 - (void) setupResultsTheme {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.resultsViewController setTableCellBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.resultsViewController setTableCellSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.resultsViewController setPrimaryTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.resultsViewController setPrimaryTextHighlightColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.resultsViewController setSecondaryTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.resultsViewController setTableCellBackgroundColor: colorSet[@"Background"]];
+    [self.resultsViewController setTableCellSeparatorColor: colorSet[@"Secondary"]];
+    [self.resultsViewController setPrimaryTextColor: colorSet[@"Label"]];
+    [self.resultsViewController setPrimaryTextHighlightColor: colorSet[@"Accent"]];
+    [self.resultsViewController setSecondaryTextColor: colorSet[@"Label"]];
 }
 
 @end

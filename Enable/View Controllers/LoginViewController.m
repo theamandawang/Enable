@@ -91,17 +91,17 @@
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.view setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [self.contentView setBackgroundColor: colorSet[@"Background"]];
+    [self.view setTintColor: colorSet[@"Accent"]];
     
-    [self.passTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.emailTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.passTextField setBackgroundColor: colorSet[@"Secondary"]];
+    [self.emailTextField setBackgroundColor: colorSet[@"Secondary"]];
 
-    [self.passTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.emailTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.passTextField setTextColor: colorSet[@"Label"]];
+    [self.emailTextField setTextColor: colorSet[@"Label"]];
     
-    [self.loginLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.emailLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.passLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [self.loginLabel setTextColor: colorSet[@"Label"]];
+    [self.emailLabel setTextColor: colorSet[@"Label"]];
+    [self.passLabel setTextColor: colorSet[@"Label"]];
 }
 @end

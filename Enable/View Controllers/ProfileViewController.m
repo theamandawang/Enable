@@ -207,8 +207,8 @@ bool userUpdated = false;
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    [header.textLabel setTextColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
-    view.tintColor = [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]];
+    [header.textLabel setTextColor: [ThemeTracker sharedTheme].colorSet[@"Label"]];
+    view.tintColor = [ThemeTracker sharedTheme].colorSet[@"Background"];
     view.alpha = 0.8;
 }
 
@@ -306,31 +306,31 @@ bool userUpdated = false;
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.shimmerLoadView setBG: colorSet[@"Background"] FG: colorSet[@"Secondary"]];
+    [self.tableView setBackgroundColor: colorSet[@"Background"]];
+    [self.tableView setSeparatorColor: colorSet[@"Secondary"]];
 }
 
 - (void) setupProfileCellTheme : (ProfileTableViewCell *) cell {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [cell.userProfileImageView setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [cell.userDisplayNameTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [cell.userDisplayNameTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [cell.updateButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    [cell.contentView setBackgroundColor: colorSet[@"Background"]];
+    [cell.userProfileImageView setTintColor: colorSet[@"Accent"]];
+    [cell.userDisplayNameTextField setBackgroundColor: colorSet[@"Secondary"]];
+    [cell.userDisplayNameTextField setTextColor: colorSet[@"Label"]];
+    [cell.updateButton setTintColor: colorSet[@"Accent"]];
 }
 
 - (void) setupResultsViewTheme : (ResultsView * ) view {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [view.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.contentView setBackgroundColor: colorSet[@"Background"]];
+    [view.titleLabel setTextColor:  colorSet[@"Label"]];
+    [view.usernameLabel setTextColor:  colorSet[@"Label"]];
+    [view.detailsLabel setTextColor: colorSet[@"Label"]];
+    [view.likeCountLabel setTextColor: colorSet[@"Label"]];
 
-    [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
+    [view.starRatingView setTintColor: colorSet[@"Star"]];
+    [view.starRatingView setBackgroundColor: colorSet[@"Background"]];
+    [view.likeImageView setTintColor: colorSet[@"Like"]];
 }
 
 - (void) setupShimmerView {
@@ -342,7 +342,7 @@ bool userUpdated = false;
     [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    
+
     [self.shimmerLoadView setup];
 }
 @end

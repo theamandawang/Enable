@@ -167,7 +167,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     config.selectionLimit = kMaxNumberOfImages;
     config.filter = [PHPickerFilter imagesFilter];
     PHPickerViewController * imagePickerVC = [[PHPickerViewController alloc] initWithConfiguration:config];
-    
+
     imagePickerVC.delegate = self;
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
@@ -226,7 +226,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
 //    CGFloat kbHeight = 216;
     [self moveScrollView:kbHeight + 20];
-    
+
 }
 
 // Called when the UIKeyboardWillHideNotification is sent
@@ -260,9 +260,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
     self.starRatingView.backgroundColor = [UIColor systemBackgroundColor];
     [self.scrollView addSubview:self.starRatingView];
-    
+
     [self setupStarRatingViewValues];
-    
+
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self setupStarRatingViewConstraints];
 }
@@ -318,21 +318,21 @@ UITapGestureRecognizer *scrollViewTapGesture;
 - (void) setupTheme{
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.addImageButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    
-    [self.submitButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.titleTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.reviewTextView setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.titleTextField setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+    [self.addImageButton setTintColor: colorSet[@"Accent"]];
 
-    [self.reviewTextView setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.reviewTextView setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.photosImageView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
-    
-    [self.shimmerLoadView setBG:[UIColor colorNamed:colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.submitButton setTintColor: colorSet[@"Accent"]];
+    [self.titleTextField setBackgroundColor: colorSet[@"Secondary"]];
+    [self.reviewTextView setBackgroundColor: colorSet[@"Secondary"]];
+    [self.titleTextField setTextColor:  colorSet[@"Label"]];
+    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: colorSet[@"Label"]}]];
+
+    [self.reviewTextView setTextColor: colorSet[@"Label"]];
+    [self.reviewTextView setBackgroundColor: colorSet[@"Secondary"]];
+    [self.starRatingView setTintColor: colorSet[@"Star"]];
+    [self.starRatingView setBackgroundColor: colorSet[@"Background"]];
+    [self.photosImageView setTintColor: colorSet[@"Accent"]];
+
+    [self.shimmerLoadView setBG: colorSet[@"Background"] FG: colorSet[@"Secondary"]];
 }
 
 - (void) setupShimmerView {

@@ -250,39 +250,37 @@ const int kReviewsSection = 2;
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    
-    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
-
-    [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.shimmerLoadView setBG: colorSet[@"Background"] FG: colorSet[@"Secondary"]];
+    [self.refreshControl setTintColor: colorSet[@"Label"]];
+    [self.tableView setBackgroundColor: colorSet[@"Background"]];
+    [self.tableView setSeparatorColor: colorSet[@"Secondary"]];
 }
 - (void) setupResultsViewTheme : (ResultsView * ) view {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [view.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    [view.contentView setBackgroundColor: colorSet[@"Background"]];
+    [view.titleLabel setTextColor: colorSet[@"Label"]];
+    [view.usernameLabel setTextColor: colorSet[@"Label"]];
+    [view.detailsLabel setTextColor: colorSet[@"Label"]];
+    [view.likeCountLabel setTextColor: colorSet[@"Label"]];
 
-    [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
+    [view.starRatingView setTintColor: colorSet[@"Star"]];
+    [view.starRatingView setBackgroundColor: colorSet[@"Background"]];
+    [view.likeImageView setTintColor: colorSet[@"Like"]];
 }
 - (void) setupSummaryCellTheme : (SummaryReviewTableViewCell *) cell {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [cell.locationNameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [cell.locationRatingLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    [cell.contentView setBackgroundColor: colorSet[@"Background"]];
+    [cell.locationNameLabel setTextColor: colorSet[@"Label"]];
+    [cell.locationRatingLabel setTextColor: colorSet[@"Label"]];
 }
 
 
 - (void) setupComposeCellTheme : (ComposeTableViewCell *) cell {
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [cell.composeTextField setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-    [cell.composeTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+    [cell.contentView setBackgroundColor: colorSet[@"Background"]];
+    [cell.composeTextField setBackgroundColor: colorSet[@"Secondary"]];
+    [cell.composeTextField setTextColor: colorSet[@"Label"]];
+    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: colorSet[@"Label"]}]];
 
 }
 
@@ -295,7 +293,7 @@ const int kReviewsSection = 2;
     [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    
+
     [self.shimmerLoadView setup];
 }
 

@@ -18,7 +18,12 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
-    NSString * status = [ThemeTracker sharedTheme].colorSet[@"StatusBar"];
+    NSString * status;
+    if([[ThemeTracker sharedTheme].theme isEqualToString:@"Custom"]){
+        status = @"Dark";
+    } else {
+        status = [ThemeTracker sharedTheme].plist[@"StatusBar"];
+    }
     if([status isEqualToString:@"Dark"]){
         return UIStatusBarStyleDarkContent;
     } else if ([status isEqualToString:@"Light"]){
