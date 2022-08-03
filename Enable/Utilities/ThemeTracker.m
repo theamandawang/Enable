@@ -18,13 +18,30 @@
     return globalTheme;
 }
 - (void) updateTheme: (NSString * _Nonnull) theme withColorDict: (NSMutableDictionary * _Nullable) dict {
-    self.theme = theme;
-    [self saveToDefaults: theme dict:dict];
     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
-    if(dict) {
+
+    if([theme isEqualToString:@"Custom"] && !dict) {
         [self unarchiveColor:customDict];
+        if(!customDict){
+            //load from cloud
+            //if nil from cloud still
+            
+        } else {
+            [self saveToDefaults: theme dict:customDict];
+            self.theme = theme;
+            [self setupColorSetWithColorDict:customDict];
+        }
+    } else if ([theme isEqualToString:@"Custom"] && dict){
+        [self saveToDefaults: theme dict:dict];
+        self.theme = theme;
+        [self setupColorSetWithColorDict:dict];
+    } else {
+        [self saveToDefaults: theme dict:dict];
+        self.theme = theme;
+        [self setupColorSetWithColorDict:customDict];
     }
-    [self setupColorSetWithColorDict:customDict];
+    
+
     [self sendNotification];
     if([PFUser currentUser]){
         [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
@@ -40,7 +57,10 @@
         }];
     }
 }
-
+//- (void) updateCustomTheme: (NSMutableDictionary * _Nullable) dict {
+//    self.theme = @"Custom";
+//    [self saveToDefaults dict:<#(NSDictionary * _Nullable)#>]
+//}
 - (void) getTheme {
     self.theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"theme"];
     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];

@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property (strong, nonatomic) ReviewShimmerView * shimmerLoadView;
+@property (weak, nonatomic) IBOutlet UIView *scrollContentView;
 
 
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
@@ -41,7 +42,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
-    [self registerForKeyboardNotifications];
+//    [self registerForKeyboardNotifications];
     [self setupTextView];
     [self setupStarRatingView];
     [self setupShimmerView];
@@ -232,7 +233,11 @@ UITapGestureRecognizer *scrollViewTapGesture;
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
-    [self moveScrollView:0];
+    NSDictionary* info = [aNotification userInfo];
+    CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
+//    CGFloat kbHeight = 216;
+    [self moveScrollView: (-kbHeight - 20)];
+
 }
 
 - (void) hideKeyboard
@@ -252,7 +257,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
         [self.scrollView setContentOffset:CGPointMake(0, scrollViewYOffset)];
     }];
 }
-
 #pragma mark - Star Review
 
 
@@ -319,7 +323,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     [self.addImageButton setTintColor: colorSet[@"Accent"]];
-
+    [self.scrollContentView setBackgroundColor: colorSet[@"Background"]];
     [self.submitButton setTintColor: colorSet[@"Accent"]];
     [self.titleTextField setBackgroundColor: colorSet[@"Secondary"]];
     [self.reviewTextView setBackgroundColor: colorSet[@"Secondary"]];

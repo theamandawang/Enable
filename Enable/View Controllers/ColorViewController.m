@@ -52,33 +52,21 @@ NSArray<NSString *> * themes;
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
     self.backgroundColorWell = [[UIColorWell alloc] initWithFrame:CGRectZero];
     [self setupColorWell:self.backgroundColorWell withLabel: self.backgroundColorLabel withTitle:@"Select Background Color"];
-    [self.backgroundColorWell setSelectedColor:colorSet[@"Background"]];
     
     self.secondaryColorWell = [[UIColorWell alloc] initWithFrame:CGRectZero];
     [self setupColorWell: self.secondaryColorWell withLabel: self.secondaryColorLabel withTitle: @"Select text field color"];
-    [self.secondaryColorWell setSelectedColor:colorSet[@"Secondary"]];
-    
     
     self.accentColorWell = [[UIColorWell alloc] initWithFrame:CGRectZero];
     [self setupColorWell: self.accentColorWell withLabel: self.accentColorLabel withTitle: @"Select button color"];
-    [self.accentColorWell setSelectedColor:colorSet[@"Accent"]];
-
     
     self.labelColorWell = self.labelColorWell = [[UIColorWell alloc] initWithFrame:CGRectZero];
     [self setupColorWell: self.labelColorWell withLabel: self.labelColorLabel withTitle: @"Select text color"];
-    [self.labelColorWell setSelectedColor:colorSet[@"Label"]];
-
     
     self.likeColorWell = [[UIColorWell alloc] initWithFrame:CGRectZero];
     [self setupColorWell: self.likeColorWell withLabel: self.likeColorLabel withTitle: @"Select like color"];
-    [self.likeColorWell setSelectedColor:colorSet[@"Like"]];
-
     
     self.starColorWell = [[UIColorWell alloc] initWithFrame:CGRectZero];
     [self setupColorWell: self.starColorWell withLabel: self.starColorLabel withTitle: @"Select star color"];
-    [self.starColorWell setSelectedColor:colorSet[@"Star"]];
-    
-    
 }
 
 - (void) setupColorWell : (UIColorWell *) well withLabel: (UILabel * ) label withTitle: (NSString *) title {
@@ -106,16 +94,23 @@ NSArray<NSString *> * themes;
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
     if([themes[row] isEqualToString: @"Custom"]){
         [self.customizeContentView setHidden:NO];
-        [self didTapCustomize:nil];
-
     } else {
-        [[ThemeTracker sharedTheme] updateTheme:themes[row] withColorDict:nil];
         [self.customizeContentView setHidden:YES];
     }
+    [[ThemeTracker sharedTheme] updateTheme:themes[row] withColorDict:nil];
 }
 
 #pragma mark - Setup
-
+- (void) updateColorWells {
+    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
+    [self.backgroundColorWell setSelectedColor: colorSet[@"Background"]];
+    [self.secondaryColorWell setSelectedColor:colorSet[@"Secondary"]];
+    [self.accentColorWell setSelectedColor:colorSet[@"Accent"]];
+    [self.labelColorWell setSelectedColor:colorSet[@"Label"]];
+    [self.likeColorWell setSelectedColor:colorSet[@"Like"]];
+    [self.starColorWell setSelectedColor:colorSet[@"Star"]];
+    
+}
 - (void) setupTheme {
     [self setupMainTheme];
     NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
@@ -131,6 +126,8 @@ NSArray<NSString *> * themes;
     [self.labelColorLabel setTextColor: colorSet[@"Label"]];
     [self.themePicker setBackgroundColor: colorSet[@"Secondary"]];
     [self.themePicker reloadComponent:0];
+    [self updateColorWells];
+
 }
 - (IBAction)didTapCustomize:(id)sender {
     if([self checkColors]){
