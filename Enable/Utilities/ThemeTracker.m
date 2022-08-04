@@ -9,6 +9,7 @@
 #import "Utilities.h"
 @interface ThemeTracker ()
 @property (strong, nonatomic) NSMutableDictionary * colorSet;
+@property (strong, nonatomic) NSDictionary * customTheme;
 @property (strong, nonatomic) NSDictionary * plist;
 @end
 @implementation ThemeTracker
@@ -170,7 +171,13 @@
 }
 
 
-#pragma mark - Get Color Functions
+#pragma mark - Get Functions
+- (NSDictionary * _Nullable) getCustomTheme {
+    if([self.theme isEqualToString:@"Custom"]){
+        return self.colorSet;
+    }
+    return nil;
+}
 - (UIColor *) getBackgroundColor {
     return self.colorSet[@"Background"];
 }

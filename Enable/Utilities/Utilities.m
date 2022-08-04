@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Utilities.h"
+#import "ThemeTracker.h"
 @implementation Utilities
 #pragma mark Image -> PFFileObject
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
@@ -43,6 +44,13 @@ bool allResultsFound = false;
     UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
+    userProfile.theme = [[ThemeTracker sharedTheme] theme];
+    NSDictionary<NSString *, UIColor *>  * customDict = [[ThemeTracker sharedTheme] getCustomTheme];
+    if(customDict){
+        NSMutableDictionary * hexCustomDict = [[NSMutableDictionary alloc] init];
+        [Utilities updateHexDict:hexCustomDict withDict:customDict];
+        userProfile.customTheme = hexCustomDict;
+    }
 
 
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -142,18 +150,7 @@ bool allResultsFound = false;
     userProfile.theme = theme;
     if(customDict){
         NSMutableDictionary * hexCustomDict = [[NSMutableDictionary alloc] init];
-        for(NSString * str in customDict){
-            if([str isEqualToString:@"StatusBar"]) {
-                hexCustomDict[str] = customDict[str];
-                continue;
-            }
-            const CGFloat *components = CGColorGetComponents(customDict[str].CGColor);
-            CGFloat r = components[0];
-            CGFloat g = components[1];
-            CGFloat b = components[2];
-            NSString *hexString=[NSString stringWithFormat:@"%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255)];
-            hexCustomDict[str] = hexString;
-        }
+        [Utilities updateHexDict:hexCustomDict withDict:customDict];
         userProfile.customTheme = hexCustomDict;
     }
     [userProfile saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
@@ -438,6 +435,22 @@ static GMSPlacesClient * placesClient = nil;
         }
     }];
 
+}
+
+#pragma mark - Helper
++ (void) updateHexDict: (NSMutableDictionary * _Nonnull) hexCustomDict withDict: (NSDictionary<NSString *, UIColor *> * _Nonnull) customDict{
+    for(NSString * str in customDict){
+        if([str isEqualToString:@"StatusBar"]) {
+            hexCustomDict[str] = customDict[str];
+            continue;
+        }
+        const CGFloat *components = CGColorGetComponents(customDict[str].CGColor);
+        CGFloat r = components[0];
+        CGFloat g = components[1];
+        CGFloat b = components[2];
+        NSString *hexString=[NSString stringWithFormat:@"%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255)];
+        hexCustomDict[str] = hexString;
+    }
 }
 
 @end

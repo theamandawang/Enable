@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) getTheme;
 - (void) removeCustomTheme;
 - (void) selectCustom;
+- (NSDictionary * _Nullable) getCustomTheme;
 - (UIColor *) getBackgroundColor;
 - (UIColor *) getSecondaryColor;
 - (UIColor *) getAccentColor;

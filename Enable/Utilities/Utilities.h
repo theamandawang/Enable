@@ -49,4 +49,5 @@
 
 #pragma mark Google
 + (void) getPlaceDataFromPOI_idStr:(NSString * _Nonnull)POI_idStr withFields: (GMSPlaceField) fields withCompletion: (void (^_Nonnull)(GMSPlace * _Nullable place, NSError * _Nullable error)) completion;
+
 @end
