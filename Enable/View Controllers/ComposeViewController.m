@@ -321,22 +321,22 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 - (void) setupTheme{
     [self setupMainTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.addImageButton setTintColor: colorSet[@"Accent"]];
-    [self.scrollContentView setBackgroundColor: colorSet[@"Background"]];
-    [self.submitButton setTintColor: colorSet[@"Accent"]];
-    [self.titleTextField setBackgroundColor: colorSet[@"Secondary"]];
-    [self.reviewTextView setBackgroundColor: colorSet[@"Secondary"]];
-    [self.titleTextField setTextColor:  colorSet[@"Label"]];
-    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: colorSet[@"Label"]}]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.addImageButton setTintColor: [singleton getAccentColor]];
+    [self.scrollContentView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.submitButton setTintColor: [singleton getAccentColor]];
+    [self.titleTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
+    [self.titleTextField setTextColor:  [singleton getLabelColor]];
+    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}]];
 
-    [self.reviewTextView setTextColor: colorSet[@"Label"]];
-    [self.reviewTextView setBackgroundColor: colorSet[@"Secondary"]];
-    [self.starRatingView setTintColor: colorSet[@"Star"]];
-    [self.starRatingView setBackgroundColor: colorSet[@"Background"]];
-    [self.photosImageView setTintColor: colorSet[@"Accent"]];
+    [self.reviewTextView setTextColor: [singleton getLabelColor]];
+    [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
+    [self.starRatingView setTintColor: [singleton getStarColor]];
+    [self.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.photosImageView setTintColor: [singleton getAccentColor]];
 
-    [self.shimmerLoadView setBG: colorSet[@"Background"] FG: colorSet[@"Secondary"]];
+    [self.shimmerLoadView setBG: [singleton getBackgroundColor] FG: [singleton getSecondaryColor]];
 }
 
 - (void) setupShimmerView {

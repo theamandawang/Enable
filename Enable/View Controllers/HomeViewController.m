@@ -206,21 +206,21 @@ didFailAutocompleteWithError:(NSError *)error {
 }
 
 - (void) setupSearchBarTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.searchController.searchBar.searchTextField setBackgroundColor: colorSet[@"Secondary"]];
-    [self.searchController.searchBar setBarTintColor: colorSet[@"Background"]];
-    [self.searchController.searchBar setTintColor: colorSet[@"Accent"]];
-    self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: colorSet[@"Label"]}];
-    [self.searchController.searchBar.searchTextField.leftView setTintColor: colorSet[@"Accent"]];
-    [self.searchController.searchBar.searchTextField.rightView setTintColor: colorSet[@"Accent"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.searchController.searchBar.searchTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [self.searchController.searchBar setBarTintColor: [singleton getBackgroundColor]];
+    [self.searchController.searchBar setTintColor: [singleton getAccentColor]];
+    self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}];
+    [self.searchController.searchBar.searchTextField.leftView setTintColor: [singleton getAccentColor]];
+    [self.searchController.searchBar.searchTextField.rightView setTintColor: [singleton getAccentColor]];
 }
 - (void) setupResultsTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.resultsViewController setTableCellBackgroundColor: colorSet[@"Background"]];
-    [self.resultsViewController setTableCellSeparatorColor: colorSet[@"Secondary"]];
-    [self.resultsViewController setPrimaryTextColor: colorSet[@"Label"]];
-    [self.resultsViewController setPrimaryTextHighlightColor: colorSet[@"Accent"]];
-    [self.resultsViewController setSecondaryTextColor: colorSet[@"Label"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.resultsViewController setTableCellBackgroundColor: [singleton getBackgroundColor]];
+    [self.resultsViewController setTableCellSeparatorColor: [singleton getSecondaryColor]];
+    [self.resultsViewController setPrimaryTextColor: [singleton getLabelColor]];
+    [self.resultsViewController setPrimaryTextHighlightColor: [singleton getAccentColor]];
+    [self.resultsViewController setSecondaryTextColor: [singleton getLabelColor]];
 }
 
 @end

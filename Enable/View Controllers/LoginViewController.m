@@ -77,6 +77,7 @@
             [self endLoading];
             [self showAlert:@"Failed to login" message:error.localizedDescription completion:nil];
         } else {
+            [[ThemeTracker sharedTheme] removeCustomTheme];
             [self navigateBack];
         }
         
@@ -90,18 +91,18 @@
 #pragma mark - Setup
 - (void) setupTheme {
     [self setupMainTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor: colorSet[@"Background"]];
-    [self.view setTintColor: colorSet[@"Accent"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.view setTintColor: [singleton getAccentColor]];
     
-    [self.passTextField setBackgroundColor: colorSet[@"Secondary"]];
-    [self.emailTextField setBackgroundColor: colorSet[@"Secondary"]];
+    [self.passTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [self.emailTextField setBackgroundColor: [singleton getSecondaryColor]];
 
-    [self.passTextField setTextColor: colorSet[@"Label"]];
-    [self.emailTextField setTextColor: colorSet[@"Label"]];
+    [self.passTextField setTextColor: [singleton getLabelColor]];
+    [self.emailTextField setTextColor: [singleton getLabelColor]];
     
-    [self.loginLabel setTextColor: colorSet[@"Label"]];
-    [self.emailLabel setTextColor: colorSet[@"Label"]];
-    [self.passLabel setTextColor: colorSet[@"Label"]];
+    [self.loginLabel setTextColor: [singleton getLabelColor]];
+    [self.emailLabel setTextColor: [singleton getLabelColor]];
+    [self.passLabel setTextColor: [singleton getLabelColor]];
 }
 @end

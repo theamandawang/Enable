@@ -249,38 +249,38 @@ const int kReviewsSection = 2;
 #pragma mark - Setup
 - (void) setupTheme {
     [self setupMainTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.shimmerLoadView setBG: colorSet[@"Background"] FG: colorSet[@"Secondary"]];
-    [self.refreshControl setTintColor: colorSet[@"Label"]];
-    [self.tableView setBackgroundColor: colorSet[@"Background"]];
-    [self.tableView setSeparatorColor: colorSet[@"Secondary"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.shimmerLoadView setBG: [singleton getBackgroundColor] FG: [singleton getSecondaryColor]];
+    [self.refreshControl setTintColor: [singleton getLabelColor]];
+    [self.tableView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.tableView setSeparatorColor: [singleton getSecondaryColor]];
 }
 - (void) setupResultsViewTheme : (ResultsView * ) view {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [view.contentView setBackgroundColor: colorSet[@"Background"]];
-    [view.titleLabel setTextColor: colorSet[@"Label"]];
-    [view.usernameLabel setTextColor: colorSet[@"Label"]];
-    [view.detailsLabel setTextColor: colorSet[@"Label"]];
-    [view.likeCountLabel setTextColor: colorSet[@"Label"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [view.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [view.titleLabel setTextColor: [singleton getLabelColor]];
+    [view.usernameLabel setTextColor: [singleton getLabelColor]];
+    [view.detailsLabel setTextColor: [singleton getLabelColor]];
+    [view.likeCountLabel setTextColor: [singleton getLabelColor]];
 
-    [view.starRatingView setTintColor: colorSet[@"Star"]];
-    [view.starRatingView setBackgroundColor: colorSet[@"Background"]];
-    [view.likeImageView setTintColor: colorSet[@"Like"]];
+    [view.starRatingView setTintColor: [singleton getStarColor]];
+    [view.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
+    [view.likeImageView setTintColor: [singleton getLikeColor]];
 }
 - (void) setupSummaryCellTheme : (SummaryReviewTableViewCell *) cell {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor: colorSet[@"Background"]];
-    [cell.locationNameLabel setTextColor: colorSet[@"Label"]];
-    [cell.locationRatingLabel setTextColor: colorSet[@"Label"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [cell.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [cell.locationNameLabel setTextColor: [singleton getLabelColor]];
+    [cell.locationRatingLabel setTextColor: [singleton getLabelColor]];
 }
 
 
 - (void) setupComposeCellTheme : (ComposeTableViewCell *) cell {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor: colorSet[@"Background"]];
-    [cell.composeTextField setBackgroundColor: colorSet[@"Secondary"]];
-    [cell.composeTextField setTextColor: colorSet[@"Label"]];
-    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: colorSet[@"Label"]}]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [cell.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [cell.composeTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [cell.composeTextField setTextColor: [singleton getLabelColor]];
+    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}]];
 
 }
 

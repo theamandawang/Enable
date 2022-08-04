@@ -6,15 +6,25 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 NS_ASSUME_NONNULL_BEGIN
 @interface ThemeTracker : NSObject
 @property (strong, nonatomic) NSString * theme;
-@property (strong, nonatomic) NSDictionary * plist;
-@property (strong, nonatomic) NSMutableDictionary * colorSet;
 + (instancetype)sharedTheme;
 - (void) updateTheme: (NSString * _Nonnull) theme withColorDict: (NSDictionary * _Nullable) dict;
 - (void) getTheme;
+- (void) removeCustomTheme;
+- (void) selectCustom;
+- (UIColor *) getBackgroundColor;
+- (UIColor *) getSecondaryColor;
+- (UIColor *) getAccentColor;
+- (UIColor *) getLabelColor;
+- (UIColor *) getStarColor;
+- (UIColor *) getLikeColor;
+- (NSString *) getStatusBarColor;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

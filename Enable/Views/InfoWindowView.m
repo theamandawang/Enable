@@ -36,11 +36,11 @@
 
 # pragma mark - Setup
 - (void) setupTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor: colorSet[@"Background"]];
-    [self.placeNameLabel setTextColor: colorSet[@"Label"]];
-    [self.starRatingView setTintColor: colorSet[@"Star"]];
-    [self.starRatingView setBackgroundColor: colorSet[@"Background"]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.placeNameLabel setTextColor: [singleton getLabelColor]];
+    [self.starRatingView setTintColor: [singleton getStarColor]];
+    [self.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
 }
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
