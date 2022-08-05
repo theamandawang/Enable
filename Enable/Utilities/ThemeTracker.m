@@ -7,6 +7,7 @@
 
 #import "ThemeTracker.h"
 #import "Utilities.h"
+#import "Constants.h"
 @interface ThemeTracker ()
 @property (strong, nonatomic) NSMutableDictionary * colorSet;
 @property (strong, nonatomic) NSDictionary * customTheme;
@@ -23,7 +24,7 @@
 }
 - (void) updateTheme: (NSString * _Nonnull) theme withColorDict: (NSMutableDictionary * _Nullable) dict {
     self.theme = theme;
-    if ([theme isEqualToString:@"Custom"] && dict){
+    if ([theme isEqualToString:kCustomThemeName] && dict){
         [self saveToDefaults:theme dict:dict];
         [self setupColorSetWithColorDict:dict];
     } else {
@@ -47,9 +48,9 @@
 }
 
 - (void) getTheme {
-    self.theme = [[NSUserDefaults standardUserDefaults] stringForKey:@"theme"];
+    self.theme = [[NSUserDefaults standardUserDefaults] stringForKey: kNSUserDefaultThemeKey];
     if(!self.theme) self.theme = @"Default";
-    if([self.theme isEqualToString:@"Custom"]){
+    if([self.theme isEqualToString:kCustomThemeName]){
         NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
         [self unarchiveColor: customDict];
         if(customDict.count > 0){
@@ -92,7 +93,7 @@
     if(!customDict || !customDict.count){
         //if there is no custom theme, do nothing
     } else {
-        [self updateTheme:@"Custom" withColorDict:customDict];
+        [self updateTheme:kCustomThemeName withColorDict:customDict];
     }
 }
 
@@ -112,9 +113,9 @@
 }
 
 - (void) setupColorSetWithColorDict: (NSDictionary * _Nullable) dict {
-    self.plist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]][self.theme];
+    self.plist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: kThemePlistName ofType: @"plist"]][self.theme];
     self.colorSet = [[NSMutableDictionary alloc] init];
-    if([self.theme isEqualToString:@"Custom"]){
+    if([self.theme isEqualToString:kCustomThemeName]){
         for (NSString * str in dict){
             self.colorSet[str] = dict[str];
         }
@@ -131,7 +132,7 @@
 
 #pragma mark - Get Data From NSUserDefaults
 - (void) unarchiveColor: (NSMutableDictionary *) dict{
-    NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"Custom"];
+    NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kCustomThemeName];
     for(NSString * str in temp){
         if([str isEqualToString:@"StatusBar"]){
             dict[str] = temp[str];
@@ -142,7 +143,7 @@
 }
 
 - (void) saveToDefaults: (NSString * _Nonnull) theme dict: (NSDictionary * _Nullable) dict {
-    [[NSUserDefaults standardUserDefaults] setObject:theme forKey:@"theme"];
+    [[NSUserDefaults standardUserDefaults] setObject:theme forKey:kNSUserDefaultThemeKey];
     if(dict){
         NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
         for(NSString * str in dict){
@@ -152,14 +153,14 @@
                 customDict[str] = [NSKeyedArchiver archivedDataWithRootObject:dict[str] requiringSecureCoding:NO error:nil];
             }
         }
-        [[NSUserDefaults standardUserDefaults] setObject: customDict forKey:@"Custom"];
+        [[NSUserDefaults standardUserDefaults] setObject: customDict forKey:kCustomThemeName];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) removeCustomTheme {
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Custom"];
-    if([self.theme isEqualToString: @"Custom"]){
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:kCustomThemeName];
+    if([self.theme isEqualToString: kCustomThemeName]){
         [self getTheme];
     }
 }
@@ -167,13 +168,13 @@
 #pragma mark - Notification
 
 - (void) sendNotification {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"Theme" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName: kThemeNotificationName object:nil];
 }
 
 
 #pragma mark - Get Functions
 - (NSDictionary * _Nullable) getCustomTheme {
-    if([self.theme isEqualToString:@"Custom"]){
+    if([self.theme isEqualToString:kCustomThemeName]){
         return self.colorSet;
     }
     return nil;

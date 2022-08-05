@@ -24,7 +24,7 @@
     [self setupTheme];
     [[NSNotificationCenter defaultCenter] addObserver:self
             selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
+            name:kThemeNotificationName object:nil];
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];

@@ -8,6 +8,7 @@
 #import <Foundation/Foundation.h>
 #import "Utilities.h"
 #import "ThemeTracker.h"
+#import "Constants.h"
 @implementation Utilities
 #pragma mark Image -> PFFileObject
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
@@ -20,11 +21,6 @@
     }
     return [PFFileObject fileObjectWithName:@"image.jpeg" data:imageData];
 }
-
-const int kCustomizedErrorCode = 0;
-const int kQueryLimit = 3;
-const int kMaxRadius = 50;
-const int kMinRadius = 1;
 bool allResultsFound = false;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSError  * _Nullable  error))completion{

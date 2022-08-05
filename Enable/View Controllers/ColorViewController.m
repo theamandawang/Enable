@@ -31,7 +31,7 @@
 NSArray<NSString *> * themes;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSDictionary * themesDictionary = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"Themes" ofType: @"plist"]];
+    NSDictionary * themesDictionary = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: kThemePlistName ofType: @"plist"]];
     themes = [[themesDictionary allKeys] sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     self.themePicker.dataSource = self;
     self.themePicker.delegate = self;
@@ -39,7 +39,7 @@ NSArray<NSString *> * themes;
     NSString * myTheme = [ThemeTracker sharedTheme].theme;
     int row = myTheme ? [themes indexOfObject: myTheme] : 0;
     [self.themePicker selectRow:row inComponent:0 animated:YES];
-    if([themes[row] isEqualToString: @"Custom"]){
+    if([themes[row] isEqualToString: kCustomThemeName]){
         [self.customizeContentView setHidden:NO];
     } else {
         [self.customizeContentView setHidden:YES];
@@ -91,7 +91,7 @@ NSArray<NSString *> * themes;
     return [[NSAttributedString alloc] initWithString:themes[row] attributes:[NSDictionary dictionaryWithObjects:@[[[ThemeTracker sharedTheme] getLabelColor]] forKeys:@[NSForegroundColorAttributeName]]];
 }
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    if([themes[row] isEqualToString: @"Custom"]){
+    if([themes[row] isEqualToString: kCustomThemeName]){
         [self.customizeContentView setHidden:NO];
         [[ThemeTracker sharedTheme] selectCustom];
     } else {
@@ -103,7 +103,7 @@ NSArray<NSString *> * themes;
 #pragma mark - Setup
 - (void) updateColorWells {
     ThemeTracker * singleton = [ThemeTracker sharedTheme];
-    if([[singleton theme] isEqualToString:@"Custom"]){
+    if([[singleton theme] isEqualToString:kCustomThemeName]){
         [self.backgroundColorWell setSelectedColor: [singleton getBackgroundColor]];
         [self.secondaryColorWell setSelectedColor: [singleton getSecondaryColor]];
         [self.accentColorWell setSelectedColor: [singleton getAccentColor]];
@@ -135,18 +135,17 @@ NSArray<NSString *> * themes;
         NSDictionary * dict = @{@"Background" : self.backgroundColorWell.selectedColor, @"Secondary" : self.secondaryColorWell.selectedColor,
                                 @"Label" : self.labelColorWell.selectedColor, @"Accent" : self.accentColorWell.selectedColor,
                                 @"Like" : self.likeColorWell.selectedColor, @"Star" : self.starColorWell.selectedColor, @"StatusBar" : [self calculateStatusBar]};
-        [[ThemeTracker sharedTheme] updateTheme:@"Custom" withColorDict:dict];
+        [[ThemeTracker sharedTheme] updateTheme:kCustomThemeName withColorDict:dict];
     }
 }
 - (NSString *) calculateStatusBar {
     // taken from https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
-    NSString * retVal = @"Dark";
     const CGFloat * components = CGColorGetComponents(self.backgroundColorWell.selectedColor.CGColor);
     float contrastVal = ((components[0] * 255 * 299) + (components[1] * 255 * 587) + (components[2] * 255 * 114)) / 1000;
     if(contrastVal < 125) {
-        retVal = @"Light";
+        return kLightStatusBar;
     }
-    return retVal;
+    return kDarkStatusBar;
 }
 
 - (bool) calculateDifferenceColor: (CGColorRef) c1 and: (CGColorRef) c2 {

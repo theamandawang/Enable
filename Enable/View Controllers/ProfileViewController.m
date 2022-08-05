@@ -21,9 +21,6 @@
 @end
 
 @implementation ProfileViewController
-const int kNumberSections = 2;
-const int kProfileSection = 0;
-
 bool imageUpdated = false;
 bool userUpdated = false;
 
@@ -80,7 +77,7 @@ bool userUpdated = false;
 - (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
     [self startLoading];
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-        if(error && (error.code != 0)){
+        if(error && (error.code != kCustomizedErrorCode)){
             [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
         } else {
             self.currentProfile = profile;
@@ -136,7 +133,7 @@ bool userUpdated = false;
 # pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return kNumberSections;
+    return kNumberProfileSections;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -184,7 +181,7 @@ bool userUpdated = false;
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section){
         case kProfileSection:
-            return 1;
+            return kRowsForNonReviews;
         default:
             return self.reviews.count;
     }

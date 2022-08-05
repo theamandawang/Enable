@@ -31,7 +31,6 @@
 //TODO: add tableview for dropdown.
 //TODO: automatically scroll up when keyboard opens
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
-const int kMaxNumberOfImages = 3;
 int imageIndex = 0;
 UITapGestureRecognizer *scrollViewTapGesture;
 

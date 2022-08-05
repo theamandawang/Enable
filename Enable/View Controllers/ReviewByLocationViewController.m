@@ -27,11 +27,6 @@
 @end
 
 @implementation ReviewByLocationViewController
-const int kNoMatchErrorCode = 101;
-const int kSummarySection = 0;
-const int kComposeSection = 1;
-const int kReviewsSection = 2;
-
 - (void) viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
@@ -180,7 +175,7 @@ const int kReviewsSection = 2;
 # pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return kNumberReviewSections;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
@@ -226,8 +221,8 @@ const int kReviewsSection = 2;
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
-        case kSummarySection: return 1;
-        case kComposeSection: return 1;
+        case kSummarySection: return kRowsForNonReviews;
+        case kComposeSection: return kRowsForNonReviews;
         default: return self.reviews.count;
     }
 }
