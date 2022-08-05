@@ -27,6 +27,7 @@
 //https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 
 - (void)navigateBack {
+    [[ThemeTracker sharedTheme] checkCloudThemes];
     [[ThemeTracker sharedTheme] getTheme];
     [self endLoading];
     [self.navigationController popViewControllerAnimated:NO];
