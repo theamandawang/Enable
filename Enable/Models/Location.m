@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Location.h"
+#import "Constants.h"
 @implementation Location
     @dynamic rating;
     @dynamic POI_idStr;
@@ -15,7 +16,7 @@
     @dynamic address;
     @dynamic reviewCount;
 + (nonnull NSString *)parseClassName {
-    return @"Location";
+    return kLocationModelClassName;
 }
 
 @end

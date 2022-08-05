@@ -7,6 +7,7 @@
 
 #import "MapView.h"
 #import <CoreLocation/CoreLocation.h>
+#import "Constants.h"
 @interface MapView() <CLLocationManagerDelegate>
 @property (weak, nonatomic) IBOutlet UIStackView *stackView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
@@ -32,7 +33,7 @@ bool didUpdateInitial = false;
     return self;
 }
 - (instancetype) mapInit{
-    [[NSBundle mainBundle] loadNibNamed: @"MapView" owner: self options:nil];
+    [[NSBundle mainBundle] loadNibNamed: kMapViewNibName owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupLocationManager];

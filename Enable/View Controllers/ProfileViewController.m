@@ -21,30 +21,25 @@
 @end
 
 @implementation ProfileViewController
-const int kNumberSections = 2;
-const int kProfileSection = 0;
-
 bool imageUpdated = false;
 bool userUpdated = false;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    UINib *nib = [UINib nibWithNibName:kReviewTableViewCellNibName bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kReviewTableViewCellReuseID];
+    UINib *nib2 = [UINib nibWithNibName:kProfileTableViewCellNibName bundle:nil];
+    [self.tableView registerNib:nib2 forCellReuseIdentifier:kProfileTableViewCellReuseID];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self setupShimmerView];
+    [self setupTheme];
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
     [self getCurrentProfile:^{
         [self getUserProfile];
     }];
-    UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
-    UINib *nib2 = [UINib nibWithNibName:@"ProfileTableViewCell" bundle:nil];
-    [self.tableView registerNib:nib2 forCellReuseIdentifier:@"ProfileCell"];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    [self setupShimmerView];
-    [self setupTheme];
-
 }
 
 #pragma mark - Override
@@ -60,7 +55,6 @@ bool userUpdated = false;
 
 #pragma mark - Queries
 - (void) getUserProfile {
-    [self startLoading];
     if(self.userProfileID){
         [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
             if(error){
@@ -80,12 +74,12 @@ bool userUpdated = false;
 - (void) getCurrentProfile: (void (^ _Nonnull) (void)) completion {
     [self startLoading];
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
-        if(error && (error.code != 0)){
+        if(error && (error.code != kCustomizedErrorCode)){
             [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
         } else {
             self.currentProfile = profile;
+            completion();
         }
-        completion();
     }];
 }
 
@@ -103,7 +97,7 @@ bool userUpdated = false;
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"profileToReviews"]){
+    if([segue.identifier isEqualToString: kProfileToReviewSegueName]){
         ReviewByLocationViewController * vc = [segue destinationViewController];
         vc.locationID = sender;
         vc.delegate =  [self.navigationController.viewControllers objectAtIndex: 0];
@@ -130,20 +124,20 @@ bool userUpdated = false;
     }];
 }
 - (void) toLogin{
-    [self performSegueWithIdentifier:@"profileToLogin" sender:nil];
+    [self performSegueWithIdentifier:kProfileToLoginSegueName sender:nil];
 }
 
 # pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return kNumberSections;
+    return kNumberProfileSections;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if(indexPath.section == kProfileSection) {
-        ProfileTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
+        ProfileTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileTableViewCellReuseID];
         if(!self.userProfile.image) {
-            cell.userProfileImageView.image = [UIImage systemImageNamed:@"person.fill"];
+            cell.userProfileImageView.image = [UIImage systemImageNamed: kPlaceholderProfileImageName];
         } else {
             cell.userProfileImageView.file = self.userProfile.image;
             [cell.userProfileImageView loadInBackground];
@@ -161,7 +155,7 @@ bool userUpdated = false;
         [self setupProfileCellTheme:cell];
         return cell;
     } else {
-        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: kReviewTableViewCellReuseID];
         cell.resultsView.delegate = self;
         cell.resultsView.userProfile = self.userProfile;
         [self setupResultsViewTheme: cell.resultsView];
@@ -184,14 +178,14 @@ bool userUpdated = false;
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section){
         case kProfileSection:
-            return 1;
+            return kRowsForNonReviews;
         default:
             return self.reviews.count;
     }
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section != kProfileSection){
-        [self performSegueWithIdentifier:@"profileToReviews" sender:self.reviews[indexPath.row].locationID.objectId];
+        [self performSegueWithIdentifier:kProfileToReviewSegueName sender:self.reviews[indexPath.row].locationID.objectId];
     }
 }
 
@@ -207,8 +201,8 @@ bool userUpdated = false;
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     UITableViewHeaderFooterView *header = (UITableViewHeaderFooterView *)view;
-    [header.textLabel setTextColor: [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Label"]]];
-    view.tintColor = [UIColor colorNamed:[ThemeTracker sharedTheme].colorSet[@"Background"]];
+    [header.textLabel setTextColor: [[ThemeTracker sharedTheme] getLabelColor]];
+    view.tintColor = [[ThemeTracker sharedTheme] getBackgroundColor];
     view.alpha = 0.8;
 }
 
@@ -218,6 +212,7 @@ bool userUpdated = false;
         if(error){
             [self showAlert:@"Failed to log out" message:error.localizedDescription completion:nil];
         } else {
+            [[ThemeTracker sharedTheme] removeCustomTheme];
             [self.navigationController popToRootViewControllerAnimated:TRUE];
 
         }
@@ -305,32 +300,33 @@ bool userUpdated = false;
 #pragma mark - Setup
 - (void) setupTheme {
     [self setupMainTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.tableView setSeparatorColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.shimmerLoadView setBG: [singleton getBackgroundColor] FG: [singleton getSecondaryColor]];
+    [self.tableView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.tableView setSeparatorColor: [singleton getSecondaryColor]];
 }
 
 - (void) setupProfileCellTheme : (ProfileTableViewCell *) cell {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [cell.userProfileImageView setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [cell.userDisplayNameTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [cell.userDisplayNameTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [cell.updateButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [cell.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [cell.userProfileImageView setTintColor: [singleton getAccentColor]];
+    [cell.userDisplayNameTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [cell.userDisplayNameTextField setTextColor: [singleton getLabelColor]];
+    [cell.updateButton setTintColor: [singleton getAccentColor]];
+    
 }
 
 - (void) setupResultsViewTheme : (ResultsView * ) view {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [view.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [view.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [view.titleLabel setTextColor:  [singleton getLabelColor]];
+    [view.usernameLabel setTextColor:  [singleton getLabelColor]];
+    [view.detailsLabel setTextColor: [singleton getLabelColor]];
+    [view.likeCountLabel setTextColor: [singleton getLabelColor]];
 
-    [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
+    [view.starRatingView setTintColor: [singleton getStarColor]];
+    [view.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
+    [view.likeImageView setTintColor: [singleton getLikeColor]];
 }
 
 - (void) setupShimmerView {
@@ -342,7 +338,7 @@ bool userUpdated = false;
     [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    
+
     [self.shimmerLoadView setup];
 }
 @end

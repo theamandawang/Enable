@@ -7,6 +7,7 @@
 
 #import "MainNavigationViewController.h"
 #import "ThemeTracker.h"
+#import "Constants.h"
 @interface MainNavigationViewController ()
 
 @end
@@ -18,10 +19,11 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
-    NSString * status = [ThemeTracker sharedTheme].colorSet[@"StatusBar"];
-    if([status isEqualToString:@"Dark"]){
+    NSString * status;
+    status = [[ThemeTracker sharedTheme] getStatusBarColor];
+    if([status isEqualToString:kDarkStatusBar]){
         return UIStatusBarStyleDarkContent;
-    } else if ([status isEqualToString:@"Light"]){
+    } else if ([status isEqualToString:kLightStatusBar]){
         return UIStatusBarStyleLightContent;
     }
     return UIStatusBarStyleDefault;

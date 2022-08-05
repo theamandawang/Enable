@@ -24,7 +24,7 @@
     [self setupTheme];
     [[NSNotificationCenter defaultCenter] addObserver:self
             selector:@selector(setupTheme)
-            name:@"Theme" object:nil];
+            name:kThemeNotificationName object:nil];
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
@@ -88,12 +88,12 @@
 
 #pragma mark - Theme
 - (void) setupMainTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.activityView setColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.navigationController.navigationBar setBarTintColor:[UIColor colorNamed:colorSet[@"Secondary"]]];
-    [self.navigationController.navigationBar setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[UIColor colorNamed: colorSet[@"Label"]]] forKeys:@[NSForegroundColorAttributeName]]];
-    [self.view setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.activityView setColor: [singleton getLabelColor]];
+    [self.navigationController.navigationBar setBarTintColor: [singleton getSecondaryColor]];
+    [self.navigationController.navigationBar setTintColor: [singleton getAccentColor]];
+    [self.navigationController.navigationBar setTitleTextAttributes: [NSDictionary dictionaryWithObjects:@[[singleton getLabelColor]] forKeys:@[NSForegroundColorAttributeName]]];
+    [self.view setBackgroundColor:[singleton getBackgroundColor]];
     [self setNeedsStatusBarAppearanceUpdate];
 }
 #pragma mark - Private

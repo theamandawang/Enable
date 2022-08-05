@@ -7,6 +7,8 @@
 
 #import <Foundation/Foundation.h>
 #import "Utilities.h"
+#import "ThemeTracker.h"
+#import "Constants.h"
 @implementation Utilities
 #pragma mark Image -> PFFileObject
 + (PFFileObject *)getPFFileFromImage: (UIImage * _Nullable)image {
@@ -19,11 +21,6 @@
     }
     return [PFFileObject fileObjectWithName:@"image.jpeg" data:imageData];
 }
-
-const int kCustomizedErrorCode = 0;
-const int kQueryLimit = 3;
-const int kMaxRadius = 50;
-const int kMinRadius = 1;
 bool allResultsFound = false;
 #pragma mark User Signup/Login/Logout
 + (void) logInWithEmail :(NSString* _Nonnull)email  password : (NSString* _Nonnull)password completion:(void (^ _Nonnull)(NSError  * _Nullable  error))completion{
@@ -43,6 +40,13 @@ bool allResultsFound = false;
     UserProfile * userProfile = [[UserProfile alloc] initWithClassName:@"UserProfile"];
     userProfile.username = @"Anonymous User";
     userProfile.email = email;
+    userProfile.theme = [[ThemeTracker sharedTheme] theme];
+    NSDictionary<NSString *, UIColor *>  * customDict = [[ThemeTracker sharedTheme] getCustomTheme];
+    if(customDict){
+        NSMutableDictionary * hexCustomDict = [[NSMutableDictionary alloc] init];
+        [Utilities updateHexDict:hexCustomDict withDict:customDict];
+        userProfile.customTheme = hexCustomDict;
+    }
 
 
     [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
@@ -80,7 +84,7 @@ bool allResultsFound = false;
 + (void) getCurrentUserProfileWithCompletion:(void (^_Nonnull)(UserProfile * _Nullable profile, NSError  * _Nullable  error))completion {
     PFQuery *query = [PFQuery queryWithClassName:@"UserProfile"];
     if(![PFUser currentUser]){
-        NSError * error = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"No user signed in"}];
+        NSError * error = [[NSError alloc] initWithDomain:kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"No user signed in"}];
         completion(nil, error);
         return;
     }
@@ -127,7 +131,7 @@ bool allResultsFound = false;
         if(error){
             completion(error);
         } else if (!succeeded) {
-            NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not update profile"}];
+            NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not update profile"}];
             completion(customError);
         }
         else if (succeeded){
@@ -138,13 +142,18 @@ bool allResultsFound = false;
 }
 
 
-+ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withTheme : (NSString * _Nonnull) theme withCompletion: (void (^_Nullable) (NSError * _Nullable error)) completion {
++ (void) updateUserProfile: (UserProfile * _Nonnull) userProfile withTheme : (NSString * _Nonnull) theme withCustom: (NSDictionary<NSString *, UIColor *> * _Nullable) customDict withCompletion: (void (^_Nullable) (NSError * _Nullable error)) completion {
     userProfile.theme = theme;
+    if(customDict){
+        NSMutableDictionary * hexCustomDict = [[NSMutableDictionary alloc] init];
+        [Utilities updateHexDict:hexCustomDict withDict:customDict];
+        userProfile.customTheme = hexCustomDict;
+    }
     [userProfile saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
             if(error){
                 completion(error);
             } else if (!succeeded){
-                NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Unable to update cloud with theme"}];
+                NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Unable to update cloud with theme"}];
                 completion(customError);
             } else {
                 NSLog(@"Success");
@@ -156,7 +165,7 @@ bool allResultsFound = false;
 #pragma mark Review
 
 + (void) getReviewFromID: (id _Nonnull) reviewID withCompletion: (void (^_Nonnull)(Review * _Nullable review, NSError * _Nullable error))completion {
-    PFQuery *query = [PFQuery queryWithClassName:@"Review"];
+    PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
     [query getObjectInBackgroundWithId:reviewID block:^(PFObject * _Nullable dbReview, NSError * _Nullable error) {
         if(!error){
             if(dbReview){
@@ -173,7 +182,7 @@ bool allResultsFound = false;
 }
 
 + (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
-    PFQuery *query = [PFQuery queryWithClassName:@"Review"];
+    PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
     //TODO: infinite scroll
     query.limit = 20;
     [query whereKey:@"locationID" equalTo:location];
@@ -190,7 +199,7 @@ bool allResultsFound = false;
 }
 
 + (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
-    PFQuery *query = [PFQuery queryWithClassName:@"Review"];
+    PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
     //TODO: infinite scroll
     query.limit = 20;
     [query whereKey:@"userProfileID" equalTo:profile];
@@ -210,7 +219,7 @@ bool allResultsFound = false;
 #pragma mark Location
 
 + (void) getLocationFromID: (id _Nonnull) locationID withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
-    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    PFQuery * query = [PFQuery queryWithClassName: kLocationModelClassName];
     [query getObjectInBackgroundWithId:locationID block:^(PFObject * _Nullable dbLocation, NSError * _Nullable error) {
         if(!error){
             completion((Location *)dbLocation, nil);
@@ -222,7 +231,7 @@ bool allResultsFound = false;
 }
 
 + (void) getLocationFromPOI_idStr: (NSString * _Nonnull) POI_idStr withCompletion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion{
-    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    PFQuery * query = [PFQuery queryWithClassName: kLocationModelClassName];
     [query whereKey:@"POI_idStr" equalTo:POI_idStr];
     [query getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable dbLocation, NSError * _Nullable error) {
         if(!error){
@@ -235,7 +244,7 @@ bool allResultsFound = false;
 }
 
 + (void) getLocationsFromLocation: (CLLocationCoordinate2D) location corner: (CLLocationCoordinate2D) corner withCompletion: (void (^_Nonnull)(NSArray<Location *> * _Nullable locations, NSError * _Nullable error))completion{
-    PFQuery * query = [PFQuery queryWithClassName:@"Location"];
+    PFQuery * query = [PFQuery queryWithClassName: kLocationModelClassName];
     PFGeoPoint * farRightCorner = [PFGeoPoint geoPointWithLatitude:corner.latitude longitude:corner.longitude];
     PFGeoPoint * point = [PFGeoPoint geoPointWithLatitude:location.latitude longitude:location.longitude];
     double radius = [point distanceInMilesTo:farRightCorner];
@@ -279,7 +288,7 @@ bool allResultsFound = false;
 
 #pragma mark Posting
 + (void) postLocationWithPOI_idStr: (NSString * _Nonnull) POI_idStr coordinates: (PFGeoPoint * _Nonnull) coordinates name: (NSString * _Nonnull) name address: (NSString * _Nonnull) address completion: (void (^_Nonnull)(Location * _Nullable location, NSError * _Nullable error))completion {
-    Location *location = [[Location alloc] initWithClassName:@"Location"];
+    Location *location = [[Location alloc] initWithClassName: kLocationModelClassName];
     location.rating = 0;
     location.reviewCount = 0;
     location.POI_idStr = POI_idStr;
@@ -308,7 +317,7 @@ bool allResultsFound = false;
         [parseFiles addObject: [Utilities getPFFileFromImage:img]];
     }
     [Utilities getCurrentUserProfileWithCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable profileError) {
-        Review *review = [[Review alloc] initWithClassName:@"Review"];
+        Review *review = [[Review alloc] initWithClassName: kReviewModelClassName];
         if(profileError){
             completion(profileError);
             return;
@@ -320,7 +329,7 @@ bool allResultsFound = false;
                     completion(locationError);
                     return;
                 } else if (!succeeded) {
-                    NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not increment location reviews"}];
+                    NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not increment location reviews"}];
                     completion(customError);
                     return;
                 } else if (succeeded) {
@@ -338,7 +347,7 @@ bool allResultsFound = false;
                                 completion(nil);
                             } else {
                                 NSLog(@"Fail saveReviewInBackground (in Post Review) couldn't save.");
-                                NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not save review"}];
+                                NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not save review"}];
                                 completion(customError);
                             }
                         }
@@ -362,7 +371,7 @@ bool allResultsFound = false;
         if(error){
             completion(error);
         } else if (!succeeded) {
-            NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not like"}];
+            NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not like"}];
             completion(customError);
         }
     }];
@@ -376,7 +385,7 @@ bool allResultsFound = false;
         if(error){
             completion(error);
         } else if (!succeeded) {
-            NSError * customError = [[NSError alloc] initWithDomain:@"CustomError" code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not unlike"}];
+            NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Did not unlike"}];
             completion(customError);
         }
     }];
@@ -422,6 +431,22 @@ static GMSPlacesClient * placesClient = nil;
         }
     }];
 
+}
+
+#pragma mark - Helper
++ (void) updateHexDict: (NSMutableDictionary * _Nonnull) hexCustomDict withDict: (NSDictionary<NSString *, UIColor *> * _Nonnull) customDict{
+    for(NSString * str in customDict){
+        if([str isEqualToString: kStatusBarKey]) {
+            hexCustomDict[str] = customDict[str];
+            continue;
+        }
+        const CGFloat *components = CGColorGetComponents(customDict[str].CGColor);
+        CGFloat r = components[0];
+        CGFloat g = components[1];
+        CGFloat b = components[2];
+        NSString *hexString=[NSString stringWithFormat:@"%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255)];
+        hexCustomDict[str] = hexString;
+    }
 }
 
 @end

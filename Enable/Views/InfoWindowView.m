@@ -6,6 +6,7 @@
 //
 #import "InfoWindowView.h"
 #import "ThemeTracker.h"
+#import "Constants.h"
 @interface InfoWindowView ()
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
@@ -25,7 +26,7 @@
     return self;
 }
 - (instancetype) customInit{
-    [[NSBundle mainBundle] loadNibNamed: @"InfoWindowView" owner: self options:nil];
+    [[NSBundle mainBundle] loadNibNamed: kInfoWindowViewNibName owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupPlaceNameLabel];
@@ -36,11 +37,11 @@
 
 # pragma mark - Setup
 - (void) setupTheme {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [self.placeNameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.placeNameLabel setTextColor: [singleton getLabelColor]];
+    [self.starRatingView setTintColor: [singleton getStarColor]];
+    [self.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
 }
 - (void)setupStarRatingView {
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];

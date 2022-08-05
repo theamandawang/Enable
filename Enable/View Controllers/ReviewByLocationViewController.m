@@ -27,20 +27,15 @@
 @end
 
 @implementation ReviewByLocationViewController
-const int kNoMatchErrorCode = 101;
-const int kSummarySection = 0;
-const int kComposeSection = 1;
-const int kReviewsSection = 2;
-
 - (void) viewDidLoad {
     [super viewDidLoad];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.reviews = [[NSMutableArray alloc] init];
-    UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
+    UINib *nib = [UINib nibWithNibName:kReviewTableViewCellNibName bundle:nil];
     [self setupShimmerView];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kReviewTableViewCellReuseID];
     [self getCurrentUserProfile];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
@@ -92,11 +87,11 @@ const int kReviewsSection = 2;
     }];
 }
 - (void) toLogin{
-    [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
+    [self performSegueWithIdentifier: kReviewToLoginSegueName sender:nil];
 }
 - (void) toProfile: (id) userProfileID {
     self.userProfileID = userProfileID;
-    [self performSegueWithIdentifier:@"reviewToProfile" sender:nil];
+    [self performSegueWithIdentifier: kReviewToProfileSegueName sender:nil];
 }
 
 
@@ -138,7 +133,7 @@ const int kReviewsSection = 2;
                         if(error){
                             [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
                         } else {
-                            self.location = [[Location alloc] initWithClassName:@"Location"];
+                            self.location = [[Location alloc] initWithClassName: kLocationModelClassName];
                             self.location.POI_idStr = self.POI_idStr;
                             self.location.address = [place formattedAddress];
                             self.location.name = [place name];
@@ -166,12 +161,12 @@ const int kReviewsSection = 2;
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"compose"]){
+    if([segue.identifier isEqualToString: kReviewToComposeSegueName]){
         ComposeViewController * vc = [segue destinationViewController];
         vc.POI_idStr = self.POI_idStr;
         vc.location = self.location;
     }
-    if([segue.identifier isEqualToString:@"reviewToProfile"]){
+    if([segue.identifier isEqualToString: kReviewToProfileSegueName]){
         ProfileViewController * vc = [segue destinationViewController];
         vc.userProfileID = self.userProfileID;
     }
@@ -180,12 +175,12 @@ const int kReviewsSection = 2;
 # pragma mark - Table View
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return kNumberReviewSections;
 }
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if(indexPath.section == kSummarySection){
-        SummaryReviewTableViewCell *summaryCell = [self.tableView dequeueReusableCellWithIdentifier:@"SummaryCell"];
+        SummaryReviewTableViewCell *summaryCell = [self.tableView dequeueReusableCellWithIdentifier: kSummaryTableViewCellReuseID];
         summaryCell.locationNameLabel.text = self.location.name;
         if(self.reviews && self.reviews.count > 0){
             summaryCell.locationRatingLabel.text = [NSString stringWithFormat: @"%0.2f/5 stars!", self.location.rating];
@@ -195,12 +190,12 @@ const int kReviewsSection = 2;
         [self setupSummaryCellTheme:summaryCell];
         return summaryCell;
     } else if (indexPath.section == kComposeSection) {
-        ComposeTableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier:@"ComposeCell"];
+        ComposeTableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier: kComposeTableViewCellReuseID];
         [self setupComposeCellTheme : composeCell];
         return composeCell;
     }
     else {
-        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kReviewTableViewCellReuseID];
         cell.resultsView.delegate = self;
         [self setupResultsViewTheme:cell.resultsView];
         [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
@@ -226,8 +221,8 @@ const int kReviewsSection = 2;
 
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
-        case kSummarySection: return 1;
-        case kComposeSection: return 1;
+        case kSummarySection: return kRowsForNonReviews;
+        case kComposeSection: return kRowsForNonReviews;
         default: return self.reviews.count;
     }
 }
@@ -238,9 +233,9 @@ const int kReviewsSection = 2;
     }
     else if(indexPath.section == kComposeSection){
         if([PFUser currentUser]){
-            [self performSegueWithIdentifier:@"compose" sender:nil];
+            [self performSegueWithIdentifier:kReviewToComposeSegueName sender:nil];
         } else {
-            [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
+            [self performSegueWithIdentifier:kReviewToLoginSegueName sender:nil];
         }
     }
 }
@@ -249,40 +244,38 @@ const int kReviewsSection = 2;
 #pragma mark - Setup
 - (void) setupTheme {
     [self setupMainTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    
-    [self.shimmerLoadView setBG:[UIColor colorNamed: colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
-
-    [self.refreshControl setTintColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [self.tableView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.tableView setSeparatorColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.shimmerLoadView setBG: [singleton getBackgroundColor] FG: [singleton getSecondaryColor]];
+    [self.refreshControl setTintColor: [singleton getLabelColor]];
+    [self.tableView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.tableView setSeparatorColor: [singleton getSecondaryColor]];
 }
 - (void) setupResultsViewTheme : (ResultsView * ) view {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [view.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.titleLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.usernameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.detailsLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [view.likeCountLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [view.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [view.titleLabel setTextColor: [singleton getLabelColor]];
+    [view.usernameLabel setTextColor: [singleton getLabelColor]];
+    [view.detailsLabel setTextColor: [singleton getLabelColor]];
+    [view.likeCountLabel setTextColor: [singleton getLabelColor]];
 
-    [view.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [view.starRatingView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [view.likeImageView setTintColor:[UIColor colorNamed: colorSet[@"Like"]]];
+    [view.starRatingView setTintColor: [singleton getStarColor]];
+    [view.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
+    [view.likeImageView setTintColor: [singleton getLikeColor]];
 }
 - (void) setupSummaryCellTheme : (SummaryReviewTableViewCell *) cell {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [cell.locationNameLabel setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [cell.locationRatingLabel setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [cell.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [cell.locationNameLabel setTextColor: [singleton getLabelColor]];
+    [cell.locationRatingLabel setTextColor: [singleton getLabelColor]];
 }
 
 
 - (void) setupComposeCellTheme : (ComposeTableViewCell *) cell {
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [cell.contentView setBackgroundColor:[UIColor colorNamed: colorSet[@"Background"]]];
-    [cell.composeTextField setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-    [cell.composeTextField setTextColor:[UIColor colorNamed: colorSet[@"Label"]]];
-    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [cell.contentView setBackgroundColor: [singleton getBackgroundColor]];
+    [cell.composeTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [cell.composeTextField setTextColor: [singleton getLabelColor]];
+    [cell.composeTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Add a review..." attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}]];
 
 }
 
@@ -295,7 +288,7 @@ const int kReviewsSection = 2;
     [self.shimmerLoadView.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor].active = YES;
     [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
-    
+
     [self.shimmerLoadView setup];
 }
 

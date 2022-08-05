@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "Utilities.h"
 #import "ThemeTracker.h"
+#import "Constants.h"
 NS_ASSUME_NONNULL_BEGIN
 
 @interface EnableBaseViewController : UIViewController

@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property (strong, nonatomic) ReviewShimmerView * shimmerLoadView;
+@property (weak, nonatomic) IBOutlet UIView *scrollContentView;
 
 
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
@@ -28,9 +29,6 @@
 
 @implementation ComposeViewController
 //TODO: add tableview for dropdown.
-//TODO: automatically scroll up when keyboard opens
-//https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
-const int kMaxNumberOfImages = 3;
 int imageIndex = 0;
 UITapGestureRecognizer *scrollViewTapGesture;
 
@@ -41,7 +39,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
-    [self registerForKeyboardNotifications];
     [self setupTextView];
     [self setupStarRatingView];
     [self setupShimmerView];
@@ -67,7 +64,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
         if(error){
             [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
         } else {
-            self.location = [[Location alloc] initWithClassName:@"Location"];
+            self.location = [[Location alloc] initWithClassName: kLocationModelClassName];
             self.location.POI_idStr = self.POI_idStr;
             self.location.address = [place formattedAddress];
             self.location.name = [place name];
@@ -167,7 +164,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     config.selectionLimit = kMaxNumberOfImages;
     config.filter = [PHPickerFilter imagesFilter];
     PHPickerViewController * imagePickerVC = [[PHPickerViewController alloc] initWithConfiguration:config];
-    
+
     imagePickerVC.delegate = self;
     [self presentViewController:imagePickerVC animated:YES completion:nil];
 }
@@ -209,50 +206,11 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 #pragma mark - Keyboard
-- (void)registerForKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(keyboardWasShown:)
-            name:UIKeyboardDidShowNotification object:nil];
-   [[NSNotificationCenter defaultCenter] addObserver:self
-             selector:@selector(keyboardWillBeHidden:)
-             name:UIKeyboardWillHideNotification object:nil];
-}
-
-// Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification
-{
-    NSDictionary* info = [aNotification userInfo];
-    CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
-//    CGFloat kbHeight = 216;
-    [self moveScrollView:kbHeight + 20];
-    
-}
-
-// Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    [self moveScrollView:0];
-}
 
 - (void) hideKeyboard
 {
     [self.scrollView endEditing:YES];
 }
-
-// push scroll view up so that keyboard doesn't block anything
-- (void)moveScrollView: (CGFloat)constant {
-    self.ScrollViewBottomConstraint.constant = -constant;
-    [UIView animateWithDuration:0.1 animations:^{
-        [self.view layoutIfNeeded];
-        CGFloat scrollViewYOffset = 0;
-        if (constant != 0) {
-            scrollViewYOffset = 20;
-        }
-        [self.scrollView setContentOffset:CGPointMake(0, scrollViewYOffset)];
-    }];
-}
-
 #pragma mark - Star Review
 
 
@@ -260,9 +218,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
     self.starRatingView = [[HCSStarRatingView alloc] initWithFrame:CGRectZero];
     self.starRatingView.backgroundColor = [UIColor systemBackgroundColor];
     [self.scrollView addSubview:self.starRatingView];
-    
+
     [self setupStarRatingViewValues];
-    
+
     self.starRatingView.translatesAutoresizingMaskIntoConstraints = NO;
     [self setupStarRatingViewConstraints];
 }
@@ -317,22 +275,22 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 - (void) setupTheme{
     [self setupMainTheme];
-    NSDictionary * colorSet = [ThemeTracker sharedTheme].colorSet;
-    [self.addImageButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    
-    [self.submitButton setTintColor:[UIColor colorNamed: colorSet[@"Accent"]]];
-    [self.titleTextField setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.reviewTextView setBackgroundColor:[UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.titleTextField setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [UIColor colorNamed: colorSet[@"Label"]]}]];
+    ThemeTracker * singleton = [ThemeTracker sharedTheme];
+    [self.addImageButton setTintColor: [singleton getAccentColor]];
+    [self.scrollContentView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.submitButton setTintColor: [singleton getAccentColor]];
+    [self.titleTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
+    [self.titleTextField setTextColor:  [singleton getLabelColor]];
+    [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}]];
 
-    [self.reviewTextView setTextColor: [UIColor colorNamed: colorSet[@"Label"]]];
-    [self.reviewTextView setBackgroundColor: [UIColor colorNamed: colorSet[@"Secondary"]]];
-    [self.starRatingView setTintColor: [UIColor colorNamed: colorSet[@"Star"]]];
-    [self.starRatingView setBackgroundColor: [UIColor colorNamed: colorSet[@"Background"]]];
-    [self.photosImageView setTintColor: [UIColor colorNamed: colorSet[@"Accent"]]];
-    
-    [self.shimmerLoadView setBG:[UIColor colorNamed:colorSet[@"Background"]] FG:[UIColor colorNamed: colorSet[@"Secondary"]]];
+    [self.reviewTextView setTextColor: [singleton getLabelColor]];
+    [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
+    [self.starRatingView setTintColor: [singleton getStarColor]];
+    [self.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
+    [self.photosImageView setTintColor: [singleton getAccentColor]];
+
+    [self.shimmerLoadView setBG: [singleton getBackgroundColor] FG: [singleton getSecondaryColor]];
 }
 
 - (void) setupShimmerView {
