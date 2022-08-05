@@ -49,7 +49,7 @@
 
 - (void) getTheme {
     self.theme = [[NSUserDefaults standardUserDefaults] stringForKey: kNSUserDefaultThemeKey];
-    if(!self.theme) self.theme = @"Default";
+    if(!self.theme) self.theme = kDefaultThemeName;
     if([self.theme isEqualToString:kCustomThemeName]){
         NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
         [self unarchiveColor: customDict];
@@ -57,7 +57,7 @@
             [self setupColorSetWithColorDict:customDict];
         } else {
             //custom theme doesn't exist anymore; reset to default!
-            [self updateTheme:@"Default" withColorDict:nil];
+            [self updateTheme:kDefaultThemeName withColorDict:nil];
         }
     } else {
         [self setupColorSetWithColorDict:nil];
@@ -68,7 +68,7 @@
             if(error){
                 NSLog(@"Unable to get user theme: %@", error.localizedDescription);
             } else if (profile) {
-                if(!profile.theme) profile.theme = @"Default";
+                if(!profile.theme) profile.theme = kDefaultThemeName;
                 self.theme = profile.theme;
                 if(profile.customTheme){
                     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
@@ -99,7 +99,7 @@
 
 - (void) loadColorDictFromParse: (NSDictionary * _Nonnull) profileDict to:(NSMutableDictionary * _Nonnull) customDict {
     for(NSString * str in profileDict){
-        if([str isEqualToString:@"StatusBar"]){
+        if([str isEqualToString:kStatusBarKey]){
             customDict[str] = profileDict[str];
             continue;
         }
@@ -121,7 +121,7 @@
         }
     } else {
         for (NSString * str in self.plist){
-            if([str isEqualToString:@"StatusBar"]){
+            if([str isEqualToString: kStatusBarKey]){
                 self.colorSet[str] = self.plist[str];
                 continue;
             }
@@ -134,7 +134,7 @@
 - (void) unarchiveColor: (NSMutableDictionary *) dict{
     NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kCustomThemeName];
     for(NSString * str in temp){
-        if([str isEqualToString:@"StatusBar"]){
+        if([str isEqualToString: kStatusBarKey]){
             dict[str] = temp[str];
         } else {
             dict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
@@ -147,7 +147,7 @@
     if(dict){
         NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
         for(NSString * str in dict){
-            if([str isEqualToString:@"StatusBar"]){
+            if([str isEqualToString: kStatusBarKey]){
                 customDict[str] = dict[str];
             } else {
                 customDict[str] = [NSKeyedArchiver archivedDataWithRootObject:dict[str] requiringSecureCoding:NO error:nil];
@@ -180,30 +180,30 @@
     return nil;
 }
 - (UIColor *) getBackgroundColor {
-    return self.colorSet[@"Background"];
+    return self.colorSet[kBackgroundKey];
 }
 - (UIColor *) getSecondaryColor {
-    return self.colorSet[@"Secondary"];
+    return self.colorSet[kSecondaryKey];
 
 }
 - (UIColor *) getAccentColor {
-    return self.colorSet[@"Accent"];
+    return self.colorSet[kAccentKey];
 
 }
 - (UIColor *) getLabelColor {
-    return self.colorSet[@"Label"];
+    return self.colorSet[kLabelKey];
 
 }
 - (UIColor *) getStarColor {
-    return self.colorSet[@"Star"];
+    return self.colorSet[kStarKey];
 
 }
 - (UIColor *) getLikeColor {
-    return self.colorSet[@"Like"];
+    return self.colorSet[kLikeKey];
 
 }
 - (NSString *) getStatusBarColor {
-    return self.colorSet[@"StatusBar"];
+    return self.colorSet[kStatusBarKey];
 }
 
 @end

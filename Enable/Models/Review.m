@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Review.h"
+#import "Constants.h"
 @implementation Review
     @dynamic userProfileID;
     @dynamic rating;
@@ -17,7 +18,7 @@
     @dynamic images;
     @dynamic userLikes;
 + (nonnull NSString *)parseClassName {
-    return @"Review";
+    return kReviewModelClassName;
 }
 
 @end

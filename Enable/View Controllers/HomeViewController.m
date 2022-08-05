@@ -38,7 +38,7 @@ GMSMarker *infoMarker;
         [self.searchController dismissViewControllerAnimated:YES completion:^{
         }];
     }
-    if([segue.identifier isEqualToString:@"review"]){
+    if([segue.identifier isEqualToString:kHomeToReviewSegueName]){
         ReviewByLocationViewController* vc = [segue destinationViewController];
         vc.delegate = self;
         vc.POI_idStr = self.POI_idStr;
@@ -147,10 +147,10 @@ didFailAutocompleteWithError:(NSError *)error {
 }
 - (IBAction)didTapProfile:(id)sender {
     if([PFUser currentUser]){
-        [self performSegueWithIdentifier:@"signedIn" sender:nil];
+        [self performSegueWithIdentifier:kHomeToProfileSignedInSegueName sender:nil];
     }
     else {
-        [self performSegueWithIdentifier:@"signedOut" sender:nil];
+        [self performSegueWithIdentifier:kHomeToProfileSignedOutSegueName sender:nil];
     }
 }
 
@@ -158,7 +158,7 @@ didFailAutocompleteWithError:(NSError *)error {
     if(marker.userData){
         self.POI_idStr = marker.userData;
     }
-    [self performSegueWithIdentifier:@"review" sender:nil];
+    [self performSegueWithIdentifier:kHomeToReviewSegueName sender:nil];
 }
 
 #pragma mark - ViewErrorHandle

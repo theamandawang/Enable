@@ -6,6 +6,7 @@
 //
 #import "InfoWindowView.h"
 #import "ThemeTracker.h"
+#import "Constants.h"
 @interface InfoWindowView ()
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @end
@@ -25,7 +26,7 @@
     return self;
 }
 - (instancetype) customInit{
-    [[NSBundle mainBundle] loadNibNamed: @"InfoWindowView" owner: self options:nil];
+    [[NSBundle mainBundle] loadNibNamed: kInfoWindowViewNibName owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupPlaceNameLabel];

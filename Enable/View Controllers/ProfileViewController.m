@@ -26,22 +26,20 @@ bool userUpdated = false;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    UINib *nib = [UINib nibWithNibName:kReviewTableViewCellNibName bundle:nil];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kReviewTableViewCellReuseID];
+    UINib *nib2 = [UINib nibWithNibName:kProfileTableViewCellNibName bundle:nil];
+    [self.tableView registerNib:nib2 forCellReuseIdentifier:kProfileTableViewCellReuseID];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self setupShimmerView];
+    [self setupTheme];
     if(self.userProfileID){
         [self.logOutButton setHidden:YES];
     }
     [self getCurrentProfile:^{
         [self getUserProfile];
     }];
-    UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
-    UINib *nib2 = [UINib nibWithNibName:@"ProfileTableViewCell" bundle:nil];
-    [self.tableView registerNib:nib2 forCellReuseIdentifier:@"ProfileCell"];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    [self setupShimmerView];
-    [self setupTheme];
-
 }
 
 #pragma mark - Override
@@ -57,7 +55,6 @@ bool userUpdated = false;
 
 #pragma mark - Queries
 - (void) getUserProfile {
-    [self startLoading];
     if(self.userProfileID){
         [Utilities getUserProfileFromID:self.userProfileID withCompletion:^(UserProfile * _Nullable userProfile, NSError * _Nullable error) {
             if(error){
@@ -81,8 +78,8 @@ bool userUpdated = false;
             [self showAlert:@"Failed to get current user" message:error.localizedDescription completion:nil];
         } else {
             self.currentProfile = profile;
+            completion();
         }
-        completion();
     }];
 }
 
@@ -100,7 +97,7 @@ bool userUpdated = false;
 
 #pragma mark - Navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"profileToReviews"]){
+    if([segue.identifier isEqualToString: kProfileToReviewSegueName]){
         ReviewByLocationViewController * vc = [segue destinationViewController];
         vc.locationID = sender;
         vc.delegate =  [self.navigationController.viewControllers objectAtIndex: 0];
@@ -127,7 +124,7 @@ bool userUpdated = false;
     }];
 }
 - (void) toLogin{
-    [self performSegueWithIdentifier:@"profileToLogin" sender:nil];
+    [self performSegueWithIdentifier:kProfileToLoginSegueName sender:nil];
 }
 
 # pragma mark - Table View
@@ -138,9 +135,9 @@ bool userUpdated = false;
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if(indexPath.section == kProfileSection) {
-        ProfileTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ProfileCell"];
+        ProfileTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileTableViewCellReuseID];
         if(!self.userProfile.image) {
-            cell.userProfileImageView.image = [UIImage systemImageNamed:@"person.fill"];
+            cell.userProfileImageView.image = [UIImage systemImageNamed: kPlaceholderProfileImageName];
         } else {
             cell.userProfileImageView.file = self.userProfile.image;
             [cell.userProfileImageView loadInBackground];
@@ -158,7 +155,7 @@ bool userUpdated = false;
         [self setupProfileCellTheme:cell];
         return cell;
     } else {
-        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier: kReviewTableViewCellReuseID];
         cell.resultsView.delegate = self;
         cell.resultsView.userProfile = self.userProfile;
         [self setupResultsViewTheme: cell.resultsView];
@@ -188,7 +185,7 @@ bool userUpdated = false;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section != kProfileSection){
-        [self performSegueWithIdentifier:@"profileToReviews" sender:self.reviews[indexPath.row].locationID.objectId];
+        [self performSegueWithIdentifier:kProfileToReviewSegueName sender:self.reviews[indexPath.row].locationID.objectId];
     }
 }
 

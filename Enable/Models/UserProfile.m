@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "UserProfile.h"
+#import "Constants.h"
 @implementation UserProfile
     
     @dynamic userID;
@@ -17,7 +18,7 @@
     @dynamic customTheme;
     
 + (nonnull NSString *)parseClassName {
-    return @"UserProfile";
+    return kUserProfileModelClassName;
 }
 
 @end

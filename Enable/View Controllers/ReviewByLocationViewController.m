@@ -33,9 +33,9 @@
     self.tableView.delegate = self;
     self.refreshControl = [[UIRefreshControl alloc] init];
     self.reviews = [[NSMutableArray alloc] init];
-    UINib *nib = [UINib nibWithNibName:@"ReviewTableViewCell" bundle:nil];
+    UINib *nib = [UINib nibWithNibName:kReviewTableViewCellNibName bundle:nil];
     [self setupShimmerView];
-    [self.tableView registerNib:nib forCellReuseIdentifier:@"ReviewCell"];
+    [self.tableView registerNib:nib forCellReuseIdentifier:kReviewTableViewCellReuseID];
     [self getCurrentUserProfile];
     [self.tableView insertSubview:self.refreshControl atIndex:0];
     [self.refreshControl addTarget:self action:@selector(queryForLocationData) forControlEvents:UIControlEventValueChanged];
@@ -87,11 +87,11 @@
     }];
 }
 - (void) toLogin{
-    [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
+    [self performSegueWithIdentifier: kReviewToLoginSegueName sender:nil];
 }
 - (void) toProfile: (id) userProfileID {
     self.userProfileID = userProfileID;
-    [self performSegueWithIdentifier:@"reviewToProfile" sender:nil];
+    [self performSegueWithIdentifier: kReviewToProfileSegueName sender:nil];
 }
 
 
@@ -133,7 +133,7 @@
                         if(error){
                             [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
                         } else {
-                            self.location = [[Location alloc] initWithClassName:@"Location"];
+                            self.location = [[Location alloc] initWithClassName: kLocationModelClassName];
                             self.location.POI_idStr = self.POI_idStr;
                             self.location.address = [place formattedAddress];
                             self.location.name = [place name];
@@ -161,12 +161,12 @@
 #pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([segue.identifier isEqualToString:@"compose"]){
+    if([segue.identifier isEqualToString: kReviewToComposeSegueName]){
         ComposeViewController * vc = [segue destinationViewController];
         vc.POI_idStr = self.POI_idStr;
         vc.location = self.location;
     }
-    if([segue.identifier isEqualToString:@"reviewToProfile"]){
+    if([segue.identifier isEqualToString: kReviewToProfileSegueName]){
         ProfileViewController * vc = [segue destinationViewController];
         vc.userProfileID = self.userProfileID;
     }
@@ -180,7 +180,7 @@
 
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     if(indexPath.section == kSummarySection){
-        SummaryReviewTableViewCell *summaryCell = [self.tableView dequeueReusableCellWithIdentifier:@"SummaryCell"];
+        SummaryReviewTableViewCell *summaryCell = [self.tableView dequeueReusableCellWithIdentifier: kSummaryTableViewCellReuseID];
         summaryCell.locationNameLabel.text = self.location.name;
         if(self.reviews && self.reviews.count > 0){
             summaryCell.locationRatingLabel.text = [NSString stringWithFormat: @"%0.2f/5 stars!", self.location.rating];
@@ -190,12 +190,12 @@
         [self setupSummaryCellTheme:summaryCell];
         return summaryCell;
     } else if (indexPath.section == kComposeSection) {
-        ComposeTableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier:@"ComposeCell"];
+        ComposeTableViewCell *composeCell = [self.tableView dequeueReusableCellWithIdentifier: kComposeTableViewCellReuseID];
         [self setupComposeCellTheme : composeCell];
         return composeCell;
     }
     else {
-        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReviewCell"];
+        ReviewTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kReviewTableViewCellReuseID];
         cell.resultsView.delegate = self;
         [self setupResultsViewTheme:cell.resultsView];
         [Utilities getUserProfileFromID:self.reviews[indexPath.row].userProfileID.objectId withCompletion:^(UserProfile * _Nullable profile, NSError * _Nullable error) {
@@ -233,9 +233,9 @@
     }
     else if(indexPath.section == kComposeSection){
         if([PFUser currentUser]){
-            [self performSegueWithIdentifier:@"compose" sender:nil];
+            [self performSegueWithIdentifier:kReviewToComposeSegueName sender:nil];
         } else {
-            [self performSegueWithIdentifier:@"reviewToLogin" sender:nil];
+            [self performSegueWithIdentifier:kReviewToLoginSegueName sender:nil];
         }
     }
 }

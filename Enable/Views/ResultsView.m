@@ -8,6 +8,7 @@
 #import "ResultsView.h"
 #import "UserProfile.h"
 #import <AFNetworking/UIImageView+AFNetworking.h>
+#import "Constants.h"
 @interface ResultsView ()
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
@@ -31,7 +32,7 @@
     return self;
 }
 - (instancetype) customInit{
-    [[NSBundle mainBundle] loadNibNamed: @"ResultsView" owner: self options:nil];
+    [[NSBundle mainBundle] loadNibNamed: kResultsViewNibName owner: self options:nil];
     [self addSubview: self.contentView];
     self.contentView.frame = self.bounds;
     [self setupStarRatingView];
@@ -59,15 +60,15 @@
     self.userProfile = profile;
     self.likeCountLabel.text = [NSString stringWithFormat: @"%d", review.likes];
     if(self.liked){
-        self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
+        self.likeImageView.image = [UIImage systemImageNamed:kLikedImageName];
     } else {
-        self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
+        self.likeImageView.image = [UIImage systemImageNamed:kUnlikedImageName];
     }
     if(profile.image){
         self.profileImageView.file = profile.image;
         [self.profileImageView loadInBackground];
     } else {
-        self.profileImageView.image = [UIImage systemImageNamed:@"person.fill"];
+        self.profileImageView.image = [UIImage systemImageNamed: kPlaceholderProfileImageName];
     }
     [self layoutIfNeeded];
 
@@ -75,7 +76,7 @@
 
 - (void) setCurrentImage: (int) i {
     NSURLRequest * request = [NSURLRequest requestWithURL:[NSURL URLWithString:[self.review.images[i] valueForKey:@"url"]]];
-    [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed:@"photo.on.rectangle.angled"]
+    [self.photosImageView setImageWithURLRequest:request placeholderImage:[UIImage systemImageNamed: kPlaceholderPhotoImageName]
         success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
                 if(image){
                     [UIView transitionWithView:self.photosImageView
@@ -117,12 +118,12 @@
         return;
     }
     if(self.liked){
-        self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart"];
+        self.likeImageView.image = [UIImage systemImageNamed: kUnlikedImageName];
         self.liked = false;
         self.likeCountLabel.text = [NSString stringWithFormat:@"%u", self.review.likes - 1];
         [self.delegate removeLikeFromReview:self.review currentUser: self.currentProfile];
     } else {
-        self.likeImageView.image = [UIImage systemImageNamed:@"arrow.up.heart.fill"];
+        self.likeImageView.image = [UIImage systemImageNamed: kLikedImageName];
         self.liked = true;
         self.likeCountLabel.text = [NSString stringWithFormat:@"%u", self.review.likes + 1];
         [self.delegate addLikeFromUserProfile:self.currentProfile review:self.review];

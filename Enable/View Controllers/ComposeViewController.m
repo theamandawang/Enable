@@ -67,7 +67,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
         if(error){
             [self showAlert:@"Failed to get Place data" message:error.localizedDescription completion:nil];
         } else {
-            self.location = [[Location alloc] initWithClassName:@"Location"];
+            self.location = [[Location alloc] initWithClassName: kLocationModelClassName];
             self.location.POI_idStr = self.POI_idStr;
             self.location.address = [place formattedAddress];
             self.location.name = [place name];
