@@ -48,6 +48,7 @@
 		7FA7DEDC2874AE0F0080E4A9 /* MapView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FA7DEDB2874AE0F0080E4A9 /* MapView.xib */; };
 		7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */; };
 		7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA7DEE12874AEB90080E4A9 /* MapView.m */; };
+		7FBA6F1B289D847C0046376D /* CloudThemes.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FBA6F1A289D847C0046376D /* CloudThemes.m */; };
 		7FD3FF1B288862F5005D857B /* InfoWindowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF1A288862F5005D857B /* InfoWindowView.m */; };
 		7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */; };
 		7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */; };
@@ -124,6 +125,8 @@
 		7FA7DEDE2874AE3F0080E4A9 /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		7FA7DEE02874AEB90080E4A9 /* MapView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MapView.h; sourceTree = "<group>"; };
 		7FA7DEE12874AEB90080E4A9 /* MapView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MapView.m; sourceTree = "<group>"; };
+		7FBA6F19289D847C0046376D /* CloudThemes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CloudThemes.h; sourceTree = "<group>"; };
+		7FBA6F1A289D847C0046376D /* CloudThemes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CloudThemes.m; sourceTree = "<group>"; };
 		7FD3FF19288862F5005D857B /* InfoWindowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InfoWindowView.h; sourceTree = "<group>"; };
 		7FD3FF1A288862F5005D857B /* InfoWindowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = InfoWindowView.m; sourceTree = "<group>"; };
 		7FD3FF23288A10A6005D857B /* ProfileTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProfileTableViewCell.h; sourceTree = "<group>"; };
@@ -166,6 +169,8 @@
 				7F6298BF28776BB600A550F4 /* Review.m */,
 				7F6298C128776DAF00A550F4 /* Location.h */,
 				7F6298C228776DBD00A550F4 /* Location.m */,
+				7FBA6F19289D847C0046376D /* CloudThemes.h */,
+				7FBA6F1A289D847C0046376D /* CloudThemes.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -468,6 +473,7 @@
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
 				7F6298D82877D3EB00A550F4 /* ComposeViewController.m in Sources */,
 				7F250C09289C494500DEB487 /* Constants.m in Sources */,
+				7FBA6F1B289D847C0046376D /* CloudThemes.m in Sources */,
 				7F67386C2894542B00EEAC26 /* ComposeTableViewCell.m in Sources */,
 				7FA7DEE22874AEB90080E4A9 /* MapView.m in Sources */,
 				7F6298DF287C99CB00A550F4 /* ReviewTableViewCell.m in Sources */,

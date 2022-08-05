@@ -24,6 +24,7 @@ const int kMaxNumberOfImages = 3;
 NSString *const kLocationModelClassName = @"Location";
 NSString *const kReviewModelClassName = @"Review";
 NSString *const kUserProfileModelClassName = @"UserProfile";
+NSString *const kCloudThemesModelClassName = @"CloudThemes";
 
 #pragma mark - NibNames + ReuseIDs
 
@@ -67,6 +68,8 @@ NSString *const kStarKey = @"Star";
 
 NSString *const kCustomThemeName = @"Custom";
 NSString *const kDefaultThemeName = @"Default";
+NSString *const kNSUserDefaultCloudThemesKey = @"CloudThemes";
+
 
 const int kMinBrightness = 125;
 const int kMinContrast = 200;
