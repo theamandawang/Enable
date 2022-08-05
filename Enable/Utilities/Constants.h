@@ -10,15 +10,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Constants : NSObject
-FOUNDATION_EXPORT NSString *const kCustomThemeName;
-FOUNDATION_EXPORT NSString *const kDefaultThemeName;
 
+#pragma mark - Utilities constants
 FOUNDATION_EXPORT NSString *const kCustomizedErrorDomain;
 FOUNDATION_EXPORT const int kCustomizedErrorCode;
 FOUNDATION_EXPORT const int kQueryLimit;
 FOUNDATION_EXPORT const int kMaxRadius;
 FOUNDATION_EXPORT const int kMinRadius;
 FOUNDATION_EXPORT const int kNoMatchErrorCode;
+
+#pragma mark - TableViewSections
 typedef enum
 {
     kNumberProfileSections = 2,
@@ -30,12 +31,15 @@ typedef enum
     kNumberReviewSections = 3
 } TableViewSections;
 
+#pragma mark - ComposeVC constants
 FOUNDATION_EXPORT const int kMaxNumberOfImages;
 
+#pragma mark - Parse Class Names
 FOUNDATION_EXPORT NSString *const kLocationModelClassName;
 FOUNDATION_EXPORT NSString *const kReviewModelClassName;
 FOUNDATION_EXPORT NSString *const kUserProfileModelClassName;
 
+#pragma mark - NibNames + ReuseIDs
 FOUNDATION_EXPORT NSString *const kReviewShimmerViewNibName;
 FOUNDATION_EXPORT NSString *const kProfileShimmerViewNibName;
 FOUNDATION_EXPORT NSString *const kInfoWindowViewNibName;
@@ -48,6 +52,8 @@ FOUNDATION_EXPORT NSString *const kProfileTableViewCellReuseID;
 FOUNDATION_EXPORT NSString *const kSummaryTableViewCellReuseID;
 FOUNDATION_EXPORT NSString *const kComposeTableViewCellReuseID;
 
+
+#pragma mark - Segue names
 FOUNDATION_EXPORT NSString *const kProfileToReviewSegueName;
 FOUNDATION_EXPORT NSString *const kProfileToLoginSegueName;
 FOUNDATION_EXPORT NSString *const kHomeToReviewSegueName;
@@ -57,7 +63,7 @@ FOUNDATION_EXPORT NSString *const kReviewToComposeSegueName;
 FOUNDATION_EXPORT NSString *const kReviewToLoginSegueName;
 FOUNDATION_EXPORT NSString *const kReviewToProfileSegueName;
 
-
+#pragma mark - Themes
 FOUNDATION_EXPORT NSString *const kDarkStatusBar;
 FOUNDATION_EXPORT NSString *const kLightStatusBar;
 FOUNDATION_EXPORT NSString *const kThemePlistName;
@@ -71,11 +77,13 @@ FOUNDATION_EXPORT NSString *const kLabelKey;
 FOUNDATION_EXPORT NSString *const kLikeKey;
 FOUNDATION_EXPORT NSString *const kStarKey;
 
-
+FOUNDATION_EXPORT NSString *const kCustomThemeName;
+FOUNDATION_EXPORT NSString *const kDefaultThemeName;
 
 FOUNDATION_EXPORT const int kMinBrightness;
 FOUNDATION_EXPORT const int kMinContrast;
 
+#pragma mark - Image names
 FOUNDATION_EXPORT NSString *const kLikedImageName;
 FOUNDATION_EXPORT NSString *const kUnlikedImageName;
 FOUNDATION_EXPORT NSString *const kPlaceholderProfileImageName;

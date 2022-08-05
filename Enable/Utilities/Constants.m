@@ -9,11 +9,9 @@
 
 @implementation Constants
 
-#pragma mark - Error
+#pragma mark - Utilities constants
 const int kCustomizedErrorCode = 0;
 NSString *const kCustomizedErrorDomain = @"CustomError";
-
-#pragma mark - Utilities constants
 const int kQueryLimit = 3;
 const int kMaxRadius = 50;
 const int kMinRadius = 1;
@@ -41,7 +39,7 @@ NSString *const kProfileTableViewCellReuseID = @"ProfileCell";
 NSString *const kSummaryTableViewCellReuseID = @"SummaryCell";
 NSString *const kComposeTableViewCellReuseID = @"ComposeCell";
 
-#pragma mark - Segues
+#pragma mark - Segue names
 
 NSString *const kProfileToReviewSegueName = @"profileToReviews";
 NSString *const kProfileToLoginSegueName = @"profileToLogin";
