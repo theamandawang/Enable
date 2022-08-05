@@ -29,8 +29,6 @@
 
 @implementation ComposeViewController
 //TODO: add tableview for dropdown.
-//TODO: automatically scroll up when keyboard opens
-//https://stackoverflow.com/questions/13161666/how-do-i-scroll-the-uiscrollview-when-the-keyboard-appears
 int imageIndex = 0;
 UITapGestureRecognizer *scrollViewTapGesture;
 
@@ -41,7 +39,6 @@ UITapGestureRecognizer *scrollViewTapGesture;
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
-//    [self registerForKeyboardNotifications];
     [self setupTextView];
     [self setupStarRatingView];
     [self setupShimmerView];
@@ -209,52 +206,10 @@ UITapGestureRecognizer *scrollViewTapGesture;
 }
 
 #pragma mark - Keyboard
-- (void)registerForKeyboardNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self
-            selector:@selector(keyboardWasShown:)
-            name:UIKeyboardDidShowNotification object:nil];
-   [[NSNotificationCenter defaultCenter] addObserver:self
-             selector:@selector(keyboardWillBeHidden:)
-             name:UIKeyboardWillHideNotification object:nil];
-}
-
-// Called when the UIKeyboardDidShowNotification is sent.
-- (void)keyboardWasShown:(NSNotification*)aNotification
-{
-    NSDictionary* info = [aNotification userInfo];
-    CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
-//    CGFloat kbHeight = 216;
-    [self moveScrollView:kbHeight + 20];
-
-}
-
-// Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
-    NSDictionary* info = [aNotification userInfo];
-    CGFloat kbHeight = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size.height;
-//    CGFloat kbHeight = 216;
-    [self moveScrollView: (-kbHeight - 20)];
-
-}
 
 - (void) hideKeyboard
 {
     [self.scrollView endEditing:YES];
-}
-
-// push scroll view up so that keyboard doesn't block anything
-- (void)moveScrollView: (CGFloat)constant {
-    self.ScrollViewBottomConstraint.constant = -constant;
-    [UIView animateWithDuration:0.1 animations:^{
-        [self.view layoutIfNeeded];
-        CGFloat scrollViewYOffset = 0;
-        if (constant != 0) {
-            scrollViewYOffset = 20;
-        }
-        [self.scrollView setContentOffset:CGPointMake(0, scrollViewYOffset)];
-    }];
 }
 #pragma mark - Star Review
 

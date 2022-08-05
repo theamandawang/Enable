@@ -90,9 +90,7 @@
 - (void) selectCustom {
     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
     [self unarchiveColor:customDict];
-    if(!customDict || !customDict.count){
-        //if there is no custom theme, do nothing
-    } else {
+    if(customDict && customDict.count){
         [self updateTheme:kCustomThemeName withColorDict:customDict];
     }
 }
