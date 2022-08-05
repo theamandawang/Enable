@@ -11,6 +11,7 @@
 @interface ThemeTracker ()
 @property (strong, nonatomic) NSMutableDictionary * colorSet;
 @property (strong, nonatomic) NSDictionary * customTheme;
+@property (strong, nonatomic) NSDictionary * cloudThemes;
 @property (strong, nonatomic) NSDictionary * plist;
 @end
 @implementation ThemeTracker
@@ -49,18 +50,29 @@
 
 - (void) getTheme {
     self.theme = [[NSUserDefaults standardUserDefaults] stringForKey: kNSUserDefaultThemeKey];
+    NSDictionary * plist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: kThemePlistName ofType: @"plist"]];
     if(!self.theme) self.theme = kDefaultThemeName;
     if([self.theme isEqualToString:kCustomThemeName]){
         NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
-        [self unarchiveColor: customDict];
+        [self unarchiveColor:customDict custom:true];
         if(customDict.count > 0){
             [self setupColorSetWithColorDict:customDict];
         } else {
             //custom theme doesn't exist anymore; reset to default!
             [self updateTheme:kDefaultThemeName withColorDict:nil];
         }
-    } else {
+    } else if(plist[self.theme]){
         [self setupColorSetWithColorDict:nil];
+    } else {
+        //handle cloud theme
+        NSMutableDictionary * cloudDict = [[NSMutableDictionary alloc] init];
+        [self unarchiveColor:cloudDict custom:false];
+        if(cloudDict.count > 0){
+            [self setupColorSetWithColorDict:cloudDict];
+        } else {
+            //cloud theme doesn't exist anymore; reset to default!
+            [self updateTheme:kDefaultThemeName withColorDict:nil];
+        }
     }
     [self sendNotification];
     if([PFUser currentUser]){
@@ -85,11 +97,29 @@
         }];
     }
 }
+- (void) checkCloudThemes {
+    [Utilities getCloudThemesWithCompletion:^(NSDictionary<NSString *,NSDictionary<NSString *,NSString *> *> * _Nullable cloudThemes, NSError * _Nullable error) {
+        if(cloudThemes){
+            NSMutableDictionary * cloudDict = [[NSMutableDictionary alloc] init];
+            for (NSString * theme in cloudThemes) {
+                NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
+                [self loadColorDictFromParse:cloudThemes[theme] to:customDict];
+                cloudDict[theme] = [[NSMutableDictionary alloc] init];
+                [self archiveFrom:customDict to:cloudDict[theme]];
+            }
+            [self saveCloudThemesToDefaults:cloudDict];
+            self.cloudThemes = cloudDict;
+        } else {
+            //error!
+        }
+    }];
+}
+
 #pragma mark - Helper functions
 
 - (void) selectCustom {
     NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
-    [self unarchiveColor:customDict];
+    [self unarchiveColor:customDict custom:true];
     if(customDict && customDict.count){
         [self updateTheme:kCustomThemeName withColorDict:customDict];
     }
@@ -113,7 +143,7 @@
 - (void) setupColorSetWithColorDict: (NSDictionary * _Nullable) dict {
     self.plist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: kThemePlistName ofType: @"plist"]][self.theme];
     self.colorSet = [[NSMutableDictionary alloc] init];
-    if([self.theme isEqualToString:kCustomThemeName]){
+    if(dict){
         for (NSString * str in dict){
             self.colorSet[str] = dict[str];
         }
@@ -124,18 +154,27 @@
                 continue;
             }
             self.colorSet[str] = [UIColor colorNamed:self.plist[str]];
+
         }
     }
 }
 
 #pragma mark - Get Data From NSUserDefaults
-- (void) unarchiveColor: (NSMutableDictionary *) dict{
-    NSDictionary * temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kCustomThemeName];
-    for(NSString * str in temp){
+- (void) unarchiveColor: (NSMutableDictionary *) dict custom: (bool) custom{
+    NSDictionary * temp;
+    if(custom){
+        temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kCustomThemeName];
+    } else {
+        temp = [[NSUserDefaults standardUserDefaults] dictionaryForKey:kNSUserDefaultCloudThemesKey];
+    }
+    [self unarchiveFrom:temp to:dict];
+}
+- (void) unarchiveFrom: (NSDictionary *) dict to: (NSMutableDictionary *) customDict {
+    for(NSString * str in dict){
         if([str isEqualToString: kStatusBarKey]){
-            dict[str] = temp[str];
+            customDict[str] = dict[str];
         } else {
-            dict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:temp[str] error:nil];
+            customDict[str] = [NSKeyedUnarchiver unarchivedObjectOfClass:[UIColor class] fromData:dict[str] error:nil];
         }
     }
 }
@@ -144,16 +183,24 @@
     [[NSUserDefaults standardUserDefaults] setObject:theme forKey:kNSUserDefaultThemeKey];
     if(dict){
         NSMutableDictionary * customDict = [[NSMutableDictionary alloc] init];
-        for(NSString * str in dict){
-            if([str isEqualToString: kStatusBarKey]){
-                customDict[str] = dict[str];
-            } else {
-                customDict[str] = [NSKeyedArchiver archivedDataWithRootObject:dict[str] requiringSecureCoding:NO error:nil];
-            }
-        }
+        [self archiveFrom:dict to:customDict];
         [[NSUserDefaults standardUserDefaults] setObject: customDict forKey:kCustomThemeName];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+- (void) saveCloudThemesToDefaults: (NSDictionary * _Nullable) dict {
+    [[NSUserDefaults standardUserDefaults] setObject: dict forKey:kNSUserDefaultCloudThemesKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void) archiveFrom: (NSDictionary *) dict to: (NSMutableDictionary *) customDict {
+    for(NSString * str in dict){
+        if([str isEqualToString: kStatusBarKey]){
+            customDict[str] = dict[str];
+        } else {
+            customDict[str] = [NSKeyedArchiver archivedDataWithRootObject:dict[str] requiringSecureCoding:NO error:nil];
+        }
+    }
 }
 
 - (void) removeCustomTheme {
@@ -202,6 +249,10 @@
 }
 - (NSString *) getStatusBarColor {
     return self.colorSet[kStatusBarKey];
+}
+
+- (NSArray *) getCloudThemeNames {
+   return self.cloudThemes.allKeys;
 }
 
 @end

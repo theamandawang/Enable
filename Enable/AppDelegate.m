@@ -23,6 +23,7 @@ NSDictionary *dict;
     // Override point for customization after application launch.
     path = [[NSBundle mainBundle] pathForResource: @"Keys" ofType: @"plist"];
     dict = [NSDictionary dictionaryWithContentsOfFile: path];
+    [[ThemeTracker sharedTheme] checkCloudThemes];
     [[ThemeTracker sharedTheme] getTheme];
     [self setUpParse];
     [self setUpGoogleMaps];

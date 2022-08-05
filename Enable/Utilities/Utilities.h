@@ -9,6 +9,7 @@
 #import "UserProfile.h"
 #import "Review.h"
 #import "Location.h"
+#import "CloudThemes.h"
 #import <GooglePlaces/GooglePlaces.h>
 #import <GoogleMaps/GoogleMaps.h>
 @interface Utilities : NSObject
@@ -49,5 +50,8 @@
 
 #pragma mark Google
 + (void) getPlaceDataFromPOI_idStr:(NSString * _Nonnull)POI_idStr withFields: (GMSPlaceField) fields withCompletion: (void (^_Nonnull)(GMSPlace * _Nullable place, NSError * _Nullable error)) completion;
+
+#pragma mark - Cloud themes
++ (void) getCloudThemesWithCompletion: (void (^_Nonnull)(NSDictionary <NSString *, NSDictionary<NSString *, NSString *> *> * _Nullable cloudThemes, NSError * _Nullable error)) completion;
 
 @end

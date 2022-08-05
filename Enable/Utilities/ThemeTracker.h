@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) getTheme;
 - (void) removeCustomTheme;
 - (void) selectCustom;
+- (void) checkCloudThemes;
 - (NSDictionary * _Nullable) getCustomTheme;
 - (UIColor *) getBackgroundColor;
 - (UIColor *) getSecondaryColor;
@@ -23,6 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIColor *) getStarColor;
 - (UIColor *) getLikeColor;
 - (NSString *) getStatusBarColor;
+- (NSArray *) getCloudThemeNames;
 
 
 

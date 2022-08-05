@@ -38,6 +38,7 @@ FOUNDATION_EXPORT const int kMaxNumberOfImages;
 FOUNDATION_EXPORT NSString *const kLocationModelClassName;
 FOUNDATION_EXPORT NSString *const kReviewModelClassName;
 FOUNDATION_EXPORT NSString *const kUserProfileModelClassName;
+FOUNDATION_EXPORT NSString *const kCloudThemesModelClassName;
 
 #pragma mark - NibNames + ReuseIDs
 FOUNDATION_EXPORT NSString *const kReviewShimmerViewNibName;
@@ -69,6 +70,7 @@ FOUNDATION_EXPORT NSString *const kLightStatusBar;
 FOUNDATION_EXPORT NSString *const kThemePlistName;
 FOUNDATION_EXPORT NSString *const kNSUserDefaultThemeKey;
 FOUNDATION_EXPORT NSString *const kThemeNotificationName;
+FOUNDATION_EXPORT NSString *const kNSUserDefaultCloudThemesKey;
 FOUNDATION_EXPORT NSString *const kStatusBarKey;
 FOUNDATION_EXPORT NSString *const kBackgroundKey;
 FOUNDATION_EXPORT NSString *const kSecondaryKey;

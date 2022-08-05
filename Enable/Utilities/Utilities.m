@@ -135,7 +135,6 @@ bool allResultsFound = false;
             completion(customError);
         }
         else if (succeeded){
-            NSLog(@"success saving");
             completion(nil);
         }
     }];
@@ -156,7 +155,6 @@ bool allResultsFound = false;
                 NSError * customError = [[NSError alloc] initWithDomain: kCustomizedErrorDomain code:kCustomizedErrorCode userInfo:@{NSLocalizedDescriptionKey : @"Unable to update cloud with theme"}];
                 completion(customError);
             } else {
-                NSLog(@"Success");
                 completion(nil);
             }
     }];
@@ -447,6 +445,30 @@ static GMSPlacesClient * placesClient = nil;
         NSString *hexString=[NSString stringWithFormat:@"%02X%02X%02X", (int)(r * 255), (int)(g * 255), (int)(b * 255)];
         hexCustomDict[str] = hexString;
     }
+}
+
+#pragma mark - Cloud Themes
+
++ (void) getCloudThemesWithCompletion: (void (^_Nonnull)(NSDictionary <NSString *, NSDictionary<NSString *, NSString *> *> * _Nullable cloudThemes, NSError * _Nullable error)) completion{
+    PFQuery * query = [PFQuery queryWithClassName: kCloudThemesModelClassName];
+    [query whereKeyExists:@"themes"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+        if(error) {
+            completion(nil, error);
+            return;
+        }
+        if(objects){
+            NSLog(@"found");
+            if(objects.count > 0) {
+                completion(((CloudThemes *)objects[0]).themes, nil);
+            } else {
+                completion(nil, nil);
+            }
+        } else {
+            NSLog(@"No objects found");
+            completion(nil, nil);
+        }
+    }];
 }
 
 @end
