@@ -211,6 +211,7 @@ didFailAutocompleteWithError:(NSError *)error {
     [self.searchController.searchBar setBarTintColor: [singleton getBackgroundColor]];
     [self.searchController.searchBar setTintColor: [singleton getAccentColor]];
     self.searchController.searchBar.searchTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Search location..." attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}];
+    [self.searchController.searchBar.searchTextField setTextColor:[singleton getLabelColor]];
     [self.searchController.searchBar.searchTextField.leftView setTintColor: [singleton getAccentColor]];
     [self.searchController.searchBar.searchTextField.rightView setTintColor: [singleton getAccentColor]];
 }
