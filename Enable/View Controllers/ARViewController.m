@@ -33,17 +33,7 @@
     switch(sender.state){
         case UIGestureRecognizerStateBegan:
         {
-            ARRaycastQuery *query = [self.arView raycastQueryFromPoint:location allowingTarget:ARRaycastTargetEstimatedPlane alignment:ARRaycastTargetAlignmentAny];
-            NSArray<ARRaycastResult *> *result = [self.arView.session raycast:query];
-            if (![result firstObject]) {
-                return;
-            }
-            ARRaycastResult * point = result[0];
-            SCNVector3 pos = SCNVector3Make(point.worldTransform.columns[3].x, point.worldTransform.columns[3].y, point.worldTransform.columns[3].z);
-            SCNNode * node = [[SCNNode alloc] init];
-            node.position = pos;
-            [self.arView.scene.rootNode addChildNode:node];
-
+            [self addNodeAt:location];
             break;
         }
         case UIGestureRecognizerStateChanged:
@@ -51,8 +41,11 @@
             break;
         }
         case UIGestureRecognizerStateEnded:
-            NSLog(@"ended");
+        {
+            [self addNodeAt:location];
+
             break;
+        }
         case UIGestureRecognizerStateCancelled:
             break;
         case UIGestureRecognizerStateFailed:
@@ -60,6 +53,20 @@
     }
 }
 
+
+- (void) addNodeAt: (CGPoint) location {
+    ARRaycastQuery *query = [self.arView raycastQueryFromPoint:location allowingTarget:ARRaycastTargetEstimatedPlane alignment:ARRaycastTargetAlignmentAny];
+    NSArray<ARRaycastResult *> *result = [self.arView.session raycast:query];
+    if (![result firstObject]) {
+        return;
+    }
+    ARRaycastResult * point = result[0];
+    SCNVector3 pos = SCNVector3Make(point.worldTransform.columns[3].x, point.worldTransform.columns[3].y, point.worldTransform.columns[3].z);
+    SCNNode * node = [[SCNNode alloc] init];
+    node.geometry = [SCNSphere sphereWithRadius:0.01];
+    node.position = pos;
+    [self.arView.scene.rootNode addChildNode:node];
+}
 - (void) setupTheme {
     [self setupMainTheme];
 }
