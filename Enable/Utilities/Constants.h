@@ -63,6 +63,7 @@ FOUNDATION_EXPORT NSString *const kHomeToProfileSignedOutSegueName;
 FOUNDATION_EXPORT NSString *const kReviewToComposeSegueName;
 FOUNDATION_EXPORT NSString *const kReviewToLoginSegueName;
 FOUNDATION_EXPORT NSString *const kReviewToProfileSegueName;
+FOUNDATION_EXPORT NSString *const kComposeToARSegueName;
 
 #pragma mark - Themes
 FOUNDATION_EXPORT NSString *const kDarkStatusBar;

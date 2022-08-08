@@ -569,12 +569,22 @@
                                                     <action selector="didTapPhoto:" destination="FpU-Et-TaW" eventType="touchUpInside" id="JLa-PT-Vii"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mo5-Ve-dsZ">
+                                                <rect key="frame" x="348" y="280" width="60" height="31"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="ARKit"/>
+                                                <connections>
+                                                    <action selector="ditTapAR:" destination="FpU-Et-TaW" eventType="touchUpInside" id="ko8-m0-6jn"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Mo5-Ve-dsZ" secondAttribute="trailing" constant="20" id="5Gb-HC-ia1"/>
                                             <constraint firstItem="pcX-PS-yfb" firstAttribute="top" secondItem="saa-b4-r0p" secondAttribute="bottom" constant="50" id="CCh-fd-QG0"/>
                                             <constraint firstItem="Sb9-tz-kyI" firstAttribute="trailing" secondItem="pcX-PS-yfb" secondAttribute="trailing" id="CD3-yq-K4k"/>
                                             <constraint firstItem="Wg3-rP-wpJ" firstAttribute="top" secondItem="1xt-2p-uUA" secondAttribute="bottom" constant="10" id="CK5-nl-o3D"/>
+                                            <constraint firstItem="Mo5-Ve-dsZ" firstAttribute="centerY" secondItem="Wg3-rP-wpJ" secondAttribute="centerY" id="HbB-Vz-UoV"/>
                                             <constraint firstItem="Sb9-tz-kyI" firstAttribute="top" secondItem="pcX-PS-yfb" secondAttribute="bottom" constant="60" id="Hlx-6N-Hsp"/>
                                             <constraint firstItem="saa-b4-r0p" firstAttribute="leading" secondItem="6jt-Bg-pGf" secondAttribute="leading" constant="20" id="I6J-ne-2H1"/>
                                             <constraint firstItem="1xt-2p-uUA" firstAttribute="leading" secondItem="6jt-Bg-pGf" secondAttribute="leading" id="Ke1-Az-cHs"/>
@@ -615,12 +625,14 @@
                     <navigationItem key="navigationItem" id="Y83-xc-AWj"/>
                     <connections>
                         <outlet property="addImageButton" destination="Wg3-rP-wpJ" id="2Gs-WT-Jau"/>
+                        <outlet property="arButton" destination="Mo5-Ve-dsZ" id="f7e-JO-Qsj"/>
                         <outlet property="photosImageView" destination="1xt-2p-uUA" id="Ojy-TI-RV1"/>
                         <outlet property="reviewTextView" destination="pcX-PS-yfb" id="GR6-lH-qEw"/>
                         <outlet property="scrollContentView" destination="6jt-Bg-pGf" id="IU5-Up-Ukb"/>
                         <outlet property="scrollView" destination="KUv-1Z-Ass" id="5gj-4u-vBW"/>
                         <outlet property="submitButton" destination="Sb9-tz-kyI" id="59a-d5-Oby"/>
                         <outlet property="titleTextField" destination="saa-b4-r0p" id="SFA-h8-hYo"/>
+                        <segue destination="qV9-vI-znl" kind="show" identifier="composeToAR" id="R4h-Eg-HEX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bgz-aq-IoS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -640,7 +652,47 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2862.6168224299063" y="44.708423326133911"/>
+            <point key="canvasLocation" x="2917" y="45"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="EmA-0A-6g1">
+            <objects>
+                <viewController id="qV9-vI-znl" customClass="ARViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lBI-UL-OlY">
+                        <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="exY-bl-PQe">
+                                <rect key="frame" x="0.0" y="88" width="428" height="755"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="M6d-Ww-9tO" appends="YES" id="IwT-eh-qyQ"/>
+                                </connections>
+                            </arscnView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Kn9-xB-SEo"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="exY-bl-PQe" firstAttribute="top" secondItem="Kn9-xB-SEo" secondAttribute="top" id="ANB-bB-XyZ"/>
+                            <constraint firstItem="Kn9-xB-SEo" firstAttribute="trailing" secondItem="exY-bl-PQe" secondAttribute="trailing" id="FqU-uJ-JiQ"/>
+                            <constraint firstItem="Kn9-xB-SEo" firstAttribute="bottom" secondItem="exY-bl-PQe" secondAttribute="bottom" id="K0B-yB-dmL"/>
+                            <constraint firstItem="exY-bl-PQe" firstAttribute="leading" secondItem="Kn9-xB-SEo" secondAttribute="leading" id="iGg-2t-6M7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="72G-Bk-kkR"/>
+                    <connections>
+                        <outlet property="arView" destination="exY-bl-PQe" id="GgZ-Oz-gCs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eEw-gq-F86" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="M6d-Ww-9tO">
+                    <scrollTypes key="allowedScrollTypesMask" continuous="YES"/>
+                    <connections>
+                        <action selector="didTapandDragScene:" destination="qV9-vI-znl" id="RBg-rB-BQv"/>
+                    </connections>
+                </panGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="4051.4018691588781" y="53.779697624190071"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

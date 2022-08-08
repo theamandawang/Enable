@@ -14,6 +14,7 @@
 @interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+@property (weak, nonatomic) IBOutlet UIButton *arButton;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
@@ -116,6 +117,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
         [self endLoading];
         [self showAlert:@"Cannot post review" message:@"Please fill in all fields." completion:nil];
     }
+}
+- (IBAction)ditTapAR:(id)sender {
+    [self performSegueWithIdentifier:kComposeToARSegueName sender:nil];
 }
 
 #pragma mark - ImagePicker / Camera
@@ -279,6 +283,7 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.addImageButton setTintColor: [singleton getAccentColor]];
     [self.scrollContentView setBackgroundColor: [singleton getBackgroundColor]];
     [self.submitButton setTintColor: [singleton getAccentColor]];
+    [self.arButton setTintColor: [singleton getAccentColor]];
     [self.titleTextField setBackgroundColor: [singleton getSecondaryColor]];
     [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
     [self.titleTextField setTextColor:  [singleton getLabelColor]];
