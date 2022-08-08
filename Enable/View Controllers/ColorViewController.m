@@ -33,7 +33,7 @@ NSArray<NSString *> * themes;
     [super viewDidLoad];
     NSDictionary * themesDictionary = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: kThemePlistName ofType: @"plist"]];
     themes = [themesDictionary.allKeys arrayByAddingObjectsFromArray:[[ThemeTracker sharedTheme] getCloudThemeNames]];
-    [themes sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
+    themes = [themes sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
     self.themePicker.dataSource = self;
     self.themePicker.delegate = self;
     [self setupAllColorWells];
