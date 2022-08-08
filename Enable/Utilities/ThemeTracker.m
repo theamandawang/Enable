@@ -74,7 +74,7 @@
         }
     } else if(self.plist[self.theme]){
         [self setupColorSetWithColorDict:nil];
-    } else if(self.cloudThemes[self.theme]){
+    } else {
         NSMutableDictionary * cloudDict = [[NSMutableDictionary alloc] init];
         [self unarchiveColor:cloudDict custom:false];
         if(cloudDict.count > 0){
@@ -84,9 +84,6 @@
             [self updateTheme:kDefaultThemeName withColorDict:nil];
             return;
         }
-    } else {
-        [self updateTheme:kDefaultThemeName withColorDict:nil];
-        return;
     }
 }
 - (void) getTheme {
@@ -139,6 +136,7 @@
             [self saveCloudThemesToDefaults:cloudDict];
             self.cloudThemes = cloudDict;
         }
+        [self getTheme];
     }];
 }
 
