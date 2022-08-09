@@ -10,9 +10,11 @@
 #import "Location.h"
 #import "UserProfile.h"
 #import "EnableBaseViewController.h"
+#import "ARViewController.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ComposeViewController : EnableBaseViewController <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate>
+@interface ComposeViewController : EnableBaseViewController <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate, ARViewControllerDelegate>
 @property (strong, nonatomic) Location * location;
 @property (strong, nonatomic) NSString * POI_idStr;
 @end

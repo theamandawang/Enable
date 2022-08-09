@@ -17,6 +17,8 @@
     @dynamic likes;
     @dynamic images;
     @dynamic userLikes;
+    @dynamic measuredItem;
+    @dynamic measurement;
 + (nonnull NSString *)parseClassName {
     return kReviewModelClassName;
 }

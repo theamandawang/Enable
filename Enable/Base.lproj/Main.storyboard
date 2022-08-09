@@ -522,10 +522,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="843"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jt-Bg-pGf">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="766.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="760.66666666666663"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
-                                                <rect key="frame" x="0.0" y="20" width="428" height="399.33333333333331"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="428" height="399.33333333333331"/>
                                                 <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="400" id="EzU-gh-eLs"/>
@@ -538,7 +538,7 @@
                                                 </connections>
                                             </imageView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sb9-tz-kyI">
-                                                <rect key="frame" x="20" y="678" width="388" height="48.666666666666629"/>
+                                                <rect key="frame" x="20" y="672" width="388" height="48.666666666666629"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="29"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Submit"/>
@@ -550,19 +550,19 @@
                                                 </connections>
                                             </button>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title / Summary" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="saa-b4-r0p">
-                                                <rect key="frame" x="20" y="501" width="388" height="34"/>
+                                                <rect key="frame" x="20" y="481" width="388" height="34"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="onDrag" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pcX-PS-yfb">
-                                                <rect key="frame" x="20" y="585" width="388" height="33"/>
+                                                <rect key="frame" x="20" y="579" width="388" height="33"/>
                                                 <color key="backgroundColor" systemColor="secondarySystemBackgroundColor"/>
                                                 <color key="textColor" systemColor="labelColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wg3-rP-wpJ">
-                                                <rect key="frame" x="163.66666666666666" y="430" width="100.99999999999997" height="31"/>
+                                                <rect key="frame" x="163.66666666666666" y="410" width="100.99999999999997" height="31"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="tinted" title="Add Images"/>
                                                 <connections>
@@ -570,20 +570,38 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mo5-Ve-dsZ">
-                                                <rect key="frame" x="348" y="430" width="60" height="31"/>
+                                                <rect key="frame" x="324" y="410" width="84" height="31"/>
                                                 <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="ARKit"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Measure!"/>
                                                 <connections>
-                                                    <action selector="ditTapAR:" destination="FpU-Et-TaW" eventType="touchUpInside" id="ko8-m0-6jn"/>
+                                                    <action selector="didTapAR:" destination="FpU-Et-TaW" eventType="touchUpInside" id="pzq-Xo-47C"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sXN-OW-HhA">
+                                                <rect key="frame" x="200" y="530" width="208" height="34"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="clear.fill" catalog="system" imagePlacement="trailing" title=""/>
+                                                <connections>
+                                                    <action selector="didRemoveMeasure:" destination="FpU-Et-TaW" eventType="touchUpInside" id="KmZ-W8-tPL"/>
+                                                </connections>
+                                            </button>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Measured item:" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7Xg-k7-nHL">
+                                                <rect key="frame" x="20" y="530" width="170" height="34"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="170" id="bc6-5g-60w"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="Mo5-Ve-dsZ" secondAttribute="trailing" constant="20" id="5Gb-HC-ia1"/>
-                                            <constraint firstItem="pcX-PS-yfb" firstAttribute="top" secondItem="saa-b4-r0p" secondAttribute="bottom" constant="50" id="CCh-fd-QG0"/>
+                                            <constraint firstItem="7Xg-k7-nHL" firstAttribute="leading" secondItem="saa-b4-r0p" secondAttribute="leading" id="6lA-tx-n3c"/>
                                             <constraint firstItem="Sb9-tz-kyI" firstAttribute="trailing" secondItem="pcX-PS-yfb" secondAttribute="trailing" id="CD3-yq-K4k"/>
                                             <constraint firstItem="Wg3-rP-wpJ" firstAttribute="top" secondItem="1xt-2p-uUA" secondAttribute="bottom" constant="10" id="CK5-nl-o3D"/>
+                                            <constraint firstItem="7Xg-k7-nHL" firstAttribute="top" secondItem="saa-b4-r0p" secondAttribute="bottom" constant="15" id="Ccm-vz-H5Y"/>
+                                            <constraint firstItem="sXN-OW-HhA" firstAttribute="leading" secondItem="7Xg-k7-nHL" secondAttribute="trailing" constant="10" id="FVi-Zu-686"/>
                                             <constraint firstItem="Mo5-Ve-dsZ" firstAttribute="centerY" secondItem="Wg3-rP-wpJ" secondAttribute="centerY" id="HbB-Vz-UoV"/>
                                             <constraint firstItem="Sb9-tz-kyI" firstAttribute="top" secondItem="pcX-PS-yfb" secondAttribute="bottom" constant="60" id="Hlx-6N-Hsp"/>
                                             <constraint firstItem="saa-b4-r0p" firstAttribute="leading" secondItem="6jt-Bg-pGf" secondAttribute="leading" constant="20" id="I6J-ne-2H1"/>
@@ -591,10 +609,14 @@
                                             <constraint firstItem="pcX-PS-yfb" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" id="L6U-jd-Ya6"/>
                                             <constraint firstAttribute="bottom" secondItem="Sb9-tz-kyI" secondAttribute="bottom" constant="40" id="Ne8-5C-ktL"/>
                                             <constraint firstItem="Sb9-tz-kyI" firstAttribute="leading" secondItem="pcX-PS-yfb" secondAttribute="leading" id="QIP-8c-gYd"/>
+                                            <constraint firstItem="pcX-PS-yfb" firstAttribute="top" secondItem="7Xg-k7-nHL" secondAttribute="bottom" constant="15" id="Uvu-g3-lyw"/>
                                             <constraint firstAttribute="trailing" secondItem="1xt-2p-uUA" secondAttribute="trailing" id="ZuZ-cN-M8K"/>
-                                            <constraint firstItem="1xt-2p-uUA" firstAttribute="top" secondItem="6jt-Bg-pGf" secondAttribute="top" constant="20" id="edk-Yy-U74"/>
+                                            <constraint firstItem="sXN-OW-HhA" firstAttribute="top" secondItem="saa-b4-r0p" secondAttribute="bottom" constant="15" id="ceQ-Hh-Dio"/>
+                                            <constraint firstItem="1xt-2p-uUA" firstAttribute="top" secondItem="6jt-Bg-pGf" secondAttribute="top" id="edk-Yy-U74"/>
+                                            <constraint firstItem="pcX-PS-yfb" firstAttribute="top" secondItem="sXN-OW-HhA" secondAttribute="bottom" constant="15" id="eh3-2J-mar"/>
                                             <constraint firstItem="pcX-PS-yfb" firstAttribute="leading" secondItem="saa-b4-r0p" secondAttribute="leading" id="fmm-cG-zY8"/>
                                             <constraint firstAttribute="width" constant="428" id="l8J-1y-HwX"/>
+                                            <constraint firstItem="sXN-OW-HhA" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" id="oyt-gp-spK"/>
                                             <constraint firstItem="saa-b4-r0p" firstAttribute="top" secondItem="Wg3-rP-wpJ" secondAttribute="bottom" constant="40" id="q5i-Wr-vRP"/>
                                             <constraint firstItem="Wg3-rP-wpJ" firstAttribute="centerX" secondItem="1xt-2p-uUA" secondAttribute="centerX" id="qEv-MW-mHV"/>
                                             <constraint firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" constant="20" id="stg-D7-Xgv"/>
@@ -626,6 +648,8 @@
                     <connections>
                         <outlet property="addImageButton" destination="Wg3-rP-wpJ" id="2Gs-WT-Jau"/>
                         <outlet property="arButton" destination="Mo5-Ve-dsZ" id="f7e-JO-Qsj"/>
+                        <outlet property="measureTextField" destination="7Xg-k7-nHL" id="KYW-hR-Qxx"/>
+                        <outlet property="measurementButton" destination="sXN-OW-HhA" id="Zgc-Tg-VNa"/>
                         <outlet property="photosImageView" destination="1xt-2p-uUA" id="Ojy-TI-RV1"/>
                         <outlet property="reviewTextView" destination="pcX-PS-yfb" id="GR6-lH-qEw"/>
                         <outlet property="scrollContentView" destination="6jt-Bg-pGf" id="IU5-Up-Ukb"/>
@@ -652,7 +676,7 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2917" y="45"/>
+            <point key="canvasLocation" x="2915.8878504672894" y="44.708423326133911"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="EmA-0A-6g1">
@@ -716,6 +740,7 @@
         <segue reference="glC-rt-CzJ"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="clear.fill" catalog="system" width="128" height="114"/>
         <image name="paintpalette" catalog="system" width="128" height="105"/>
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="photo.on.rectangle.angled" catalog="system" width="128" height="100"/>

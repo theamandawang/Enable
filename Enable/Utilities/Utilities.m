@@ -309,7 +309,7 @@ bool allResultsFound = false;
     return (currAvg * numReviews + rating) / (numReviews + 1);
 }
 
-+ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSError * _Nullable error))completion{
++ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images measurement: (float) measurement measuredItem: (NSString * _Nullable) measuredItem completion: (void (^_Nonnull)(NSError * _Nullable error))completion{
     NSMutableArray<PFFileObject *> * parseFiles = [[NSMutableArray alloc] init];
     for(UIImage * img in images){
         [parseFiles addObject: [Utilities getPFFileFromImage:img]];
@@ -335,6 +335,8 @@ bool allResultsFound = false;
                     review.title = title;
                     review.reviewText = description;
                     review.rating = rating;
+                    review.measurement = measurement;
+                    review.measuredItem = measuredItem;
                     review.locationID = location;
                     review.images = (NSArray *)parseFiles;
                     review.likes = 0;

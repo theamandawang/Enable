@@ -37,6 +37,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *measurementLabel;
 @property (weak, nonatomic) IBOutlet PFImageView *profileImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 

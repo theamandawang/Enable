@@ -93,6 +93,7 @@
 - (void) addTextNodeAt: (SCNVector3) location withDistance: (CGFloat) distance {
     SCNNode * node = [[SCNNode alloc] init];
     SCNText * text = [SCNText textWithString:[NSString stringWithFormat:@"%0.2f", distance] extrusionDepth:0.5];
+    [self.delegate exportMeasurement:distance];
     SCNMaterial * material = [[SCNMaterial alloc] init];
     material.diffuse.contents = UIColor.systemRedColor;
     text.materials = @[material];

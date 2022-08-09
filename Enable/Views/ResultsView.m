@@ -40,6 +40,7 @@
 }
 
 - (void) presentReview: (Review * _Nullable) review byUser: (UserProfile * _Nonnull) profile{
+    [self.measurementLabel setHidden: YES];
     if(review.images.count > 0){
         [self.titleTopToProfileBottom setActive: NO];
         [self.titleTopToImageBottom setActive: YES];
@@ -58,6 +59,10 @@
     self.starRatingView.value = review.rating;
     self.usernameLabel.text = profile.username;
     self.userProfile = profile;
+    if(self.review.measuredItem){
+        self.measurementLabel.text = [NSString stringWithFormat:@"%@: %0.2f inches", self.review.measuredItem, self.review.measurement];
+        [self.measurementLabel setHidden: NO];
+    }
     self.likeCountLabel.text = [NSString stringWithFormat: @"%d", review.likes];
     if(self.liked){
         self.likeImageView.image = [UIImage systemImageNamed:kLikedImageName];

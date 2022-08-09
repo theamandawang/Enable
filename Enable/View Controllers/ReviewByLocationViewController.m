@@ -256,6 +256,7 @@
     [view.titleLabel setTextColor: [singleton getLabelColor]];
     [view.usernameLabel setTextColor: [singleton getLabelColor]];
     [view.detailsLabel setTextColor: [singleton getLabelColor]];
+    [view.measurementLabel setTextColor: [singleton getLabelColor]];
     [view.likeCountLabel setTextColor: [singleton getLabelColor]];
     [view.profileImageView setTintColor: [singleton getAccentColor]];
     [view.starRatingView setTintColor: [singleton getStarColor]];
