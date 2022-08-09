@@ -19,6 +19,7 @@
     self.tapGestureRecognizer.cancelsTouchesInView = NO;
     self.photoTapGestureRecognizer.cancelsTouchesInView = NO;
     [self.userProfileImageView addGestureRecognizer:self.photoTapGestureRecognizer];
+    self.userProfileImageView.layer.cornerRadius = 50;
     [self.contentView addGestureRecognizer:self.tapGestureRecognizer];    
 }
 #pragma mark - IBActions / User input

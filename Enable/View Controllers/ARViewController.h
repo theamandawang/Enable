@@ -9,6 +9,7 @@
 #import "EnableBaseViewController.h"
 #import <SceneKit/SceneKit.h>
 #import <ARKit/ARKit.h>
+#import <SpriteKit/SpriteKit.h>
 #import <Photos/Photos.h>
 #import <AVFoundation/AVFoundation.h>
 

@@ -257,7 +257,7 @@
     [view.usernameLabel setTextColor: [singleton getLabelColor]];
     [view.detailsLabel setTextColor: [singleton getLabelColor]];
     [view.likeCountLabel setTextColor: [singleton getLabelColor]];
-
+    [view.profileImageView setTintColor: [singleton getAccentColor]];
     [view.starRatingView setTintColor: [singleton getStarColor]];
     [view.starRatingView setBackgroundColor: [singleton getBackgroundColor]];
     [view.likeImageView setTintColor: [singleton getLikeColor]];

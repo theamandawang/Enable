@@ -70,6 +70,7 @@
     } else {
         self.profileImageView.image = [UIImage systemImageNamed: kPlaceholderProfileImageName];
     }
+    self.profileImageView.layer.cornerRadius = 30;
     [self layoutIfNeeded];
 
 }
