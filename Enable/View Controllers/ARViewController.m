@@ -43,7 +43,7 @@
         case UIGestureRecognizerStateEnded:
         {
             [self addNodeAt:location];
-
+            NSLog(@"%f", [self distanceFrom:self.arView.scene.rootNode.childNodes[0] to:self.arView.scene.rootNode.childNodes[1]]);
             break;
         }
         case UIGestureRecognizerStateCancelled:
@@ -53,7 +53,16 @@
     }
 }
 
+- (CGFloat) distanceFrom: (SCNNode *) source to: (SCNNode *) destination {
+    CGFloat dx = destination.position.x - source.position.x;
+    CGFloat dy = destination.position.y - source.position.y;
+    CGFloat dz = destination.position.z - source.position.z;
+     
+    float inches = 39.3701;
+    float meters = sqrt(dx*dx + dy*dy + dz*dz);
 
+    return meters*inches;
+}
 - (void) addNodeAt: (CGPoint) location {
     ARRaycastQuery *query = [self.arView raycastQueryFromPoint:location allowingTarget:ARRaycastTargetEstimatedPlane alignment:ARRaycastTargetAlignmentAny];
     NSArray<ARRaycastResult *> *result = [self.arView.session raycast:query];
@@ -63,7 +72,11 @@
     ARRaycastResult * point = result[0];
     SCNVector3 pos = SCNVector3Make(point.worldTransform.columns[3].x, point.worldTransform.columns[3].y, point.worldTransform.columns[3].z);
     SCNNode * node = [[SCNNode alloc] init];
-    node.geometry = [SCNSphere sphereWithRadius:0.01];
+    SCNSphere * sphere = [SCNSphere sphereWithRadius:0.01];
+    SCNMaterial * material = [[SCNMaterial alloc] init];
+    material.diffuse.contents = UIColor.systemRedColor;
+    sphere.materials = @[material];
+    node.geometry = sphere;
     node.position = pos;
     [self.arView.scene.rootNode addChildNode:node];
 }
