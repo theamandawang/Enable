@@ -523,7 +523,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="428" height="843"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jt-Bg-pGf">
-                                        <rect key="frame" x="0.0" y="0.0" width="428" height="760.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="428" height="800.66666666666663"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.on.rectangle.angled" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="1xt-2p-uUA" customClass="PFImageView">
                                                 <rect key="frame" x="0.0" y="0.0" width="428" height="399.33333333333331"/>
@@ -608,7 +608,7 @@
                                             <constraint firstItem="saa-b4-r0p" firstAttribute="leading" secondItem="6jt-Bg-pGf" secondAttribute="leading" constant="20" id="I6J-ne-2H1"/>
                                             <constraint firstItem="1xt-2p-uUA" firstAttribute="leading" secondItem="6jt-Bg-pGf" secondAttribute="leading" id="Ke1-Az-cHs"/>
                                             <constraint firstItem="pcX-PS-yfb" firstAttribute="trailing" secondItem="saa-b4-r0p" secondAttribute="trailing" id="L6U-jd-Ya6"/>
-                                            <constraint firstAttribute="bottom" secondItem="Sb9-tz-kyI" secondAttribute="bottom" constant="40" id="Ne8-5C-ktL"/>
+                                            <constraint firstAttribute="bottom" secondItem="Sb9-tz-kyI" secondAttribute="bottom" constant="80" id="Ne8-5C-ktL"/>
                                             <constraint firstItem="Sb9-tz-kyI" firstAttribute="leading" secondItem="pcX-PS-yfb" secondAttribute="leading" id="QIP-8c-gYd"/>
                                             <constraint firstItem="pcX-PS-yfb" firstAttribute="top" secondItem="7Xg-k7-nHL" secondAttribute="bottom" constant="15" id="Uvu-g3-lyw"/>
                                             <constraint firstAttribute="trailing" secondItem="1xt-2p-uUA" secondAttribute="trailing" id="ZuZ-cN-M8K"/>

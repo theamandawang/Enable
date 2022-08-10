@@ -10,8 +10,8 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "Constants.h"
 @interface ResultsView ()
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
 @property int imageIndex;
@@ -42,15 +42,15 @@
 - (void) presentReview: (Review * _Nullable) review byUser: (UserProfile * _Nonnull) profile{
     [self.measurementLabel setHidden: YES];
     if(review.images.count > 0){
-        [self.titleTopToProfileBottom setActive: NO];
-        [self.titleTopToImageBottom setActive: YES];
+        [self.titleTopToProfileBottom setPriority: 250];
+        [self.titleTopToImageBottom setPriority: 1000];
         [self.photosImageView setHidden: NO];
         [self.photosImageView setNeedsLayout];
         [self setCurrentImage:0];
     }
     else {
-        [self.titleTopToImageBottom setActive: NO];
-        [self.titleTopToProfileBottom setActive: YES];
+        [self.titleTopToImageBottom setPriority: 250];
+        [self.titleTopToProfileBottom setPriority: 1000];
         [self.photosImageView setHidden: YES];
     }
     self.imageIndex = 0;

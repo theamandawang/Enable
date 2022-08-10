@@ -57,7 +57,8 @@ GMSMarker *infoMarker;
     infoMarker = [GMSMarker markerWithPosition:location];
     [Utilities getLocationFromPOI_idStr:placeID withCompletion:^(Location * _Nullable location, NSError * _Nullable error) {
         if(location){
-            infoMarker.snippet = [NSString stringWithFormat:@"Average Rating: %0.2f/5", location.rating];
+            infoMarker.snippet = [NSString stringWithFormat:@"%0.2f", location.rating];
+            self.infoWindowView.starRatingView.value = location.rating;
         } else {
             infoMarker.snippet = @"No reviews yet!";
         }
@@ -140,6 +141,7 @@ didFailAutocompleteWithError:(NSError *)error {
 }
 
 - (UIView *)mapView:(GMSMapView *)mapView markerInfoContents:(nonnull GMSMarker *)marker{
+    marker.tracksInfoWindowChanges = YES;
     self.infoWindowView = [[InfoWindowView alloc] initWithFrame:CGRectMake(marker.infoWindowAnchor.x, marker.infoWindowAnchor.y + 1, 180, 100)];
     self.infoWindowView.starRatingView.value = [marker.snippet floatValue];
     self.infoWindowView.placeNameLabel.text = marker.title;

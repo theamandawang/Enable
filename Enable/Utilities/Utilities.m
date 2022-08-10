@@ -181,8 +181,7 @@ bool allResultsFound = false;
 
 + (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
-    //TODO: infinite scroll
-    query.limit = 20;
+    //TODO: limit queries and allow infinite scroll
     [query whereKey:@"locationID" equalTo:location];
     [query addDescendingOrder:@"likes"];
     [query addDescendingOrder:@"createdAt"];
@@ -198,8 +197,7 @@ bool allResultsFound = false;
 
 + (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
-    //TODO: infinite scroll
-    query.limit = 20;
+    //TODO: limit queries and allow infinite scroll use skip and limit to implement!
     [query whereKey:@"userProfileID" equalTo:profile];
     [query addDescendingOrder:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
