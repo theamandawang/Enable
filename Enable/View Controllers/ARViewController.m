@@ -71,6 +71,7 @@
             break;
     }
 }
+
 - (void) clearView {
     for(SCNNode * n in self.nodes){
         [n removeFromParentNode];
@@ -79,6 +80,8 @@
     self.ray = nil;
     [self.nodes removeAllObjects];
 }
+
+#pragma mark - Calculations
 - (SCNVector3) midpointFrom: (SCNVector3) source to: (SCNVector3) destination {
     CGFloat x = (destination.x + source.x) / 2.0;
     CGFloat y = (destination.y + source.y) / 2.0;
@@ -88,6 +91,21 @@
 - (CGFloat) distanceFrom: (SCNNode *) source to: (SCNNode *) destination {
     float metersToInches = 39.3701;
     return simd_distance(destination.simdPosition, source.simdPosition) * metersToInches;
+}
+
+
+
+#pragma mark - add nodes
+
+- (SCNVector3) arQuery: (CGPoint) location {
+    ARRaycastQuery *query = [self.arView raycastQueryFromPoint:location allowingTarget:ARRaycastTargetEstimatedPlane alignment:ARRaycastTargetAlignmentAny];
+    NSArray<ARRaycastResult *> *result = [self.arView.session raycast:query];
+    if (![result firstObject]) {
+        return SCNVector3Zero;
+    }
+    ARRaycastResult * point = result[0];
+    SCNVector3 pos = SCNVector3Make(point.worldTransform.columns[3].x, point.worldTransform.columns[3].y, point.worldTransform.columns[3].z);
+    return pos;
 }
 
 - (void) addTextNodeAt: (SCNVector3) location withDistance: (CGFloat) distance {
@@ -100,19 +118,14 @@
     node.geometry = text;
     node.position = location;
     node.scale = SCNVector3Make(0.005, 0.005, 0.005);
+    
+    // text faces camera
+    SCNLookAtConstraint * constraint = [SCNLookAtConstraint lookAtConstraintWithTarget:self.arView.pointOfView];
+    constraint.localFront = SCNVector3Make(0, 0, 1);
+    constraint.gimbalLockEnabled = YES;
+    node.constraints = @[constraint];
     [self.nodes addObject:node];
     [self.arView.scene.rootNode addChildNode:node];
-}
-
-- (SCNVector3) arQuery: (CGPoint) location {
-    ARRaycastQuery *query = [self.arView raycastQueryFromPoint:location allowingTarget:ARRaycastTargetEstimatedPlane alignment:ARRaycastTargetAlignmentAny];
-    NSArray<ARRaycastResult *> *result = [self.arView.session raycast:query];
-    if (![result firstObject]) {
-        return SCNVector3Zero;
-    }
-    ARRaycastResult * point = result[0];
-    SCNVector3 pos = SCNVector3Make(point.worldTransform.columns[3].x, point.worldTransform.columns[3].y, point.worldTransform.columns[3].z);
-    return pos;
 }
 
 - (void) addNodeAt: (CGPoint) location {
@@ -148,6 +161,8 @@
     self.ray = node;
     [self.arView.scene.rootNode addChildNode:node];
 }
+
+#pragma mark - IBAction
 - (IBAction)didTapSave:(id)sender {
     UIImage * snap = [self.arView snapshot];
     [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
@@ -166,6 +181,9 @@
         }
     }];
 }
+
+#pragma mark - Theme
+
 - (void) setupTheme {
     [self setupMainTheme];
     [self.saveButton setTintColor: [[ThemeTracker sharedTheme] getAccentColor]];

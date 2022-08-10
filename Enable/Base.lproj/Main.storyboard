@@ -18,8 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="428" height="926"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
-                                <rect key="frame" x="0.0" y="153" width="428" height="739"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="19E-Cg-fHi" customClass="MapView">
+                                <rect key="frame" x="0.0" y="138" width="428" height="705"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <gestureRecognizers/>
                             </view>
@@ -30,6 +30,7 @@
                         <constraints>
                             <constraint firstItem="19E-Cg-fHi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="NJI-SL-Kby"/>
                             <constraint firstItem="19E-Cg-fHi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RRc-Fy-al5"/>
+                            <constraint firstItem="19E-Cg-fHi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="T9K-GS-2sf"/>
                             <constraint firstItem="19E-Cg-fHi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="gbD-0m-dTu"/>
                         </constraints>
                     </view>
