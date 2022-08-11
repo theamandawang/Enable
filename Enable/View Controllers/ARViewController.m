@@ -47,9 +47,6 @@
         case UIGestureRecognizerStateChanged:
         {
             if(self.nodes.count) {
-                if(self.ray){
-                    [self.ray removeFromParentNode];
-                }
                 [self addRay:self.nodes[0] end:location];
             }
             break;
@@ -60,6 +57,7 @@
             if(self.nodes.count != 2) {
                 [self clearView];
             } else {
+                [self addRay:self.nodes[0] end:location];
                 NSLog(@"%f", [self distanceFrom:self.nodes[0] to:self.nodes[1]]);
                 CGFloat dist = [self distanceFrom:self.nodes[0] to:self.nodes[1]];
                 SCNVector3 midpoint = [self midpointFrom:self.nodes[0].position to:self.nodes[1].position];
@@ -111,7 +109,6 @@
 - (void) addTextNodeAt: (SCNVector3) location withDistance: (CGFloat) distance {
     SCNNode * node = [[SCNNode alloc] init];
     SCNText * text = [SCNText textWithString:[NSString stringWithFormat:@"%0.2f", distance] extrusionDepth:0.5];
-    [self.delegate exportMeasurement:distance];
     SCNMaterial * material = [[SCNMaterial alloc] init];
     material.diffuse.contents = UIColor.systemRedColor;
     text.materials = @[material];
@@ -126,6 +123,8 @@
     node.constraints = @[constraint];
     [self.nodes addObject:node];
     [self.arView.scene.rootNode addChildNode:node];
+    [self.delegate exportMeasurement:distance image: [self.arView snapshot]];
+
 }
 
 - (void) addNodeAt: (CGPoint) location {
@@ -144,6 +143,9 @@
     [self.arView.scene.rootNode addChildNode:node];
 }
 - (void) addRay: (SCNNode *) startNode end: (CGPoint) end {
+    if(self.ray){
+        [self.ray removeFromParentNode];
+    }
     SCNVector3 endPoint = [self arQuery:end];
     CGFloat height = sqrt(pow(startNode.position.x - endPoint.x, 2) + pow(startNode.position.y - endPoint.y, 2) + pow(startNode.position.z - endPoint.z, 2));
     SCNNode * node = [[SCNNode alloc] init];

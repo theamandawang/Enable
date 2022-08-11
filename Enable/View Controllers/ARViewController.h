@@ -16,7 +16,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @protocol ARViewControllerDelegate
 @required
-- (void) exportMeasurement: (CGFloat) measurement;
+- (void) exportMeasurement: (CGFloat) measurement image:(UIImage *) snapshot;
 @end
 @interface ARViewController : EnableBaseViewController <ARSCNViewDelegate>
 @property (weak, nonatomic) id<ARViewControllerDelegate> delegate;

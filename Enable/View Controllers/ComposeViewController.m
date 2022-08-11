@@ -333,7 +333,10 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.shimmerLoadView setup];
 }
 
-- (void)exportMeasurement:(CGFloat)measurement {
+- (void)exportMeasurement:(CGFloat)measurement image: (UIImage *) snapshot{
+    self.photosImageView.image = snapshot;
+    [self.images removeAllObjects];
+    [self.images addObject:snapshot];
     [self.measurementButton setTitle:[NSString stringWithFormat:@"%0.2f inches", measurement] forState:UIControlStateNormal];
     [self.measurementButton setHidden:NO];
     [self.measureTextField setHidden:NO];
