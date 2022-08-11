@@ -53,6 +53,7 @@
 		7FD3FF26288A10A6005D857B /* ProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF24288A10A6005D857B /* ProfileTableViewCell.m */; };
 		7FD3FF27288A10A6005D857B /* ProfileTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */; };
 		7FD3FF2A288B0172005D857B /* EnableBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FD3FF29288B0172005D857B /* EnableBaseViewController.m */; };
+		7FDE4B6728A1A6A600E0972E /* ARViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FDE4B6628A1A6A600E0972E /* ARViewController.m */; };
 		7FEC56342891ADDE004BE2BF /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FEC56332891ADDE004BE2BF /* ColorViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +135,8 @@
 		7FD3FF25288A10A6005D857B /* ProfileTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileTableViewCell.xib; sourceTree = "<group>"; };
 		7FD3FF28288B0172005D857B /* EnableBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EnableBaseViewController.h; sourceTree = "<group>"; };
 		7FD3FF29288B0172005D857B /* EnableBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EnableBaseViewController.m; sourceTree = "<group>"; };
+		7FDE4B6528A1A6A600E0972E /* ARViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARViewController.h; sourceTree = "<group>"; };
+		7FDE4B6628A1A6A600E0972E /* ARViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARViewController.m; sourceTree = "<group>"; };
 		7FEC56322891ADDE004BE2BF /* ColorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorViewController.h; sourceTree = "<group>"; };
 		7FEC56332891ADDE004BE2BF /* ColorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -295,6 +298,8 @@
 				7FD3FF29288B0172005D857B /* EnableBaseViewController.m */,
 				7F67386F2894ABBE00EEAC26 /* MainNavigationViewController.h */,
 				7F6738702894ABBE00EEAC26 /* MainNavigationViewController.m */,
+				7FDE4B6528A1A6A600E0972E /* ARViewController.h */,
+				7FDE4B6628A1A6A600E0972E /* ARViewController.m */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -472,6 +477,7 @@
 				7F841BFB28762FA700CBD922 /* ProfileViewController.m in Sources */,
 				7FA7DEDF2874AE3F0080E4A9 /* HomeViewController.m in Sources */,
 				7F6298D82877D3EB00A550F4 /* ComposeViewController.m in Sources */,
+				7FDE4B6728A1A6A600E0972E /* ARViewController.m in Sources */,
 				7F250C09289C494500DEB487 /* Constants.m in Sources */,
 				7FBA6F1B289D847C0046376D /* CloudThemes.m in Sources */,
 				7F67386C2894542B00EEAC26 /* ComposeTableViewCell.m in Sources */,

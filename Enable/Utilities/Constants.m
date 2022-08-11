@@ -50,6 +50,7 @@ NSString *const kHomeToProfileSignedOutSegueName = @"signedOut";
 NSString *const kReviewToComposeSegueName = @"compose";
 NSString *const kReviewToLoginSegueName = @"reviewToLogin";
 NSString *const kReviewToProfileSegueName = @"reviewToProfile";
+NSString *const kComposeToARSegueName = @"composeToAR";
 
 #pragma mark - Themes
 

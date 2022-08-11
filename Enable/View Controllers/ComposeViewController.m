@@ -11,17 +11,18 @@
 #import "Utilities.h"
 #import "Review.h"
 #import "ReviewShimmerView.h"
-@interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate>
+@interface ComposeViewController () <UITextViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, PHPickerViewControllerDelegate, ARViewControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIButton *addImageButton;
+@property (weak, nonatomic) IBOutlet UIButton *arButton;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UITextView *reviewTextView;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) HCSStarRatingView *starRatingView;
 @property (strong, nonatomic) ReviewShimmerView * shimmerLoadView;
 @property (weak, nonatomic) IBOutlet UIView *scrollContentView;
-
-
+@property (weak, nonatomic) IBOutlet UIButton *measurementButton;
+@property (weak, nonatomic) IBOutlet UITextField *measureTextField;
 @property (strong, nonatomic) NSMutableArray <UIImage *> *images;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *ScrollViewBottomConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *submitButton;
@@ -39,6 +40,8 @@ UITapGestureRecognizer *scrollViewTapGesture;
     scrollViewTapGesture.cancelsTouchesInView = NO;
     [self.scrollView addGestureRecognizer:scrollViewTapGesture];
     self.reviewTextView.delegate = self;
+    [self.measurementButton setHidden:YES];
+    [self.measureTextField setHidden:YES];
     [self setupTextView];
     [self setupStarRatingView];
     [self setupShimmerView];
@@ -56,6 +59,13 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.scrollView setHidden:NO];
 }
 
+#pragma mark - Navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([segue.identifier isEqualToString:kComposeToARSegueName]){
+        ARViewController * vc = [segue destinationViewController];
+        vc.delegate = self;
+    }
+}
 
 #pragma mark - Querying
 -(void) getLocationDataWithCompletion: (void (^_Nonnull)(void)) completion {
@@ -81,21 +91,22 @@ UITapGestureRecognizer *scrollViewTapGesture;
     return false;
 }
 
-- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images didPost: (void (^_Nonnull)(NSError * error))didPost{
+- (void) locationHandlerWithRating : (int) rating title: (NSString *) title description: (NSString *) description images: (NSArray *) images measurement: (float) measurement measuredItem: (NSString * _Nullable) measuredItem didPost: (void (^_Nonnull)(NSError * error))didPost{
     // I have created an option so that if there is no location provided then I will have it request
     // location on its own, but the default is still  going to rely on the location already provided.
+    if([measuredItem isEqualToString:@""]) measuredItem = nil;
     if(!self.location){
         [self getLocationDataWithCompletion:^{
             [Utilities postLocationWithPOI_idStr:self.location.POI_idStr coordinates:self.location.coordinates name:self.location.name address:self.location.address completion:^(Location * _Nullable location, NSError * _Nullable locationError) {
                 if(locationError){
                     [self showAlert:@"Failed to post location" message:locationError.localizedDescription completion:nil];
                 } else {
-                    [Utilities postReviewWithLocation:location rating:rating title:title description:description images:images completion:didPost];
+                    [Utilities postReviewWithLocation:location rating:rating title:title description:description images:images measurement: measurement measuredItem: measuredItem completion:didPost];
                 }
             }];
         }];
     } else {
-        [Utilities postReviewWithLocation:self.location rating:rating title:title description:description images: images completion:didPost];
+        [Utilities postReviewWithLocation:self.location rating:rating title:title description:description images: images measurement: measurement measuredItem: measuredItem completion:didPost];
     }
 }
 
@@ -103,7 +114,12 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self startLoading];
     [self testInternetConnection];
     if([self checkValuesWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text]){
-        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images didPost:^(NSError * _Nullable error){
+        if(![self.measurementButton isHidden] && [self.measureTextField.text isEqualToString:@""]){
+            [self endLoading];
+            [self showAlert:@"Cannot post review" message:@"Please describe measured item." completion:nil];
+            return;
+        }
+        [self locationHandlerWithRating:self.starRatingView.value title:self.titleTextField.text description:self.reviewTextView.text images: (NSArray *) self.images measurement: [self.measurementButton.titleLabel.text floatValue] measuredItem:self.measureTextField.text didPost:^(NSError * _Nullable error){
             if(error){
                 [self endLoading];
                 [self showAlert:@"Failed to post review" message:error.localizedDescription completion:nil];
@@ -116,6 +132,9 @@ UITapGestureRecognizer *scrollViewTapGesture;
         [self endLoading];
         [self showAlert:@"Cannot post review" message:@"Please fill in all fields." completion:nil];
     }
+}
+- (IBAction)didTapAR:(id)sender {
+    [self performSegueWithIdentifier:kComposeToARSegueName sender:nil];
 }
 
 #pragma mark - ImagePicker / Camera
@@ -267,6 +286,11 @@ UITapGestureRecognizer *scrollViewTapGesture;
             completion:nil
     ];
 }
+- (IBAction)didRemoveMeasure:(id)sender {
+    [self.measurementButton setHidden:YES];
+    [self.measureTextField setHidden:YES];
+    [self.measureTextField setText:@""];
+}
 
 #pragma mark - Setup
 - (void) setupTextView {
@@ -279,11 +303,15 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.addImageButton setTintColor: [singleton getAccentColor]];
     [self.scrollContentView setBackgroundColor: [singleton getBackgroundColor]];
     [self.submitButton setTintColor: [singleton getAccentColor]];
+    [self.arButton setTintColor: [singleton getAccentColor]];
+    [self.measurementButton setTintColor: [singleton getAccentColor]];
+    [self.measureTextField setBackgroundColor: [singleton getSecondaryColor]];
+    [self.measureTextField setTextColor: [singleton getLabelColor]];
+    [self.measureTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Measured Item:" attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}]];
     [self.titleTextField setBackgroundColor: [singleton getSecondaryColor]];
     [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
     [self.titleTextField setTextColor:  [singleton getLabelColor]];
     [self.titleTextField setAttributedPlaceholder:[[NSAttributedString alloc] initWithString:@"Title / Summary" attributes:@{NSForegroundColorAttributeName: [singleton getLabelColor]}]];
-
     [self.reviewTextView setTextColor: [singleton getLabelColor]];
     [self.reviewTextView setBackgroundColor: [singleton getSecondaryColor]];
     [self.starRatingView setTintColor: [singleton getStarColor]];
@@ -303,6 +331,15 @@ UITapGestureRecognizer *scrollViewTapGesture;
     [self.shimmerLoadView.leftAnchor constraintEqualToAnchor:self.view.leftAnchor].active = YES;
     [self.shimmerLoadView.rightAnchor constraintEqualToAnchor:self.view.rightAnchor].active = YES;
     [self.shimmerLoadView setup];
+}
+
+- (void)exportMeasurement:(CGFloat)measurement image: (UIImage *) snapshot{
+    self.photosImageView.image = snapshot;
+    [self.images removeAllObjects];
+    [self.images addObject:snapshot];
+    [self.measurementButton setTitle:[NSString stringWithFormat:@"%0.2f inches", measurement] forState:UIControlStateNormal];
+    [self.measurementButton setHidden:NO];
+    [self.measureTextField setHidden:NO];
 }
 
 @end

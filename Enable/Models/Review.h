@@ -17,5 +17,7 @@
 @property (nonatomic, strong) Location *_Nonnull locationID;
 @property int likes;
 @property (nonatomic, strong) NSArray<PFFileObject *> *_Nullable images;
+@property (nonatomic, strong) NSString *_Nullable measuredItem;
+@property float measurement;
 @property (nonatomic, strong, readonly) PFRelation<UserProfile *> * _Nonnull userLikes;
 @end

@@ -181,8 +181,7 @@ bool allResultsFound = false;
 
 + (void) getReviewsByLocation: (Location * _Nonnull) location withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
-    //TODO: infinite scroll
-    query.limit = 20;
+    //TODO: limit queries and allow infinite scroll
     [query whereKey:@"locationID" equalTo:location];
     [query addDescendingOrder:@"likes"];
     [query addDescendingOrder:@"createdAt"];
@@ -198,8 +197,7 @@ bool allResultsFound = false;
 
 + (void) getReviewsByUserProfile: (UserProfile * _Nonnull) profile withCompletion: (void (^ _Nonnull) (NSMutableArray<Review *> * _Nullable reviews, NSError * _Nullable error)) completion{
     PFQuery *query = [PFQuery queryWithClassName: kReviewModelClassName];
-    //TODO: infinite scroll
-    query.limit = 20;
+    //TODO: limit queries and allow infinite scroll use skip and limit to implement!
     [query whereKey:@"userProfileID" equalTo:profile];
     [query addDescendingOrder:@"createdAt"];
     [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
@@ -309,7 +307,7 @@ bool allResultsFound = false;
     return (currAvg * numReviews + rating) / (numReviews + 1);
 }
 
-+ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images completion: (void (^_Nonnull)(NSError * _Nullable error))completion{
++ (void) postReviewWithLocation:(Location * _Nonnull) location rating: (int) rating title: (NSString * _Nonnull) title description: (NSString * _Nonnull) description images: (NSArray<UIImage *> * _Nullable) images measurement: (float) measurement measuredItem: (NSString * _Nullable) measuredItem completion: (void (^_Nonnull)(NSError * _Nullable error))completion{
     NSMutableArray<PFFileObject *> * parseFiles = [[NSMutableArray alloc] init];
     for(UIImage * img in images){
         [parseFiles addObject: [Utilities getPFFileFromImage:img]];
@@ -335,6 +333,8 @@ bool allResultsFound = false;
                     review.title = title;
                     review.reviewText = description;
                     review.rating = rating;
+                    review.measurement = measurement;
+                    review.measuredItem = measuredItem;
                     review.locationID = location;
                     review.images = (NSArray *)parseFiles;
                     review.likes = 0;

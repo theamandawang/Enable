@@ -117,8 +117,6 @@
                         [self updateTheme:kDefaultThemeName withColorDict:nil];
                     }
                 }
-                [self sendNotification];
-
             }
         }];
     }

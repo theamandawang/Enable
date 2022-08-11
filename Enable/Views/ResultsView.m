@@ -10,8 +10,8 @@
 #import <AFNetworking/UIImageView+AFNetworking.h>
 #import "Constants.h"
 @interface ResultsView ()
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToProfileBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleTopToImageBottom;
 @property (weak, nonatomic) IBOutlet PFImageView *photosImageView;
 @property (strong, nonatomic) NSArray<PFFileObject *> * images;
 @property int imageIndex;
@@ -40,16 +40,17 @@
 }
 
 - (void) presentReview: (Review * _Nullable) review byUser: (UserProfile * _Nonnull) profile{
+    [self.measurementLabel setHidden: YES];
     if(review.images.count > 0){
-        [self.titleTopToProfileBottom setActive: NO];
-        [self.titleTopToImageBottom setActive: YES];
+        [self.titleTopToProfileBottom setPriority: 250];
+        [self.titleTopToImageBottom setPriority: 1000];
         [self.photosImageView setHidden: NO];
         [self.photosImageView setNeedsLayout];
         [self setCurrentImage:0];
     }
     else {
-        [self.titleTopToImageBottom setActive: NO];
-        [self.titleTopToProfileBottom setActive: YES];
+        [self.titleTopToImageBottom setPriority: 250];
+        [self.titleTopToProfileBottom setPriority: 1000];
         [self.photosImageView setHidden: YES];
     }
     self.imageIndex = 0;
@@ -58,6 +59,10 @@
     self.starRatingView.value = review.rating;
     self.usernameLabel.text = profile.username;
     self.userProfile = profile;
+    if(self.review.measuredItem){
+        self.measurementLabel.text = [NSString stringWithFormat:@"%@: %0.2f inches", self.review.measuredItem, self.review.measurement];
+        [self.measurementLabel setHidden: NO];
+    }
     self.likeCountLabel.text = [NSString stringWithFormat: @"%d", review.likes];
     if(self.liked){
         self.likeImageView.image = [UIImage systemImageNamed:kLikedImageName];
@@ -70,6 +75,7 @@
     } else {
         self.profileImageView.image = [UIImage systemImageNamed: kPlaceholderProfileImageName];
     }
+    self.profileImageView.layer.cornerRadius = 30;
     [self layoutIfNeeded];
 
 }
