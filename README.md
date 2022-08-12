@@ -10,4 +10,5 @@ Enable is an iOS app designed to allow users to provide accessibility informatio
 - Open XCode and go to Pods/Pods.xcodeproj
   - Under Build Settings -> Excluded Architectures -> Debug, add Any iOS Simulator SDK : arm64
 - Provide API Keys
+
 This allows you to run the app on the simulator :)
